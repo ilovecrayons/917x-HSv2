@@ -5,9 +5,27 @@
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 // motor groups
-pros::MotorGroup leftMotors({-5, 4, -3},
-                            pros::MotorGearset::blue); // left motor group - ports 3 (reversed), 4, 5 (reversed)
-pros::MotorGroup rightMotors({6, -9, 7}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
+    //drivetrain
+    pros::MotorGroup leftMotors({-5, 4, -3},
+                                pros::MotorGearset::blue); // left motor group - ports 3 (reversed), 4, 5 (reversed)
+    pros::MotorGroup rightMotors({6, -9, 7}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
+
+    //intake
+    pros::MotorGroup intake({11,-20});
+
+//Clamp mechanism Piston
+    pros::ADIDigitalOut clamp('A');
+
+//Segregation Mechanism and required to run it
+    //pistons
+    pros::ADIDigitalOut dGate('B');
+
+    //Optical Sensors
+    pros::Optical topSegregator(3);
+    pros::Optical bottomSegregator(2);
+
+    // variables
+    bool segregate = false;
 
 // Inertial Sensor on port 10
 pros::Imu imu(10);
@@ -25,16 +43,17 @@ lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_275, -2.5);
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
                               &rightMotors, // right motor group
-                              10, // 10 inch track width
-                              lemlib::Omniwheel::NEW_4, // using new 4" omnis
-                              360, // drivetrain rpm is 360
-                              2 // horizontal drift is 2. If we had traction wheels, it would have been 8
+                              5.75, // 5.75 inch track width
+                              lemlib::Omniwheel::NEW_325, 
+                              450, // drivetrain rpm is 360
+                              5 // If you have a drift drive, we recommend starting with a value of 2, while a drivetrain with center traction wheels should start with a value of 8.
 );
 
+
 // lateral motion controller
-lemlib::ControllerSettings linearController(10, // proportional gain (kP)
+lemlib::ControllerSettings linearController(8, // proportional gain (kP)
                                             0, // integral gain (kI)
-                                            3, // derivative gain (kD)
+                                            5, // derivative gain (kD)
                                             3, // anti windup
                                             1, // small error range, in inches
                                             100, // small error range timeout, in milliseconds
@@ -45,8 +64,8 @@ lemlib::ControllerSettings linearController(10, // proportional gain (kP)
 
 // angular motion controller
 lemlib::ControllerSettings angularController(2, // proportional gain (kP)
-                                             0, // integral gain (kI)
-                                             10, // derivative gain (kD)
+                                             0.1, // integral gain (kI)
+                                             13, // derivative gain (kD)
                                              3, // anti windup
                                              1, // small error range, in degrees
                                              100, // small error range timeout, in milliseconds
@@ -56,9 +75,9 @@ lemlib::ControllerSettings angularController(2, // proportional gain (kP)
 );
 
 // sensors for odometry
-lemlib::OdomSensors sensors(&vertical, // vertical tracking wheel
+lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel
                             nullptr, // vertical tracking wheel 2, set to nullptr as we don't have a second one
-                            &horizontal, // horizontal tracking wheel
+                            nullptr, // horizontal tracking wheel
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
@@ -162,16 +181,61 @@ void autonomous() {
 /**
  * Runs in driver control
  */
+void tankCurve(pros::controller_analog_e_t leftPower,
+               pros::controller_analog_e_t rightPower, pros::Controller mast,
+               float t) {
+  // Get the joystick values for the left and right sides
+  int leftInput = mast.get_analog(leftPower);
+  int rightInput = mast.get_analog(rightPower);
+
+  // Apply the exponential curve to smooth the power inputs
+  float leftOutput = (exp(-t / 10) + exp((fabs(leftInput) - 127) / 10) * (1 - exp(-t / 10))) * leftInput;
+  float rightOutput = (exp(-t / 10) + exp((fabs(rightInput) - 127) / 10) * (1 - exp(-t / 10))) * rightInput;
+
+  // Move the motors accordingly
+  leftMotors.move(leftOutput);
+  rightMotors.move(rightOutput);
+}
 void opcontrol() {
-    // controller
-    // loop to continuously update motors
-    while (true) {
-        // get joystick positions
-        int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-        int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-        // move the chassis with curvature drive
-        chassis.arcade(leftY, rightX);
-        // delay to save resources
-        pros::delay(10);
+	tankCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y,
+            pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 10);
+
+
+	while (true) {
+
+	if (controller.get_digital(DIGITAL_R2)) // intake
+    {
+      intake.move(127);
     }
+    if (controller.get_digital(DIGITAL_R1)) // outtake
+    {
+      intake.move(-127);
+    }
+    if (controller.get_digital(DIGITAL_R1) == false &&
+        controller.get_digital(DIGITAL_R2) == false) // stop intake
+    {
+      intake.move(0);
+    }
+	}
+	if(controller.get_digital(DIGITAL_X)){
+		clamp.set_value(true);
+	}
+	if(controller.get_digital(DIGITAL_B)){
+		clamp.set_value(false);
+	}
+
+	//red segregator
+	if (topSegregator.get_hue()==0 && bottomSegregator.get_hue()==0){
+		segregate = true;
+	}
+	
+	if(segregate == true && topSegregator.get_hue()==0){
+		dGate.set_value(true);
+	}
+	else{
+		dGate.set_value(false);
+	}
+
+	
+	pros::delay(10);
 }
