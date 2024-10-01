@@ -1,31 +1,29 @@
 #include "main.h"
-#include "lemlib/api.hpp" // IWYU pragma: keep
+#include "lemlib/api.hpp"
+#include "pros/adi.hpp"
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 // motor groups
-    //drivetrain
-    pros::MotorGroup leftMotors({-5, 4, -3},
-                                pros::MotorGearset::blue); // left motor group - ports 3 (reversed), 4, 5 (reversed)
-    pros::MotorGroup rightMotors({6, -9, 7}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
+// drivetrain
+pros::MotorGroup leftMotors({-5, 4, -3},
+                            pros::MotorGearset::blue); // left motor group - ports 3 (reversed), 4, 5 (reversed)
+pros::MotorGroup rightMotors({6, -9, 7}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
 
-    //intake
-    pros::MotorGroup intake({11,-20});
+// intake
+pros::MotorGroup intake({11, -20});
 
-//Clamp mechanism Piston
-    pros::ADIDigitalOut clamp('A');
+// Clamp mechanism Piston
+pros::adi::DigitalOut clamp('A');
 
-//Segregation Mechanism and required to run it
-    //pistons
-    pros::ADIDigitalOut dGate('B');
+// sorting mechanism
+pros::adi::DigitalOut dGate('B');
+pros::Optical topSort(3);
+pros::Optical bottomSort(2);
 
-    //Optical Sensors
-    pros::Optical topSegregator(3);
-    pros::Optical bottomSegregator(2);
-
-    // variables
-    bool segregate = false;
+// variables
+bool sort = false;
 
 // Inertial Sensor on port 10
 pros::Imu imu(10);
@@ -44,11 +42,11 @@ lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_275, -2.5);
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
                               &rightMotors, // right motor group
                               5.75, // 5.75 inch track width
-                              lemlib::Omniwheel::NEW_325, 
+                              lemlib::Omniwheel::NEW_325,
                               450, // drivetrain rpm is 360
-                              5 // If you have a drift drive, we recommend starting with a value of 2, while a drivetrain with center traction wheels should start with a value of 8.
+                              5 // If you have a drift drive, we recommend starting with a value of 2, while a
+                                // drivetrain with center traction wheels should start with a value of 8.
 );
-
 
 // lateral motion controller
 lemlib::ControllerSettings linearController(8, // proportional gain (kP)
@@ -181,61 +179,49 @@ void autonomous() {
 /**
  * Runs in driver control
  */
-void tankCurve(pros::controller_analog_e_t leftPower,
-               pros::controller_analog_e_t rightPower, pros::Controller mast,
+void tankCurve(pros::controller_analog_e_t leftPower, pros::controller_analog_e_t rightPower, pros::Controller mast,
                float t) {
-  // Get the joystick values for the left and right sides
-  int leftInput = mast.get_analog(leftPower);
-  int rightInput = mast.get_analog(rightPower);
+    // Get the joystick values for the left and right sides
+    int leftInput = mast.get_analog(leftPower);
+    int rightInput = mast.get_analog(rightPower);
 
-  // Apply the exponential curve to smooth the power inputs
-  float leftOutput = (exp(-t / 10) + exp((fabs(leftInput) - 127) / 10) * (1 - exp(-t / 10))) * leftInput;
-  float rightOutput = (exp(-t / 10) + exp((fabs(rightInput) - 127) / 10) * (1 - exp(-t / 10))) * rightInput;
+    // Apply the exponential curve to smooth the power inputs
+    float leftOutput = (exp(-t / 10) + exp((fabs(leftInput) - 127) / 10) * (1 - exp(-t / 10))) * leftInput;
+    float rightOutput = (exp(-t / 10) + exp((fabs(rightInput) - 127) / 10) * (1 - exp(-t / 10))) * rightInput;
 
-  // Move the motors accordingly
-  leftMotors.move(leftOutput);
-  rightMotors.move(rightOutput);
+    // Move the motors accordingly
+    leftMotors.move(leftOutput);
+    rightMotors.move(rightOutput);
 }
+
 void opcontrol() {
-	tankCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y,
-            pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 10);
+    tankCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 10);
 
-
-	while (true) {
-
-	if (controller.get_digital(DIGITAL_R2)) // intake
-    {
-      intake.move(127);
+    while (true) {
+        if (controller.get_digital(DIGITAL_R2)) // intake
+        {
+            intake.move(127);
+        }
+        if (controller.get_digital(DIGITAL_R1)) // outtake
+        {
+            intake.move(-127);
+        }
+        if (controller.get_digital(DIGITAL_R1) == false && controller.get_digital(DIGITAL_R2) == false) // stop intake
+        {
+            intake.move(0);
+        }
     }
-    if (controller.get_digital(DIGITAL_R1)) // outtake
-    {
-      intake.move(-127);
-    }
-    if (controller.get_digital(DIGITAL_R1) == false &&
-        controller.get_digital(DIGITAL_R2) == false) // stop intake
-    {
-      intake.move(0);
-    }
-	}
-	if(controller.get_digital(DIGITAL_X)){
-		clamp.set_value(true);
-	}
-	if(controller.get_digital(DIGITAL_B)){
-		clamp.set_value(false);
-	}
+    if (controller.get_digital(DIGITAL_X)) { clamp.set_value(true); }
+    if (controller.get_digital(DIGITAL_B)) { clamp.set_value(false); }
 
-	//red segregator
-	if (topSegregator.get_hue()==0 && bottomSegregator.get_hue()==0){
-		segregate = true;
-	}
-	
-	if(segregate == true && topSegregator.get_hue()==0){
-		dGate.set_value(true);
-	}
-	else{
-		dGate.set_value(false);
-	}
+    // red segregator
+    if (topSort.get_hue() == 0 && bottomSort.get_hue() == 0) { sort = true; }
 
-	
-	pros::delay(10);
+    if (sort == true && topSort.get_hue() == 0) {
+        dGate.set_value(true);
+    } else {
+        dGate.set_value(false);
+    }
+
+    pros::delay(10);
 }
