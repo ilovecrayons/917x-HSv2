@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 namespace lemlib {
 class PID {
     public:
@@ -60,11 +61,19 @@ class PID {
          * @endcode
          */
         void reset();
+
+        // AV CUSTOM
+        // sets the kP, kI, and kD gains
+        void setGains(float kP, float kI, float kD);
+
+        // gets the kP, kI, and kD gains
+        std::vector<float> getGains();
     protected:
+        // AV CUSTOM: kP, kI, and kD changed to dynamic
         // gains
-        const float kP;
-        const float kI;
-        const float kD;
+        float kP;
+        float kI;
+        float kD;
 
         // optimizations
         const float windupRange;
