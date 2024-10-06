@@ -8,9 +8,9 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 // motor groups
 // drivetrain
-pros::MotorGroup rightMotors({3, -2,-1},
+pros::MotorGroup rightMotors({-3, 2,-1},
                             pros::MotorGearset::blue); // left motor group - ports 3 (reversed), 4, 5 (reversed)
-pros::MotorGroup leftMotors({-8, -9, 10}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
+pros::MotorGroup leftMotors({-8, 9, -10}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
 
 // intake
 pros::MotorGroup intake({13, -20});
@@ -20,8 +20,8 @@ pros::adi::DigitalOut clamp('A');
 
 // sorting mechanism
 pros::adi::DigitalOut dGate('B');
-pros::Optical topSort(3);
-pros::Optical bottomSort(2);
+pros::Optical topSort(19);
+pros::Optical bottomSort(18);
 
 // variables
 bool sort = false;
@@ -133,6 +133,9 @@ void initialize() {
     pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0]));
 }
 
+void constantChanger(){
+    
+}
 /**
  * Runs while the robot is disabled
  */
