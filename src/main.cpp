@@ -2,6 +2,11 @@
 #include "lemlib/api.hpp"
 #include "pros/adi.hpp"
 #include "pros/llemu.hpp"
+#include <fstream>
+#include <iostream>
+
+//PID Tuner
+std::ofstream myfile;
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -13,7 +18,7 @@ pros::MotorGroup rightMotors({-3, 2,-1},
 pros::MotorGroup leftMotors({-8, 9, -10}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
 
 // intake
-pros::MotorGroup intake({13, -20});
+pros::MotorGroup intake({-13, 20});
 
 // Clamp mechanism Piston
 pros::adi::DigitalOut clamp('A');
@@ -129,12 +134,57 @@ void initialize() {
     });
 
     //TESTING
-    chassis.lateralPID.setGains(69, 1, 1);
+    chassis.lateralPID.setGains(10, 0, 3);
     pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0]));
 }
-
+float kP;
+float kI;
+float kD;
+int runNum = 1;
 void constantChanger(){
+    if(runNum == 1){
+        myfile.open("LateralPIDVals.txt");
+    }
+    kP = chassis.lateralPID.getGains()[0];
+    kI = chassis.lateralPID.getGains()[1];
+    kD = chassis.lateralPID.getGains()[2];
+
+    myfile << std::to_string(runNum)+": "+std::to_string(chassis.lateralPID.getGains()[0])+","+std::to_string(chassis.lateralPID.getGains()[1])+","+std::to_string(chassis.lateralPID.getGains()[2])+"\n";
     
+    chassis.moveFor(12,1000);
+    while (true){
+    // !controller.get_digital(DIGITAL_X) && !controller.get_digital(DIGITAL_B) && !controller.get_digital(DIGITAL_UP)
+    //                         && !controller.get_digital(DIGITAL_DOWN) && !controller.get_digital(DIGITAL_L1) && !controller.get_digital(DIGITAL_L2);
+        if (controller.get_digital(DIGITAL_X)){
+            chassis.lateralPID.setGains(kP++,kI,kD);
+            break;
+        }
+        if (controller.get_digital(DIGITAL_B)){
+            chassis.lateralPID.setGains(kP--,kI,kD);
+            break;
+        }
+        if (controller.get_digital(DIGITAL_UP)){
+            chassis.lateralPID.setGains(kP,kI++,kD);
+            break;
+        }
+        if (controller.get_digital(DIGITAL_DOWN)){
+            chassis.lateralPID.setGains(kP,kI--,kD);
+            break;
+        }
+        if (controller.get_digital(DIGITAL_L1)){
+            chassis.lateralPID.setGains(kP,kI,kD++);
+            break;
+        }
+        if (controller.get_digital(DIGITAL_L2)){
+            chassis.lateralPID.setGains(kP,kI,kD--);
+            break;
+        }
+        else{ continue; }
+        runNum++;
+    }
+
+    pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0])+","+std::to_string(chassis.lateralPID.getGains()[1])+","+std::to_string(chassis.lateralPID.getGains()[2]));
+
 }
 /**
  * Runs while the robot is disabled
