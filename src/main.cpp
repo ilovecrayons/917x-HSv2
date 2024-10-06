@@ -7,12 +7,12 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 // motor groups
 // drivetrain
-pros::MotorGroup leftMotors({-5, 4, -3},
+pros::MotorGroup rightMotors({3, -2,-1},
                             pros::MotorGearset::blue); // left motor group - ports 3 (reversed), 4, 5 (reversed)
-pros::MotorGroup rightMotors({6, -9, 7}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
+pros::MotorGroup leftMotors({-8, -9, 10}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
 
 // intake
-pros::MotorGroup intake({11, -20});
+pros::MotorGroup intake({13, -20});
 
 // Clamp mechanism Piston
 pros::adi::DigitalOut clamp('A');
@@ -195,9 +195,10 @@ void tankCurve(pros::controller_analog_e_t leftPower, pros::controller_analog_e_
 }
 
 void opcontrol() {
-    tankCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 10);
+    
 
     while (true) {
+        tankCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_Y, controller, 10);
         if (controller.get_digital(DIGITAL_R2)) // intake
         {
             intake.move(127);
@@ -210,18 +211,21 @@ void opcontrol() {
         {
             intake.move(0);
         }
-    }
-    if (controller.get_digital(DIGITAL_X)) { clamp.set_value(true); }
-    if (controller.get_digital(DIGITAL_B)) { clamp.set_value(false); }
+    
+    if (controller.get_digital(DIGITAL_L1)) { clamp.set_value(true); }
+    if (controller.get_digital(DIGITAL_L2)) { clamp.set_value(false); }
 
     // red segregator
-    if (topSort.get_hue() == 0 && bottomSort.get_hue() == 0) { sort = true; }
+    // if (topSort.get_hue() == 0 && bottomSort.get_hue() == 0) { sort = true; }
 
-    if (sort == true && topSort.get_hue() == 0) {
-        dGate.set_value(true);
-    } else {
-        dGate.set_value(false);
-    }
+    // if (sort == true && topSort.get_hue() == 0) {
+    //     dGate.set_value(true);
+    // } else {
+    //     dGate.set_value(false);
+    // }
+    if (controller.get_digital(DIGITAL_DOWN)) { dGate.set_value(false); };
+    if (controller.get_digital(DIGITAL_UP)) { dGate.set_value(true); };
 
     pros::delay(10);
+    }
 }
