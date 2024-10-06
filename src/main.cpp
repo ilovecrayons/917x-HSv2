@@ -13,7 +13,7 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 // motor groups
 // drivetrain
-pros::MotorGroup rightMotors({-3, 2,-1},
+pros::MotorGroup rightMotors({3, 2,-1},
                             pros::MotorGearset::blue); // left motor group - ports 3 (reversed), 4, 5 (reversed)
 pros::MotorGroup leftMotors({-8, 9, -10}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
 
