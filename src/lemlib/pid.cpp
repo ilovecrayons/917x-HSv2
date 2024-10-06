@@ -27,4 +27,18 @@ void PID::reset() {
     integral = 0;
     prevError = 0;
 }
+
+
+void PID::setGains(float kP, float kI, float kD){
+    this->kP = kP;
+    this->kI = kI;
+    this->kD = kD;
+
+    reset();
+}
+
+std::vector<float> PID::getGains(){
+    return {kP,kI,kD};
+}
+
 } // namespace lemlib

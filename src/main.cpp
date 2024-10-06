@@ -1,6 +1,7 @@
 #include "main.h"
 #include "lemlib/api.hpp"
 #include "pros/adi.hpp"
+#include "pros/llemu.hpp"
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -126,6 +127,10 @@ void initialize() {
             pros::delay(50);
         }
     });
+
+    //TESTING
+    chassis.lateralPID.setGains(69, 1, 1);
+    pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0]));
 }
 
 /**
@@ -174,6 +179,8 @@ void autonomous() {
     // wait until the movement is done
     chassis.waitUntilDone();
     pros::lcd::print(4, "pure pursuit finished!");
+
+    
 }
 
 /**
