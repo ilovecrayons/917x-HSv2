@@ -1,5 +1,5 @@
 #pragma once
-
+#include <fstream>
 #include <vector>
 namespace lemlib {
 class PID {
@@ -68,6 +68,9 @@ class PID {
 
         // gets the kP, kI, and kD gains
         std::vector<float> getGains();
+
+        //program to make tuning PID algs easier
+        void constantChanger(pros::Controller& controller, std::ofstream& myfile);
     protected:
         // AV CUSTOM: kP, kI, and kD changed to dynamic
         // gains
@@ -81,5 +84,7 @@ class PID {
 
         float integral = 0;
         float prevError = 0;
+    private:
+        int runNum = 1;
 };
 } // namespace lemlib

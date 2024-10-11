@@ -36,6 +36,51 @@ void PID::setGains(float kP, float kI, float kD){
 
     reset();
 }
+void PID::constantChanger(pros::Controller& controller, std::ofstream& myfile) {
+    controller.clear();
+    controller.print(0,0,"x: +kP, b: -kP | up: +kI(0.5), down: -kI(0.5) | L1: +kD, L2: -kD");
+    controller.print(2, 0, "Current Gains: %f,%f,%f", getGains()[0], getGains()[1], getGains()[2]);
+
+    if(runNum == 1){
+        std::ofstream myfile; // Change to use the fully qualified name std::ofstream
+        myfile.open("LateralPIDVals.txt");
+    }
+    float kP = getGains()[0];
+    float kI = getGains()[1];
+    float kD = getGains()[2];
+
+    myfile << std::to_string(runNum)+": "+std::to_string(getGains()[0])+","+std::to_string(getGains()[1])+","+std::to_string(getGains()[2])+"\n";
+    
+    while (true){
+    
+        if (controller.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_X)){
+            setGains(kP++,kI,kD);
+            break;
+        }
+        if (controller.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_B)){
+            setGains(kP--,kI,kD);
+            break;
+        }
+        if (controller.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_UP)){
+            setGains(kP,kI+0.5,kD);
+            break;
+        }
+        if (controller.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_DOWN)){
+            setGains(kP,kI-0.5,kD);
+            break;
+        }
+        if (controller.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_L1)){
+            setGains(kP,kI,kD++);
+            break;
+        }
+        if (controller.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_L2)){
+            setGains(kP,kI,kD--);
+            break;
+        }
+        else{ continue; }
+        runNum++;
+    }
+}
 
 std::vector<float> PID::getGains(){
     return {kP,kI,kD};

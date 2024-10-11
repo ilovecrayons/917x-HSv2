@@ -153,8 +153,7 @@ void constantChanger(){
     
     chassis.moveFor(12,1000);
     while (true){
-    // !controller.get_digital(DIGITAL_X) && !controller.get_digital(DIGITAL_B) && !controller.get_digital(DIGITAL_UP)
-    //                         && !controller.get_digital(DIGITAL_DOWN) && !controller.get_digital(DIGITAL_L1) && !controller.get_digital(DIGITAL_L2);
+    
         if (controller.get_digital(DIGITAL_X)){
             chassis.lateralPID.setGains(kP++,kI,kD);
             break;
@@ -164,11 +163,11 @@ void constantChanger(){
             break;
         }
         if (controller.get_digital(DIGITAL_UP)){
-            chassis.lateralPID.setGains(kP,kI++,kD);
+            chassis.lateralPID.setGains(kP,kI+0.5,kD);
             break;
         }
         if (controller.get_digital(DIGITAL_DOWN)){
-            chassis.lateralPID.setGains(kP,kI--,kD);
+            chassis.lateralPID.setGains(kP,kI-0.5,kD);
             break;
         }
         if (controller.get_digital(DIGITAL_L1)){
