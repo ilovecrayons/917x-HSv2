@@ -36,14 +36,14 @@ void PID::setGains(float kP, float kI, float kD){
 
     reset();
 }
-void PID::constantChanger(pros::Controller& controller, std::ofstream& myfile) {
+void PID::constantChanger(pros::Controller& controller) {
+    while (true){
     controller.clear();
     controller.print(0,0,"x: +kP, b: -kP | up: +kI(0.5), down: -kI(0.5) | L1: +kD, L2: -kD");
     controller.print(2, 0, "Current Gains: %f,%f,%f", getGains()[0], getGains()[1], getGains()[2]);
-
+    std::ofstream myfile; // Change to use the fully qualified name std::ofstream
     if(runNum == 1){
-        std::ofstream myfile; // Change to use the fully qualified name std::ofstream
-        myfile.open("LateralPIDVals.txt");
+        myfile.open("LateralPIDVals.txt", std::ios::app);;
     }
     float kP = getGains()[0];
     float kI = getGains()[1];
@@ -79,6 +79,7 @@ void PID::constantChanger(pros::Controller& controller, std::ofstream& myfile) {
         }
         else{ continue; }
         runNum++;
+    }
     }
 }
 

@@ -70,7 +70,7 @@ class PID {
         std::vector<float> getGains();
 
         //program to make tuning PID algs easier
-        void constantChanger(pros::Controller& controller, std::ofstream& myfile);
+        void constantChanger(pros::Controller& controller);
     protected:
         // AV CUSTOM: kP, kI, and kD changed to dynamic
         // gains
