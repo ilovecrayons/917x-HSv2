@@ -1,6 +1,7 @@
 #pragma once
 #include "main.h"
 #include "lemlib/api.hpp"
+#include "pros/distance.hpp"
 #include "pros/motor_group.hpp"
 
 extern pros::Controller controller;
@@ -12,6 +13,6 @@ extern pros::Optical bottomSort;
 extern pros::Imu imu;
 extern pros::MotorGroup rightMotors;
 extern pros::MotorGroup leftMotors;
-
+extern pros::Distance distance;
 extern lemlib::Chassis chassis;
 

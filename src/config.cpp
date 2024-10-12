@@ -1,4 +1,5 @@
 #include "config.hpp"
+#include "pros/distance.hpp"
 
 // ports
 constexpr int RIGHT_F = -3;
@@ -11,6 +12,7 @@ constexpr int LEFT_B = -10;
 
 constexpr int INTAKE_1 = -13;
 constexpr int INTAKE_2 = 20;
+constexpr int DISTANCE = 11;
 
 constexpr char CLAMP = 'A';
 constexpr char DGATE = 'B';
@@ -29,18 +31,20 @@ pros::MotorGroup rightMotors({RIGHT_F, RIGHT_M, RIGHT_B}, pros::MotorGearset::bl
 pros::MotorGroup leftMotors({LEFT_F, LEFT_M, LEFT_B}, pros::MotorGearset::blue);
 
 // intake
-pros::MotorGroup intake({-13, 20});
+pros::MotorGroup intake({INTAKE_1, INTAKE_2});
 
 // Clamp mechanism Piston
-pros::adi::DigitalOut clamp('A');
+pros::adi::DigitalOut clamp(CLAMP);
 
 // sorting mechanism
-pros::adi::DigitalOut dGate('B');
-pros::Optical topSort(19);
-pros::Optical bottomSort(18);
+pros::adi::DigitalOut dGate(DGATE);
+pros::Optical topSort(TOP_SORT);
+pros::Optical bottomSort(BOTTOM_SORT);
 
 // Inertial Sensor on port 10
-pros::Imu imu(10);
+pros::Imu imu(IMU);
+
+pros::Distance distance(DISTANCE);
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
@@ -48,7 +52,7 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
                               5.75, // 5.75 inch track width
                               lemlib::Omniwheel::NEW_325,
                               450, // drivetrain rpm is 360
-                              5 // If you have a drift drive, we recommend starting with a value of 2, while a
+                              8 // If you have a drift drive, we recommend starting with a value of 2, while a
                                 // drivetrain with center traction wheels should start with a value of 8.
 );
 

@@ -3,6 +3,7 @@
 #include "lemlib/logger/logger.hpp"
 #include "lemlib/timer.hpp"
 #include "lemlib/util.hpp"
+#include "pros/distance.hpp"
 #include "pros/misc.hpp"
 
 void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params, bool async) {
@@ -124,4 +125,33 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
     distTraveled = -1;
     this->endMotion();
 
+}
+
+float lemlib::Chassis::filterDistance(std::vector<float> distances) {
+    std::sort(distances.begin(), distances.end());
+    float Q1 = distances[distances.size() / 4];
+    float Q3 = distances[distances.size() * 3 / 4];
+    float IQR = Q3 - Q1;
+    float upperThreshold = Q3 + 1.5 * IQR;
+    float lowerThreshold = Q1 - 1.5 * IQR;
+    std::vector<float> filteredDistances;
+    for (int i = 0; i < distances.size(); i++) {
+        if (distances[i] > lowerThreshold && distances[i] < upperThreshold) {
+            filteredDistances.push_back(distances[i]);
+        }
+    }
+    return lemlib::avg(filteredDistances);
+}
+
+void lemlib::Chassis::collectDistances(pros::Distance& distanceSensor) {
+    this->inDistanceCollection = true;
+    this->collectedDistances.clear();
+    while(this->inDistanceCollection){
+        this->collectedDistances.push_back(distanceSensor.get_distance() / 25.4);
+        pros::delay(25);
+    }
+}
+
+void lemlib::Chassis::endCollectDistances() {
+    this->inDistanceCollection = false;
 }
