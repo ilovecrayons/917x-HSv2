@@ -1,4 +1,5 @@
 #pragma once
+#include "pros/misc.hpp"
 #include <fstream>
 #include <vector>
 namespace lemlib {
