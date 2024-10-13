@@ -52,54 +52,6 @@ void initialize() {
     chassis.lateralPID.setGains(10, 0, 3);
     pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0]));
 }
-float kP;
-float kI;
-float kD;
-int runNum = 1;
-void constantChanger(){
-    if(runNum == 1){
-        myfile.open("LateralPIDVals.txt", std::ios::app);
-    }
-    kP = chassis.lateralPID.getGains()[0];
-    kI = chassis.lateralPID.getGains()[1];
-    kD = chassis.lateralPID.getGains()[2];
-
-    myfile << std::to_string(runNum)+": "+std::to_string(chassis.lateralPID.getGains()[0])+","+std::to_string(chassis.lateralPID.getGains()[1])+","+std::to_string(chassis.lateralPID.getGains()[2])+"\n";
-    
-    chassis.moveFor(12,1000);
-    while (true){
-    
-        if (controller.get_digital(DIGITAL_X)){
-            chassis.lateralPID.setGains(kP++,kI,kD);
-            break;
-        }
-        if (controller.get_digital(DIGITAL_B)){
-            chassis.lateralPID.setGains(kP--,kI,kD);
-            break;
-        }
-        if (controller.get_digital(DIGITAL_UP)){
-            chassis.lateralPID.setGains(kP,kI+0.5,kD);
-            break;
-        }
-        if (controller.get_digital(DIGITAL_DOWN)){
-            chassis.lateralPID.setGains(kP,kI-0.5,kD);
-            break;
-        }
-        if (controller.get_digital(DIGITAL_L1)){
-            chassis.lateralPID.setGains(kP,kI,kD++);
-            break;
-        }
-        if (controller.get_digital(DIGITAL_L2)){
-            chassis.lateralPID.setGains(kP,kI,kD--);
-            break;
-        }
-        else{ continue; }
-        runNum++;
-    }
-
-    pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0])+","+std::to_string(chassis.lateralPID.getGains()[1])+","+std::to_string(chassis.lateralPID.getGains()[2]));
-
-}
 /**
  * Runs while the robot is disabled
  */
