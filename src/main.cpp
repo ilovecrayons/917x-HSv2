@@ -255,7 +255,7 @@ void tankCurve(pros::controller_analog_e_t leftPower, pros::controller_analog_e_
 }
 
 void opcontrol() {
-    
+
 
     while (true) {
         tankCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_Y, controller, 10);
