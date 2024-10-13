@@ -1,5 +1,6 @@
 #pragma once
 
+#include "pros/distance.hpp"
 #include "pros/rtos.hpp"
 #include "pros/imu.hpp"
 #include "lemlib/asset.hpp"
@@ -914,6 +915,16 @@ class Chassis {
          *
          * @warning Do not interact with these unless you know what you are doing
          */
+        
+        // AV CUSTOM
+        float filterDistance(std::vector<float> distances);
+        
+        void collectDistances(pros::Distance& distanceSensor);
+        std::vector<float> collectedDistances;
+        
+        void endCollectDistances();
+        bool inDistanceCollection = false;
+
         PID lateralPID;
         /**
          * PIDs are exposed so advanced users can implement things like gain scheduling
