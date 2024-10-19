@@ -63,7 +63,7 @@ class PID {
          */
         void reset();
 
-        // AV CUSTOM
+        // 917x custom
         // sets the kP, kI, and kD gains
         void setGains(float kP, float kI, float kD);
 
@@ -73,7 +73,7 @@ class PID {
         //program to make tuning PID algs easier
         void constantChanger(pros::Controller& controller);
     protected:
-        // AV CUSTOM: kP, kI, and kD changed to dynamic
+        // 917x custom: kP, kI, and kD changed to dynamic
         // gains
         float kP;
         float kI;
