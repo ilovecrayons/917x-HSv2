@@ -6,15 +6,17 @@
 #include <fstream>
 #include <iostream>
 
-//PID Tuner
+// PID Tuner
 std::ofstream myfile;
-
-
 
 // runtime variables
 bool sort = false;
-
-
+double fwd;
+double turning;
+float up;
+float down;
+bool clamped = false;
+int autoSelector = 5;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -48,10 +50,11 @@ void initialize() {
         }
     });
 
-    //TESTING
+    // TESTING
     chassis.lateralPID.setGains(10, 0, 3);
     pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0]));
 }
+
 /**
  * Runs while the robot is disabled
  */
@@ -73,16 +76,15 @@ ASSET(example_txt); // '.' replaced with "_" to make c++ happy
  */
 void autonomous() {
     controller.clear();
-    pros::Task pidTunerTask{[=] {
-        chassis.lateralPID.constantChanger(controller);
-    }};
-    while(true){
-        while(controller.get_digital(DIGITAL_R1)) pros::delay(10);
+    pros::Task pidTunerTask {[=] { chassis.lateralPID.constantChanger(controller); }};
+    while (true) {
+        while (controller.get_digital(DIGITAL_R1)) pros::delay(10);
 
-        chassis.moveFor(12,1000, {.maxSpeed = 127, .earlyExitRange = 5}, false);
+        chassis.moveFor(12, 1000, {.maxSpeed = 127, .earlyExitRange = 5}, false);
         pros::delay(10);
     }
 }
+
 //     // Move to x: 20 and y: 15, and face heading 90. Timeout set to 4000 ms
 //     chassis.moveToPose(20, 15, 90, 4000);
 //     // Move to x: 0 and y: 0 and face heading 270, going backwards. Timeout set to 4000ms
@@ -110,57 +112,68 @@ void autonomous() {
 //     chassis.waitUntilDone();
 //     pros::lcd::print(4, "pure pursuit finished!");
 
-    
-
-
 /**
  * Runs in driver control
  */
-void tankCurve(pros::controller_analog_e_t leftPower, pros::controller_analog_e_t rightPower, pros::Controller mast,
-               float t) {
-    // Get the joystick values for the left and right sides
-    int leftInput = mast.get_analog(leftPower);
-    int rightInput = mast.get_analog(rightPower);
+// void tankCurve(pros::controller_analog_e_t leftPower, pros::controller_analog_e_t rightPower, pros::Controller mast,
+//                float t) {
+//     // Get the joystick values for the left and right sides
+//     int leftInput = mast.get_analog(leftPower);
+//     int rightInput = mast.get_analog(rightPower);
 
-    // Apply the exponential curve to smooth the power inputs
-    float leftOutput = (exp(-t / 10) + exp((fabs(leftInput) - 127) / 10) * (1 - exp(-t / 10))) * leftInput;
-    float rightOutput = (exp(-t / 10) + exp((fabs(rightInput) - 127) / 10) * (1 - exp(-t / 10))) * rightInput;
+//     // Apply the exponential curve to smooth the power inputs
+//     float leftOutput = (exp(-t / 10) + exp((fabs(leftInput) - 127) / 10) * (1 - exp(-t / 10))) * leftInput;
+//     float rightOutput = (exp(-t / 10) + exp((fabs(rightInput) - 127) / 10) * (1 - exp(-t / 10))) * rightInput;
 
-    // Move the motors accordingly
-    leftMotors.move(leftOutput);
-    rightMotors.move(rightOutput);
+//     // Move the motors accordingly
+//     leftMotors.move(leftOutput);
+//     rightMotors.move(rightOutput);
+// }
+
+
+void arcadeCurve(pros::controller_analog_e_t power,
+                 pros::controller_analog_e_t turn, pros::Controller mast,
+                 float t) {
+  up = mast.get_analog(power);
+  down = mast.get_analog(turn);
+  fwd = (exp(-t / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-t / 10))) * up;
+  turning = -1 * down;
+  leftMotors.move(fwd - turning);
+  rightMotors.move(fwd + turning);
 }
 
 void opcontrol() {
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     while (true) {
-        tankCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_Y, controller, 10);
-        if (controller.get_digital(DIGITAL_R2)) // intake
+        arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 16.9);
+        if (controller.get_digital(DIGITAL_L2)) // intake
         {
-            intake.move(127);
+            intake.move(120);
         }
-        if (controller.get_digital(DIGITAL_R1)) // outtake
+        if (controller.get_digital(DIGITAL_L1)) // outtake
         {
-            intake.move(-127);
+            intake.move(-120);
         }
-        if (controller.get_digital(DIGITAL_R1) == false && controller.get_digital(DIGITAL_R2) == false) // stop intake
+        if (controller.get_digital(DIGITAL_L1) == false && controller.get_digital(DIGITAL_L2) == false) // stop intake
         {
             intake.move(0);
         }
-    
-    if (controller.get_digital(DIGITAL_L1)) { clamp.set_value(true); }
-    if (controller.get_digital(DIGITAL_L2)) { clamp.set_value(false); }
 
-    // red segregator
-    // if (topSort.get_hue() == 0 && bottomSort.get_hue() == 0) { sort = true; }
+        if (controller.get_digital(DIGITAL_R1)) { 
+            clamped = !clamped;
+            clamp.set_value(clamped); }
 
-    // if (sort == true && topSort.get_hue() == 0) {
-    //     dGate.set_value(true);
-    // } else {
-    //     dGate.set_value(false);
-    // }
-    if (controller.get_digital(DIGITAL_DOWN)) { dGate.set_value(false); };
-    if (controller.get_digital(DIGITAL_UP)) { dGate.set_value(true); };
+        // red segregator
+        // if (topSort.get_hue() == 0 && bottomSort.get_hue() == 0) { sort = true; }
 
-    pros::delay(10);
+        // if (sort == true && topSort.get_hue() == 0) {
+        //     dGate.set_value(true);
+        // } else {
+        //     dGate.set_value(false);
+        // }
+        if (controller.get_digital(DIGITAL_DOWN)) { dGate.set_value(false); };
+        if (controller.get_digital(DIGITAL_UP)) { dGate.set_value(true); };
+
+        pros::delay(10);
     }
 }
