@@ -72,6 +72,7 @@ ASSET(example_txt); // '.' replaced with "_" to make c++ happy
  * This is an example autonomous routine which demonstrates a lot of the features LemLib has to offer
  */
 void autonomous() {
+    chassis.lateralPID.constantChanger(controller);
 //     // Move to x: 20 and y: 15, and face heading 90. Timeout set to 4000 ms
 //     chassis.moveToPose(20, 15, 90, 4000);
 //     // Move to x: 0 and y: 0 and face heading 270, going backwards. Timeout set to 4000ms
@@ -121,7 +122,7 @@ void tankCurve(pros::controller_analog_e_t leftPower, pros::controller_analog_e_
 }
 
 void opcontrol() {
-    
+
 
     while (true) {
         tankCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_Y, controller, 10);
