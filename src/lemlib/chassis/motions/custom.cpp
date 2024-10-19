@@ -48,10 +48,9 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
         // calculate distnace to the target
         const float distTarget = distance - distTraveled;
         // check if the robot is close enough to the target to start settling
-        if(distTarget < 7.5 && !close){
+        if (distTarget < 7.5 && !close) {
             close = true;
             params.maxSpeed = fmax(fabs(prevLateralOut), 60); // slows down robot
-
         }
 
         // motion chaining
@@ -67,7 +66,7 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
         // calculate error
         const float adjustedRobotTheta = params.forwards ? pose.theta : pose.theta + M_PI;
         const float angularError = angleError(adjustedRobotTheta, currentAngle);
-        
+
         lateralSmallExit.update(distTarget);
         lateralLargeExit.update(distTarget);
 
@@ -83,10 +82,10 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
         // apply restrictions on lateral speed
         lateralOut = std::clamp(lateralOut, -params.maxSpeed, params.maxSpeed);
 
-        //constrain lateral output by max accel, but not for deceleration
+        // constrain lateral output by max accel, but not for deceleration
         if (!close) lateralOut = slew(lateralOut, prevLateralOut, lateralSettings.slew);
 
-        //prevent moving in the wrong direction
+        // prevent moving in the wrong direction
         if (params.forwards && !close) lateralOut = std::fmax(lateralOut, 0);
         else if (!params.forwards && !close) lateralOut = std::fmin(lateralOut, 0);
 
@@ -124,7 +123,6 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
     // set distTraveled to -1 to indicate that the function has finished
     distTraveled = -1;
     this->endMotion();
-
 }
 
 float lemlib::Chassis::filterDistance(std::vector<float> distances) {
@@ -146,12 +144,10 @@ float lemlib::Chassis::filterDistance(std::vector<float> distances) {
 void lemlib::Chassis::collectDistances(pros::Distance& distanceSensor) {
     this->inDistanceCollection = true;
     this->collectedDistances.clear();
-    while(this->inDistanceCollection){
+    while (this->inDistanceCollection) {
         this->collectedDistances.push_back(distanceSensor.get_distance() / 25.4);
         pros::delay(25);
     }
 }
 
-void lemlib::Chassis::endCollectDistances() {
-    this->inDistanceCollection = false;
-}
+void lemlib::Chassis::endCollectDistances() { this->inDistanceCollection = false; }
