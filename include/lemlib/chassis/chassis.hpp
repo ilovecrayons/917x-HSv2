@@ -324,7 +324,7 @@ struct MoveToPointParams {
         float earlyExitRange = 0;
 };
 
-// AV CUSTOM
+// 917x custom
 struct MoveForParams {
         bool forwards = true;
         float maxSpeed = 127;
@@ -691,7 +691,7 @@ class Chassis {
          */
         void moveToPoint(float x, float y, int timeout, MoveToPointParams params = {}, bool async = true);
 
-        // AV CUSTOM
+        // 917x custom
         void moveFor(float distance, int timeout, MoveForParams params = {}, bool async = true);
         /**
          * @brief Move the chassis along a path
@@ -916,7 +916,7 @@ class Chassis {
          * @warning Do not interact with these unless you know what you are doing
          */
         
-        // AV CUSTOM
+        // 917x custom
         float filterDistance(std::vector<float> distances);
         
         void collectDistances(pros::Distance& distanceSensor);
