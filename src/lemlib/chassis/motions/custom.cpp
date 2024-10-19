@@ -37,7 +37,7 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
     std::optional<bool> prevSide = std::nullopt;
 
     // main loop
-    while (!timer.isDone() && !lateralLargeExit.getExit() && !lateralSmallExit.getExit() && this->motionRunning) {
+    while (!timer.isDone() && ((!lateralSmallExit.getExit() && !lateralLargeExit.getExit()) || !close) && this->motionRunning) {
         // update variables
         const Pose pose = getPose(true, true);
 
