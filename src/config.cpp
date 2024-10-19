@@ -22,7 +22,6 @@ constexpr char BOTTOM_SORT = 18;
 
 constexpr char IMU = 10;
 
-
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
