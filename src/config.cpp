@@ -48,9 +48,9 @@ pros::Distance distance(DISTANCE);
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
                               &rightMotors, // right motor group
-                              5.75, // 5.75 inch track width
+                              14, // 14 inch track width
                               lemlib::Omniwheel::NEW_325,
-                              450, // drivetrain rpm is 360
+                              450, // drivetrain rpm is 450
                               8 // If you have a drift drive, we recommend starting with a value of 2, while a
                                 // drivetrain with center traction wheels should start with a value of 8.
 );
