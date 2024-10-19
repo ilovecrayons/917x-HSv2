@@ -2,16 +2,16 @@
 #include "pros/distance.hpp"
 
 // ports
-constexpr int RIGHT_F = -3;
-constexpr int RIGHT_M = 2;
-constexpr int RIGHT_B = -1;
+constexpr int RIGHT_F = 18;
+constexpr int RIGHT_M = -15;
+constexpr int RIGHT_B = 5;
 
-constexpr int LEFT_F = -8;
-constexpr int LEFT_M = 9;
-constexpr int LEFT_B = -10;
+constexpr int LEFT_F = -6;
+constexpr int LEFT_M = 20;
+constexpr int LEFT_B = -19;
 
-constexpr int INTAKE_1 = -13;
-constexpr int INTAKE_2 = 20;
+constexpr int INTAKE_1 = 13;
+constexpr int INTAKE_2 = -17;
 constexpr int DISTANCE = 11;
 
 constexpr char CLAMP = 'A';

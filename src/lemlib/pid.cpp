@@ -36,20 +36,17 @@ void PID::setGains(float kP, float kI, float kD){
 
     reset();
 }
-void PID::constantChanger(pros::Controller& controller) {
-    while (true){
+void PID::constantChanger(pros::Controller& controller){
+    // std::ofstream myfile; // Change to use the fully qualified name std::ofstream
+    // myfile.open("LateralPIDVals.txt", std::ios::app);;
     controller.clear();
     controller.print(0,0,"x: +kP, b: -kP | up: +kI(0.5), down: -kI(0.5) | L1: +kD, L2: -kD");
     controller.print(2, 0, "Current Gains: %f,%f,%f", getGains()[0], getGains()[1], getGains()[2]);
-    std::ofstream myfile; // Change to use the fully qualified name std::ofstream
-    if(runNum == 1){
-        myfile.open("LateralPIDVals.txt", std::ios::app);;
-    }
     float kP = getGains()[0];
     float kI = getGains()[1];
     float kD = getGains()[2];
 
-    myfile << std::to_string(runNum)+": "+std::to_string(getGains()[0])+","+std::to_string(getGains()[1])+","+std::to_string(getGains()[2])+"\n";
+    // myfile << std::to_string(runNum)+": "+std::to_string(getGains()[0])+","+std::to_string(getGains()[1])+","+std::to_string(getGains()[2])+"\n";
     
     while (true){
     
@@ -78,9 +75,9 @@ void PID::constantChanger(pros::Controller& controller) {
             break;
         }
         else{ continue; }
-        runNum++;
     }
-    }
+    pros::delay(100);
+
 }
 
 std::vector<float> PID::getGains(){
