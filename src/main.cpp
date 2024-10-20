@@ -161,7 +161,9 @@ void opcontrol() {
 
         if (controller.get_digital(DIGITAL_R1)) { 
             clamped = !clamped;
-            clamp.set_value(clamped); }
+            clamp.set_value(clamped);
+            pros::delay(500);
+        }
 
         // red segregator
         // if (topSort.get_hue() == 0 && bottomSort.get_hue() == 0) { sort = true; }
