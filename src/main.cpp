@@ -17,6 +17,9 @@ float up;
 float down;
 bool clamped = false;
 int autoSelector = 5;
+double separationMovementROT = 1.;
+bool post_separation_delay = false;
+int secondCounter = 0;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -130,7 +133,6 @@ void autonomous() {
 //     rightMotors.move(rightOutput);
 // }
 
-
 void arcadeCurve(pros::controller_analog_e_t power,
                  pros::controller_analog_e_t turn, pros::Controller mast,
                  float t) {
@@ -143,38 +145,63 @@ void arcadeCurve(pros::controller_analog_e_t power,
 }
 
 void opcontrol() {
+    
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
+    
     while (true) {
+        
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 16.9);
-        if (controller.get_digital(DIGITAL_L2)) // intake
-        {
-            intake.move(120);
-        }
-        if (controller.get_digital(DIGITAL_L1)) // outtake
-        {
-            intake.move(-120);
-        }
-        if (controller.get_digital(DIGITAL_L1) == false && controller.get_digital(DIGITAL_L2) == false) // stop intake
-        {
-            intake.move(0);
-        }
 
+        //  red segregator
+        // if (topSort.get_hue() == 0 && bottomSort.get_hue() == 0) {
+        //     sort = true;
+        //     intake.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
+        //     intake.tare_position_all();
+        // }
+
+        //FOR TESTING, REMOVE AFTER TESTED (REPLACE WITH ABOVE)
+        if (controller.get_digital(DIGITAL_UP)) {
+            sort = true;
+            intake.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
+            intake.tare_position_all();
+        }
+        if (sort) {
+            if (intake.get_position()<separationMovementROT*360) { intake.move(127); }
+            else
+            {
+                intake.move(0);
+                post_separation_delay = true;
+            }
+            if (post_separation_delay) {
+                secondCounter++;
+                if (secondCounter > 50) {
+                    sort = false;
+                    post_separation_delay = false;
+                    secondCounter = 0;
+                    intake.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
+                }
+            }
+        }
+        if (!sort) {
+
+            if (controller.get_digital(DIGITAL_L2)) // intake
+            {
+                intake.move(120);
+            }
+            if (controller.get_digital(DIGITAL_L1)) // outtake
+            {
+                intake.move(-120);
+            }
+            if (controller.get_digital(DIGITAL_L1) == false && controller.get_digital(DIGITAL_L2) == false) // stop intake
+            {
+                intake.move(0);
+            }
+        }
         if (controller.get_digital(DIGITAL_R1)) { 
             clamped = !clamped;
             clamp.set_value(clamped);
             pros::delay(500);
         }
-
-        // red segregator
-        // if (topSort.get_hue() == 0 && bottomSort.get_hue() == 0) { sort = true; }
-
-        // if (sort == true && topSort.get_hue() == 0) {
-        //     dGate.set_value(true);
-        // } else {
-        //     dGate.set_value(false);
-        // }
-        if (controller.get_digital(DIGITAL_DOWN)) { dGate.set_value(false); };
-        if (controller.get_digital(DIGITAL_UP)) { dGate.set_value(true); };
 
         pros::delay(10);
     }
