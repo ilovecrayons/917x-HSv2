@@ -17,8 +17,6 @@ float up;
 float down;
 bool clamped = false;
 int autoSelector = 5;
-double separationMovementROT = 1.;
-bool post_separation_delay = false;
 int secondCounter = 0;
 
 /**
@@ -153,33 +151,20 @@ void opcontrol() {
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 16.9);
 
         //  red segregator
-        // if (topSort.get_hue() == 0 && bottomSort.get_hue() == 0) {
-        //     sort = true;
-        //     intake.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
-        //     intake.tare_position_all();
-        // }
-
-        //FOR TESTING, REMOVE AFTER TESTED (REPLACE WITH ABOVE)
-        if (controller.get_digital(DIGITAL_UP)) {
+        if (topSort.get_hue()) {
             sort = true;
-            intake.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
-            intake.tare_position_all();
+            intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         }
-        if (sort) {
-            if (intake.get_position()<separationMovementROT*360) { intake.move(127); }
-            else
-            {
-                intake.move(0);
-                post_separation_delay = true;
-            }
-            if (post_separation_delay) {
+
+        if (sort)
+        {
+            if (secondCounter<50) {
                 secondCounter++;
-                if (secondCounter > 50) {
-                    sort = false;
-                    post_separation_delay = false;
-                    secondCounter = 0;
-                    intake.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
-                }
+                intake.move(0);
+            }
+            else{
+                sort = false;
+                intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
             }
         }
         if (!sort) {
