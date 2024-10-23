@@ -128,7 +128,7 @@ void opcontrol() {
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 16.9);
 
         //  red segregator
-        if (topSort.get_hue()) {
+        if (topSort.get_hue() == 0) {
             sort = true;
             intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         }
