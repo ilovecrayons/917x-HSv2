@@ -70,11 +70,6 @@ void competition_initialize() {}
 // this needs to be put outside a function
 ASSET(example_txt); // '.' replaced with "_" to make c++ happy
 
-/**
- * Runs during auto
- *
- * This is an example autonomous routine which demonstrates a lot of the features LemLib has to offer
- */
 void autonomous() {
     controller.clear();
     pros::Task pidTunerTask {[=] { chassis.lateralPID.constantChanger(controller); }};
@@ -112,24 +107,6 @@ void autonomous() {
 //     // wait until the movement is done
 //     chassis.waitUntilDone();
 //     pros::lcd::print(4, "pure pursuit finished!");
-
-/**
- * Runs in driver control
- */
-// void tankCurve(pros::controller_analog_e_t leftPower, pros::controller_analog_e_t rightPower, pros::Controller mast,
-//                float t) {
-//     // Get the joystick values for the left and right sides
-//     int leftInput = mast.get_analog(leftPower);
-//     int rightInput = mast.get_analog(rightPower);
-
-//     // Apply the exponential curve to smooth the power inputs
-//     float leftOutput = (exp(-t / 10) + exp((fabs(leftInput) - 127) / 10) * (1 - exp(-t / 10))) * leftInput;
-//     float rightOutput = (exp(-t / 10) + exp((fabs(rightInput) - 127) / 10) * (1 - exp(-t / 10))) * rightInput;
-
-//     // Move the motors accordingly
-//     leftMotors.move(leftOutput);
-//     rightMotors.move(rightOutput);
-// }
 
 void arcadeCurve(pros::controller_analog_e_t power,
                  pros::controller_analog_e_t turn, pros::Controller mast,
