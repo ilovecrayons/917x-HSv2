@@ -118,6 +118,16 @@ void arcadeCurve(pros::controller_analog_e_t power,
   rightMotors.move(fwd + turning);
 }
 
+void opAsyncButtons() {
+    while (true) {
+        if (controller.get_digital(DIGITAL_R1)) { 
+            clamped = !clamped;
+            clamp.set_value(clamped);
+            pros::delay(500);
+        }
+    }
+}
+
 void opcontrol() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     while (true) {
