@@ -126,13 +126,13 @@ void opAsyncButtons() {
             clamp.set_value(clamped);
             pros::delay(500);
         }
+        pros::delay(10);
     }
 }
 
 void opcontrol() {
-    
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
-    
+    pros::Task asyncButtons(opAsyncButtons);
     while (true) {
         
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 16.9);
@@ -168,11 +168,6 @@ void opcontrol() {
             {
                 intake.move(0);
             }
-        }
-        if (controller.get_digital(DIGITAL_R1)) { 
-            clamped = !clamped;
-            clamp.set_value(clamped);
-            pros::delay(500);
         }
 
         pros::delay(10);
