@@ -19,23 +19,34 @@ bool clamped = false;
 int autoSelector = 5;
 int secondCounter = 0;
 
-/**
- * Runs initialization code. This occurs as soon as the program is started.
- *
- * All other competition modes are blocked by initialize; it is recommended
- * to keep execution time for this mode under a few seconds.
- */
+void incrementAutonSelector() {
+    autoSelector++;
+    if (autoSelector > 5) { autoSelector = 0; }
+}
+
+void callSelectedAuton() {
+    switch (autoSelector) {
+        case 0: break;
+        case 1: break;
+        default: break;
+    }
+}
+
+void displayCurrentAuton() {
+    while (true) {
+        switch (autoSelector) {
+            case 0: pros::lcd::print(5, "Close Safe"); break;
+            case 1: pros::lcd::print(5, "Close Disrupt"); break;
+            default: break;
+        }
+        pros::delay(100);
+    }
+}
+
 void initialize() {
     pros::lcd::initialize(); // initialize brain screen
     chassis.calibrate(); // calibrate sensors
-
-    // the default rate is 50. however, if you need to change the rate, you
-    // can do the following.
-    // lemlib::bufferedStdout().setRate(...);
-    // If you use bluetooth or a wired connection, you will want to have a rate of 10ms
-
-    // for more information on how the formatting for the loggers
-    // works, refer to the fmtlib docs
+    pros::lcd::register_btn1_cb(incrementAutonSelector);
 
     // thread to for brain screen and position logging
     pros::Task screenTask([&]() {
@@ -56,10 +67,9 @@ void initialize() {
     pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0]));
 }
 
-/**
- * Runs while the robot is disabled
- */
-void disabled() {}
+void disabled() {
+    displayCurrentAuton();
+}
 
 /**
  * runs after initialize if the robot is connected to field control
@@ -79,6 +89,8 @@ void autonomous() {
         chassis.moveFor(12, 1000, {.maxSpeed = 127, .earlyExitRange = 5}, false);
         pros::delay(10);
     }
+    
+    callSelectedAuton();
 }
 
 //     // Move to x: 20 and y: 15, and face heading 90. Timeout set to 4000 ms
@@ -108,20 +120,18 @@ void autonomous() {
 //     chassis.waitUntilDone();
 //     pros::lcd::print(4, "pure pursuit finished!");
 
-void arcadeCurve(pros::controller_analog_e_t power,
-                 pros::controller_analog_e_t turn, pros::Controller mast,
-                 float t) {
-  up = mast.get_analog(power);
-  down = mast.get_analog(turn);
-  fwd = (exp(-t / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-t / 10))) * up;
-  turning = -1 * down;
-  leftMotors.move(fwd - turning);
-  rightMotors.move(fwd + turning);
+void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float t) {
+    up = mast.get_analog(power);
+    down = mast.get_analog(turn);
+    fwd = (exp(-t / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-t / 10))) * up;
+    turning = -1 * down;
+    leftMotors.move(fwd - turning);
+    rightMotors.move(fwd + turning);
 }
 
 void opAsyncButtons() {
     while (true) {
-        if (controller.get_digital(DIGITAL_R1)) { 
+        if (controller.get_digital(DIGITAL_R1)) {
             clamped = !clamped;
             clamp.set_value(clamped);
             pros::delay(500);
@@ -134,7 +144,6 @@ void opcontrol() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
-        
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 16.9);
 
         //  red segregator
@@ -143,19 +152,16 @@ void opcontrol() {
             intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         }
 
-        if (sort)
-        {
-            if (secondCounter<50) {
+        if (sort) {
+            if (secondCounter < 50) {
                 secondCounter++;
                 intake.move(0);
-            }
-            else{
+            } else {
                 sort = false;
                 intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
             }
         }
         if (!sort) {
-
             if (controller.get_digital(DIGITAL_L2)) // intake
             {
                 intake.move(120);
@@ -164,7 +170,8 @@ void opcontrol() {
             {
                 intake.move(-120);
             }
-            if (controller.get_digital(DIGITAL_L1) == false && controller.get_digital(DIGITAL_L2) == false) // stop intake
+            if (controller.get_digital(DIGITAL_L1) == false &&
+                controller.get_digital(DIGITAL_L2) == false) // stop intake
             {
                 intake.move(0);
             }
