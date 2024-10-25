@@ -8,7 +8,7 @@ constexpr int RIGHT_B = 5;
 
 constexpr int LEFT_F = -6;
 constexpr int LEFT_M = 20;
-constexpr int LEFT_B = -19;
+constexpr int LEFT_B = -8;
 
 constexpr int INTAKE_1 = 13;
 constexpr int INTAKE_2 = -17;
@@ -20,8 +20,8 @@ constexpr char DGATE = 'B';
 constexpr char TOP_SORT = 19;
 constexpr char BOTTOM_SORT = 18;
 
-constexpr char IMU = 10;
-
+constexpr char IMU = 10; 
+//
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 

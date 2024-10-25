@@ -67,6 +67,7 @@ void initialize() {
     pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0]));
 }
 
+
 void disabled() {
     displayCurrentAuton();
 }
@@ -120,13 +121,14 @@ void autonomous() {
 //     chassis.waitUntilDone();
 //     pros::lcd::print(4, "pure pursuit finished!");
 
-void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float t) {
+void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f, float t) {
     up = mast.get_analog(power);
     down = mast.get_analog(turn);
-    fwd = (exp(-t / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-t / 10))) * up;
+    fwd = (exp(-f / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-f / 10))) * up;
+    // turning = -1 * (exp(-f / 10) + exp((fabs(down) - 127) / 10) * (1 - exp(-f / 10))) * down;
     turning = -1 * down;
-    leftMotors.move(fwd - turning);
-    rightMotors.move(fwd + turning);
+    leftMotors.move(fwd * 0.9 - turning);
+    rightMotors.move(fwd * 0.9 + turning);
 }
 
 void opAsyncButtons() {
@@ -144,7 +146,9 @@ void opcontrol() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
-        arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 16.9);
+        pros::lcd::print(5, "L: %d", leftMotors.get_temperature_all()[0], leftMotors.get_temperature_all()[1], leftMotors.get_temperature_all()[2]);
+        pros::lcd::print(6, "R: %d", rightMotors.get_temperature_all()[0], rightMotors.get_temperature_all()[1], rightMotors.get_temperature_all()[2]);
+        arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 16.9, 0.01);
 
         //  red segregator
         if (topSort.get_hue() == 0) {
@@ -162,9 +166,9 @@ void opcontrol() {
             }
         }
         if (!sort) {
-            if (controller.get_digital(DIGITAL_L2)) // intake
+            if (controller.get_digital(DIGITAL_L2)) // outtake
             {
-                intake.move(120);
+                intake.move(-0);
             }
             if (controller.get_digital(DIGITAL_L1)) // outtake
             {
@@ -173,7 +177,7 @@ void opcontrol() {
             if (controller.get_digital(DIGITAL_L1) == false &&
                 controller.get_digital(DIGITAL_L2) == false) // stop intake
             {
-                intake.move(0);
+                intake.move(100);
             }
         }
 
