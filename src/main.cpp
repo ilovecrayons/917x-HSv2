@@ -71,14 +71,15 @@ void competition_initialize() {}
 ASSET(example_txt); // '.' replaced with "_" to make c++ happy
 
 void autonomous() {
-    controller.clear();
-    pros::Task pidTunerTask {[=] { chassis.lateralPID.constantChanger(controller); }};
-    while (true) {
-        while (controller.get_digital(DIGITAL_R1)) pros::delay(10);
+    // controller.clear();
+    // pros::Task pidTunerTask {[=] { chassis.lateralPID.constantChanger(controller); }};
+    // while (true) {
+    //     while (controller.get_digital(DIGITAL_R1)) pros::delay(10);
 
-        chassis.moveFor(12, 1000, {.maxSpeed = 127, .earlyExitRange = 5}, false);
-        pros::delay(10);
-    }
+    //     chassis.moveFor(12, 1000, {.maxSpeed = 127, .earlyExitRange = 5}, false);
+    //     pros::delay(10);
+    // }
+    
 }
 
 //     // Move to x: 20 and y: 15, and face heading 90. Timeout set to 4000 ms
