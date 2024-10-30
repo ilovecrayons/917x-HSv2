@@ -2,16 +2,15 @@
 #include "pros/distance.hpp"
 
 // ports
-constexpr int RIGHT_F = 18;
-constexpr int RIGHT_M = -15;
-constexpr int RIGHT_B = 5;
+constexpr int RIGHT_F = 13;
+constexpr int RIGHT_M = -1;
+constexpr int RIGHT_B = 11;
 
-constexpr int LEFT_F = -6;
-constexpr int LEFT_M = 20;
-constexpr int LEFT_B = -19;
+constexpr int LEFT_F = -19;
+constexpr int LEFT_M = 10;
+constexpr int LEFT_B = -8;
 
-constexpr int INTAKE_1 = 13;
-constexpr int INTAKE_2 = -17;
+constexpr int INTAKE_1 = 16;
 constexpr int DISTANCE = 11;
 
 constexpr char CLAMP = 'A';
@@ -20,7 +19,7 @@ constexpr char DGATE = 'B';
 constexpr char TOP_SORT = 19;
 constexpr char BOTTOM_SORT = 18;
 
-constexpr char IMU = 10;
+constexpr char IMU = 20;
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -30,7 +29,7 @@ pros::MotorGroup rightMotors({RIGHT_F, RIGHT_M, RIGHT_B}, pros::MotorGearset::bl
 pros::MotorGroup leftMotors({LEFT_F, LEFT_M, LEFT_B}, pros::MotorGearset::blue);
 
 // intake
-pros::MotorGroup intake({INTAKE_1, INTAKE_2});
+pros::Motor intake(INTAKE_1);
 
 // Clamp mechanism Piston
 pros::adi::DigitalOut clamp(CLAMP);

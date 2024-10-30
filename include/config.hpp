@@ -5,7 +5,7 @@
 #include "pros/motor_group.hpp"
 
 extern pros::Controller controller;
-extern pros::MotorGroup intake;
+extern pros::Motor intake;
 extern pros::adi::DigitalOut clamp;
 extern pros::adi::DigitalOut dGate;
 extern pros::Optical topSort;
