@@ -81,6 +81,10 @@ void competition_initialize() {}
 // this needs to be put outside a function
 ASSET(example_txt); // '.' replaced with "_" to make c++ happy
 
+void scoreWallStake(){
+    //ADD CODE
+}
+
 void autonomous() {
     // controller.clear();
     // pros::Task pidTunerTask {[=] { chassis.lateralPID.constantChanger(controller); }};
@@ -92,9 +96,14 @@ void autonomous() {
     // }
     
     // callSelectedAuton();
-    chassis.setPose(0, 0, 0);
-    chassis.lateralPID.setGains(10,0,10);
-    chassis.moveToPose(0, 24,0, 10000000,{.maxSpeed = 70});
+    chassis.setPose(63,0,-90);
+    scoreWallStake();
+    chassis.turnToHeading(0,1000);
+    chassis.moveToPose(-46,-23,-90,1000,{.forwards = false},false);
+    clamp.set_value(true);
+
+
+
 }
 
 //     // Move to x: 20 and y: 15, and face heading 90. Timeout set to 4000 ms
