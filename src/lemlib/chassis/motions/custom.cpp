@@ -65,8 +65,7 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
         if (sgn(currentAngleDiff) != sgn(previousAngleDiff) && params.minSpeed != 0) break;
 
         // calculate error
-        const float adjustedRobotTheta = params.forwards ? pose.theta : pose.theta + M_PI;
-        const float angularError = angleError(adjustedRobotTheta, currentAngle);
+        const float angularError = angleError(currentAngle, pose.theta);
 
         lateralSmallExit.update(distTarget);
         lateralLargeExit.update(distTarget);
