@@ -5,6 +5,7 @@
 #include "pros/llemu.hpp"
 #include <fstream>
 #include <iostream>
+#include "pros/screen.hpp"
 
 // PID Tuner
 std::ofstream myfile;
@@ -18,6 +19,16 @@ float down;
 bool clamped = false;
 int autoSelector = 5;
 int secondCounter = 0;
+
+void printOdomValues() {
+    while (true) {
+        lemlib::Pose pose = chassis.getPose(); // get the current position of the robot
+        pros::screen::print(TEXT_MEDIUM, 3, "x: %f", pose.x); // prints the x position
+        pros::screen::print(TEXT_MEDIUM, 4, "y: %f", pose.y); // prints the y position
+        pros::screen::print(TEXT_MEDIUM, 5, "theta: %f", pose.theta); // prints the heading
+        pros::delay(20);
+    }
+}
 
 void incrementAutonSelector() {
     autoSelector++;
@@ -44,37 +55,12 @@ void displayCurrentAuton() {
 }
 
 void initialize() {
-    pros::lcd::initialize(); // initialize brain screen
-    chassis.calibrate(); // calibrate sensors
-    pros::lcd::register_btn1_cb(incrementAutonSelector);
-
-    // thread to for brain screen and position logging
-    pros::Task screenTask([&]() {
-        while (true) {
-            // print robot location to the brain screen
-            pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
-            pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
-            pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
-            // log position telemetry
-            lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
-            // delay to save resources
-            pros::delay(50);
-        }
-    });
-
-    // TESTING
-    chassis.lateralPID.setGains(10, 0, 3);
-    pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0]));
+    chassis.calibrate(); // calibrate the chassis
+    pros::Task printOdomTask(printOdomValues); // create a task to print the odometry values
 }
 
+void disabled() { displayCurrentAuton(); }
 
-void disabled() {
-    displayCurrentAuton();
-}
-
-/**
- * runs after initialize if the robot is connected to field control
- */
 void competition_initialize() {}
 
 // get a path used for pure pursuit
@@ -86,15 +72,7 @@ void scoreWallStake(){
 }
 
 void autonomous() {
-    // controller.clear();
-    // pros::Task pidTunerTask {[=] { chassis.lateralPID.constantChanger(controller); }};
-    // while (true) {
-    //     while (controller.get_digital(DIGITAL_R1)) pros::delay(10);
 
-    //     chassis.moveFor(12, 1000, {.maxSpeed = 127, .earlyExitRange = 5}, false);
-    //     pros::delay(10);
-    // }
-    
     // callSelectedAuton();
     chassis.setPose(63,0,-90);
     scoreWallStake();
@@ -158,8 +136,10 @@ void opcontrol() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
-        pros::lcd::print(5, "L: %d", leftMotors.get_temperature_all()[0], leftMotors.get_temperature_all()[1], leftMotors.get_temperature_all()[2]);
-        pros::lcd::print(6, "R: %d", rightMotors.get_temperature_all()[0], rightMotors.get_temperature_all()[1], rightMotors.get_temperature_all()[2]);
+        pros::lcd::print(5, "L: %d", leftMotors.get_temperature_all()[0], leftMotors.get_temperature_all()[1],
+                         leftMotors.get_temperature_all()[2]);
+        pros::lcd::print(6, "R: %d", rightMotors.get_temperature_all()[0], rightMotors.get_temperature_all()[1],
+                         rightMotors.get_temperature_all()[2]);
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
         //  red segregator
