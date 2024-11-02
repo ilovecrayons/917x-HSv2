@@ -52,8 +52,8 @@ void initialize() {
     });
 
     // TESTING
-    chassis.lateralPID.setGains(10, 0, 3);
-    pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0]));
+    //chassis.lateralPID.setGains(10, 0, 3);
+    //pros::lcd::set_text(6, std::to_string(chassis.lateralPID.getGains()[0]));
 }
 
 /**
@@ -79,6 +79,9 @@ void autonomous() {
     //     chassis.moveFor(12, 1000, {.maxSpeed = 127, .earlyExitRange = 5}, false);
     //     pros::delay(10);
     // }
+    chassis.setPose(0, 0, 0);
+    chassis.lateralPID.setGains(10,0,10);
+    chassis.moveToPose(0, 24,0, 10000000,{.maxSpeed = 70});
     
 }
 
