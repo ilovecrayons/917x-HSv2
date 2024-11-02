@@ -121,11 +121,10 @@ void autonomous() {
 //     chassis.waitUntilDone();
 //     pros::lcd::print(4, "pure pursuit finished!");
 
-void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f, float t) {
+void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
     up = mast.get_analog(power);
     down = mast.get_analog(turn);
     fwd = (exp(-f / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-f / 10))) * up;
-    // turning = -1 * (exp(-f / 10) + exp((fabs(down) - 127) / 10) * (1 - exp(-f / 10))) * down;
     turning = -1 * down;
     leftMotors.move(fwd * 0.9 - turning);
     rightMotors.move(fwd * 0.9 + turning);
@@ -133,6 +132,7 @@ void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t 
 
 void opAsyncButtons() {
     while (true) {
+        // toggle clamp
         if (controller.get_digital(DIGITAL_R1)) {
             clamped = !clamped;
             clamp.set_value(clamped);
@@ -148,7 +148,7 @@ void opcontrol() {
     while (true) {
         pros::lcd::print(5, "L: %d", leftMotors.get_temperature_all()[0], leftMotors.get_temperature_all()[1], leftMotors.get_temperature_all()[2]);
         pros::lcd::print(6, "R: %d", rightMotors.get_temperature_all()[0], rightMotors.get_temperature_all()[1], rightMotors.get_temperature_all()[2]);
-        arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 16.9, 0.01);
+        arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
         //  red segregator
         if (topSort.get_hue() == 0) {
@@ -177,7 +177,7 @@ void opcontrol() {
             if (controller.get_digital(DIGITAL_L1) == false &&
                 controller.get_digital(DIGITAL_L2) == false) // stop intake
             {
-                intake.move(100);
+                intake.move(127);
             }
         }
 
