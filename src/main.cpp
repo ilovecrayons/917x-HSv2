@@ -23,9 +23,9 @@ int secondCounter = 0;
 void printOdomValues() {
     while (true) {
         lemlib::Pose pose = chassis.getPose(); // get the current position of the robot
-        pros::screen::print(TEXT_MEDIUM, 3, "x: %f", pose.x); // prints the x position
-        pros::screen::print(TEXT_MEDIUM, 4, "y: %f", pose.y); // prints the y position
-        pros::screen::print(TEXT_MEDIUM, 5, "theta: %f", pose.theta); // prints the heading
+        pros::screen::print(TEXT_MEDIUM, 1, "x: %f", pose.x); // prints the x position
+        pros::screen::print(TEXT_MEDIUM, 2, "y: %f", pose.y); // prints the y position
+        pros::screen::print(TEXT_MEDIUM, 3, "theta: %f", pose.theta); // prints the heading
         pros::delay(20);
     }
 }
@@ -72,13 +72,13 @@ void scoreWallStake(){
 }
 
 void autonomous() {
-
+    chassis.moveFor(24, 10000, {.maxSpeed = 60}, true);
     // callSelectedAuton();
-    chassis.setPose(63,0,-90);
-    scoreWallStake();
-    chassis.turnToHeading(0,1000);
-    chassis.moveToPose(-46,-23,-90,1000,{.forwards = false},false);
-    clamp.set_value(true);
+    // chassis.setPose(63,0,-90);
+    // scoreWallStake();
+    // chassis.turnToHeading(0,1000);
+    // chassis.moveToPose(-46,-23,-90,1000,{.forwards = false},false);
+    // clamp.set_value(true);
 
 
 

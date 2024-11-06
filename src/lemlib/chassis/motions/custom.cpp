@@ -26,8 +26,8 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
     angularPID.reset();
 
     // initialize vars used between iterations
-    Pose lastPose = getPose();
-    float currentAngle = getPose().theta;
+    Pose lastPose = getPose(false);
+    float currentAngle = getPose(false).theta;
     distTraveled = 0;
     Timer timer(timeout);
     bool close = false;
@@ -35,12 +35,12 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
     float prevAngularOut = 0; // previous angular power
     const int compState = pros::competition::get_status();
     std::optional<bool> prevSide = std::nullopt;
-
+    
     // main loop
     while (!timer.isDone() && ((!lateralSmallExit.getExit() && !lateralLargeExit.getExit()) || !close) &&
            this->motionRunning) {
         // update variables
-        const Pose pose = getPose(true, true);
+        const Pose pose = getPose(false);
 
         // update distance traveled
         distTraveled += pose.distance(lastPose);
@@ -72,7 +72,7 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
 
         // get output for PIDs
         float lateralOut = lateralPID.update(distTarget);
-        float angularOut = angularPID.update(radToDeg(angularError));
+        float angularOut = angularPID.update(angularError);
         if (close) angularOut = 0;
 
         // apply restrictions on angular speed
@@ -101,8 +101,8 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
         infoSink()->debug("Angular Out: {}, Lateral Out: {}", angularOut, lateralOut);
 
         // ratio the speeds to respect the max speed
-        float leftPower = lateralOut + angularOut;
-        float rightPower = lateralOut - angularOut;
+        float leftPower = lateralOut + angularOut * 1;
+        float rightPower = lateralOut - angularOut * 1;
         const float ratio = std::max(std::fabs(leftPower), std::fabs(rightPower)) / params.maxSpeed;
         if (ratio > 1) {
             leftPower /= ratio;
