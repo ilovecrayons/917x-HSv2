@@ -6,6 +6,31 @@
 #include "pros/distance.hpp"
 #include "pros/misc.hpp"
 
+/**
+ * @brief Moves the robot by a certain distance in a certain direction.
+ * 
+ * @param distance The distance to move the robot by.
+ * @param timeout The time in milliseconds to allow the function to complete.
+ * @param params The parameters for the function.
+ * @param async Whether or not the function should be run asynchronously.
+ * 
+ * @details The function moves the robot by a certain distance in a certain direction. It
+ * uses the lateral PID and angular PID to control the movement of the robot. If the
+ * function is run asynchronously, it will return immediately and the function will be
+ * run in a separate task. The function will also automatically stop the drivetrain when
+ * it is finished.
+ * 
+ * @note The function will not block other tasks in the system. If the robot is already
+ * moving when the function is called, the function will not move the robot until the
+ * previous motion has finished.
+ * 
+ * @see lemlib::Chassis::requestMotionStart()
+ * @see lemlib::Chassis::endMotion()
+ * @see lemlib::Chassis::moveTo()
+ * @see lemlib::Chassis::turnTo()
+ * @see lemlib::Chassis::moveToPose()
+ * @see lemlib::Chassis::turnToPoint()
+ */
 void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params, bool async) {
     params.earlyExitRange = fabs(params.earlyExitRange);
     this->requestMotionStart();
@@ -125,6 +150,19 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
     this->endMotion();
 }
 
+/**
+ * @brief Filter a vector of distances using the IQR method.
+ *
+ * This function works by first sorting the vector of distances, then finding the
+ * first quartile (Q1) and third quartile (Q3) of the sorted vector. The interquartile
+ * range (IQR) is then calculated as Q3 - Q1. The upper and lower thresholds are
+ * calculated as Q3 + 1.5 * IQR and Q1 - 1.5 * IQR, respectively. All distances in
+ * the vector that are within the range [lowerThreshold, upperThreshold] are added to
+ * a new vector, which is then averaged and returned as the filtered distance.
+ *
+ * @param distances The vector of distances to be filtered.
+ * @return The filtered distance.
+ */
 float lemlib::Chassis::filterDistance(std::vector<float> distances) {
     std::sort(distances.begin(), distances.end());
     float Q1 = distances[distances.size() / 4];
@@ -141,6 +179,16 @@ float lemlib::Chassis::filterDistance(std::vector<float> distances) {
     return lemlib::avg(filteredDistances);
 }
 
+/**
+ * @brief Collects distance measurements from a distance sensor.
+ *
+ * This function continuously collects distance measurements from the given
+ * distance sensor and stores them in the collectedDistances vector. The measurements
+ * are converted from millimeters to inches by dividing by 25.4. The function runs
+ * in a loop until the inDistanceCollection flag is set to false.
+ *
+ * @param distanceSensor The distance sensor from which measurements are collected.
+ */
 void lemlib::Chassis::collectDistances(pros::Distance& distanceSensor) {
     this->inDistanceCollection = true;
     this->collectedDistances.clear();
