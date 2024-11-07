@@ -1,5 +1,7 @@
 #include "config.hpp"
+#include "lemlib/chassis/trackingWheel.hpp"
 #include "pros/distance.hpp"
+#include "pros/rotation.hpp"
 
 // ports
 constexpr int RIGHT_F = 11;
@@ -9,6 +11,8 @@ constexpr int RIGHT_B = 1;
 constexpr int LEFT_F = -20;
 constexpr int LEFT_M = 13;
 constexpr int LEFT_B = -19;
+
+constexpr int HORI_ROT = 2;
 
 constexpr int INTAKE_1 = 4;
 constexpr int DISTANCE = 11;
@@ -49,20 +53,23 @@ pros::Imu imu(IMU);
 
 pros::Distance distance(DISTANCE);
 
+pros::Rotation horiRot(HORI_ROT);
+lemlib::TrackingWheel horiTrackingWheel(&horiRot, lemlib::Omniwheel::NEW_325, 0);
+
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
                               &rightMotors, // right motor group
-                              14, // 14 inch track width
+                              12, // 14 inch track width
                               lemlib::Omniwheel::NEW_325,
                               450, // drivetrain rpm is 450
-                              8 // If you have a drift drive, we recommend starting with a value of 2, while a
+                              5 // If you have a drift drive, we recommend starting with a value of 2, while a
                                 // drivetrain with center traction wheels should start with a value of 8.
 );
 
 // lateral motion controller
 lemlib::ControllerSettings linearController(10, // proportional gain (kP)
                                             0, // integral gain (kI)
-                                            15, // derivative gain (kD)  
+                                            15, // derivative gain (kD)
                                             3, // anti windup  3
                                             1, // small error range, in inches  1
                                             100, // small error range timeout, in milliseconds  100
@@ -78,7 +85,7 @@ lemlib::ControllerSettings angularController(4, // proportional gain (kP)  4
                                              3, // anti windup  3
                                              1, // small error range, in degrees  1
                                              100, // small error range timeout, in milliseconds  100
-                                             3,// large error range, in degrees  3
+                                             3, // large error range, in degrees  3
                                              500, // large error range timeout, in milliseconds  500
                                              0 // maximum acceleration (slew)
 );
@@ -86,7 +93,7 @@ lemlib::ControllerSettings angularController(4, // proportional gain (kP)  4
 // sensors for odometry
 lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel
                             nullptr, // vertical tracking wheel 2, set to nullptr as we don't have a second one
-                            nullptr, // horizontal tracking wheel
+                            &horiTrackingWheel, // horizontal tracking wheel
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
