@@ -4,21 +4,21 @@
 #include "pros/rotation.hpp"
 
 // ports
-constexpr int RIGHT_F = 11;
-constexpr int RIGHT_M = -12;
-constexpr int RIGHT_B = 1;
+constexpr int RIGHT_F = 1;
+constexpr int RIGHT_M = -4;
+constexpr int RIGHT_B = 5;
 
-constexpr int LEFT_F = -20;
-constexpr int LEFT_M = 13;
-constexpr int LEFT_B = -19;
+constexpr int LEFT_F = -17;
+constexpr int LEFT_M = 8;
+constexpr int LEFT_B = -14;
 
 constexpr int HORI_ROT = 2;
 
-constexpr int INTAKE_1 = 4;
-constexpr int DISTANCE = 11;
+constexpr int INTAKE_1 = 2;
+constexpr int DISTANCE = 3;
 
-constexpr int WALLSTAKE1 = 3;
-constexpr int WALLSTAKE2 = -4;
+constexpr int WALLSTAKE1 = 15;
+constexpr int WALLSTAKE2 = -19;
 
 constexpr char CLAMP = 'A';
 constexpr char DGATE = 'B';
@@ -26,7 +26,7 @@ constexpr char DGATE = 'B';
 constexpr char TOP_SORT = 10;
 // constexpr char BOTTOM_SORT = 18;
 
-constexpr char IMU = 17;
+constexpr char IMU = 21;
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
