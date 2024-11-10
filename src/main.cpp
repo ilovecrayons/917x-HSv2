@@ -57,6 +57,7 @@ void displayCurrentAuton() {
 void initialize() {
     chassis.calibrate(); // calibrate the chassis
     pros::Task printOdomTask(printOdomValues); // create a task to print the odometry values
+    arm.reset();
 }
 
 void disabled() { displayCurrentAuton(); }
@@ -156,6 +157,10 @@ void opAsyncButtons() {
 }
 
 void opcontrol() {
+    arm.scoreWallstake();
+    arm.loadWallstake();
+    arm.scoreWallstake();
+    
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
