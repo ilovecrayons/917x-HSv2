@@ -102,16 +102,15 @@ void autonomous() {
 //first stake
     intake.move(127); // start the intake
     chassis.moveToPoint(-24,-24,3000,{.maxSpeed = 70},false);
-    chassis.turnToPoint(-24, -48, 10000, {.minSpeed = 50}, false);
-    chassis.moveToPoint(-24,-48,10000,{},false);
-
-    chassis.turnToPoint(0,-63,10000,{.minSpeed = 90},false);
-    chassis.moveToPoint(0,-63,10000,{},false);
-    chassis.turnToPoint(23,-47,10000,{.minSpeed = 90},false);
+    chassis.turnToPoint(-24, -48, 10000, {}, false);
+    chassis.moveToPoint(-24,-48,10000,{.maxSpeed = 70},false);
+    chassis.turnToPoint(0,-57,10000,{},false);
+    chassis.moveToPoint(0,-57,10000,{.maxSpeed = 90},false);
+    chassis.turnToPoint(23,-47,10000,{},false);
     chassis.moveToPoint(23,-47,10000,{.maxSpeed = 70},false);
     pros::delay(500);
     // arm.loadWallstake();                                  Initialize once arm is tuned
-    chassis.turnToHeading(-90,10000,{.minSpeed = 80},false);
+    chassis.turnToHeading(-90,10000,{},false);
     chassis.moveToPoint(-2,-58,10000,{.maxSpeed = 70},false);
     chassis.turnToHeading(180,10000,{},false);
     // arm.scoreWallstake();                                 Initialize once arm is tuned
