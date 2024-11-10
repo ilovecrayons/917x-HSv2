@@ -1,4 +1,5 @@
 #include "subsystem/arm.hpp"
+#include "pros/screen.hpp"
 
 /**
  * @brief Construct a new Arm object
@@ -32,7 +33,7 @@ void Arm::setPower(float power) { motors->move(power); }
  * brake mode to hold, and moves the motors to 0 power.
  */
 void Arm::reset() {
-    rotation->reset();
+    rotation->reset_position();
     motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     motors->move(0);
 }
@@ -59,11 +60,13 @@ void Arm::moveTo(float position, bool async) {
         pid.reset();
         exitCondition.reset();
         while (exitCondition.getExit() == false) {
-            float error = pid.update(position - rotation->get_position());
-            motors->move(error);
+            float error = position - rotation->get_position()/100;
+            motors->move(pid.update(error));
             exitCondition.update(error);
             pros::delay(10);
             motors->move(0);
+            pros::screen::print(pros::E_TEXT_MEDIUM, 6, "error: %f", error);
+            pros::screen::print(pros::E_TEXT_MEDIUM, 7, "position: %f", rotation->get_position()/100);
         }
     }
 }

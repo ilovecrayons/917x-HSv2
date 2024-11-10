@@ -17,9 +17,9 @@ constexpr int HORI_ROT = 2;
 constexpr int INTAKE_1 = 2;
 constexpr int DISTANCE = 3;
 
-constexpr int WALLSTAKE1 = 15;
+constexpr int WALLSTAKE1 = 12;
 constexpr int WALLSTAKE2 = -19;
-constexpr int WALLSTAKE_ROT = 69;
+constexpr int WALLSTAKE_ROT = 11;
 
 constexpr char CLAMP = 'A';
 constexpr char DGATE = 'B';
@@ -39,7 +39,7 @@ pros::MotorGroup leftMotors({LEFT_F, LEFT_M, LEFT_B}, pros::MotorGearset::blue);
 // wallstake
 pros::MotorGroup wallstake({WALLSTAKE1, WALLSTAKE2});
 pros::Rotation wallstakeRot(WALLSTAKE_ROT);
-Arm arm(&wallstake, &wallstakeRot, 10, 0, 15);
+Arm arm(&wallstake, &wallstakeRot, 5, 0, 15);
 // intake
 pros::Motor intake(INTAKE_1);
 
