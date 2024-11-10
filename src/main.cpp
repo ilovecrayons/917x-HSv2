@@ -67,7 +67,12 @@ void competition_initialize() {}
 // this needs to be put outside a function
 ASSET(example_txt); // '.' replaced with "_" to make c++ happy
 
+void resetArm(){
+    // ADD CODE
+}
+
 void autonomous() {
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
 //     chassis.setPose(-58,0,-90); // set the starting position of the robot
 //     chassis.moveToPoint(-62,0,1000,{},false); // move the robot 24 inches forward
 //     scoreWallStake();
@@ -85,23 +90,48 @@ void autonomous() {
 //     chassis.moveToPoint(-24,-48,1000,{},false);
 
     chassis.setPose(-58,0,-90); // set the starting position of the robot
-    chassis.moveToPoint(-62,0,1000,{},false); // move the robot 24 inches forward
-    arm.scoreWallstake();
-    chassis.moveToPose(-52,-27,-60,1000,{.forwards = false,.maxSpeed = 90},false); 
+    chassis.moveToPoint(-62,0,10000,{},false);
+    pros::delay(500);
+    // arm.scoreWallstake();                                 Initialize once arm is tuned
+    //resetArm();                                           Initialize once arm is tuned
+    chassis.moveToPoint(-58,0,10000,{.forwards = false},false);
+    chassis.moveToPose(-52,-27,-60,10000,{.forwards = false,.maxSpeed = 70},false); 
     clamp.set_value(true); // clamp the stake
     pros::delay(750); // wait for the stake to be clamped
 //first stake
     intake.move(127); // start the intake
-    chassis.moveToPoint(-24,-24,2000,{.maxSpeed = 80},false);
-    chassis.moveToPoint(-24,-48,2000,{},false);
-    chassis.moveToPose(0,-60,90,1000,{},false);
-    chassis.moveToPoint(24,-48,1000,{},false);
-    arm.loadWallstake();
-    chassis.turnToHeading(-90,1000,{.minSpeed = 90},false);
-    chassis.moveToPoint(0,-60,1000,{},false);
-    chassis.turnToHeading(0,1000,{.minSpeed = 90},false);
-    arm.scoreWallstake();
-    
+    chassis.moveToPoint(-24,-24,3000,{.maxSpeed = 70},false);
+    chassis.turnToPoint(-24, -48, 10000, {.minSpeed = 90}, false);
+    chassis.moveToPoint(-24,-48,10000,{},false);
+    chassis.turnToPoint(0,-60,10000,{.minSpeed = 90},false);
+    chassis.moveToPose(0,-60,90,10000,{},false);
+    chassis.turnToPoint(23,-47,10000,{.minSpeed = 90},false);
+    chassis.moveToPoint(23,-47,10000,{.maxSpeed = 70},false);
+    pros::delay(500);
+    // arm.loadWallstake();                                  Initialize once arm is tuned
+    chassis.turnToHeading(-90,10000,{.minSpeed = 80},false);
+    chassis.moveToPoint(0,-54,10000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(180,10000,{},false);
+    // arm.scoreWallstake();                                 Initialize once arm is tuned
+    pros::delay(500);
+    chassis.moveToPoint(0,-60,10000,{},false);
+    //resetArm();                                         Initialize once arm is tuned
+    chassis.moveToPoint(-5,-56,10000,{.forwards = false},false);        
+    chassis.turnToHeading(-90,10000,{.minSpeed = 90},false);
+    chassis.moveToPose(-47,-52,-120,10000,{.maxSpeed =  90},false);
+    pros::delay(500);
+    chassis.moveToPoint(-47,-64,10000,{},false);
+    pros::delay(500);
+    chassis.turnToHeading(-50,10000,{.minSpeed = 90},false);
+    chassis.moveToPoint(-62,-50,10000,{},false);
+    chassis.turnToHeading(0,10000,{.minSpeed = 90},false);
+    chassis.moveToPoint(-65,-64,10000,{.forwards = false},false);
+    clamp.set_value(false); //release the stake (full)
+    pros::delay(500);
+    chassis.moveToPoint(-59,-7,1500,{.maxSpeed = 70},false);
+    chassis.turnToHeading(180,10000,{.minSpeed = 90},false);
+    chassis.moveToPoint(-52,19,2000,{.forwards = false,.maxSpeed = 80},false);
+
 }
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
