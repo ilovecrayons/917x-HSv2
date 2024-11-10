@@ -67,3 +67,20 @@ void Arm::moveTo(float position, bool async) {
         }
     }
 }
+
+void Arm::loadWallstake(float position, bool async) {
+    if(async){
+        moveTo(position, true);
+    } else {
+        moveTo(position, false);
+    }
+}
+
+void Arm::scoreWallstake(float position, bool async) {
+    if(async){
+        moveTo(position, true);
+    } else {
+        moveTo(position, false);
+    }
+}
+

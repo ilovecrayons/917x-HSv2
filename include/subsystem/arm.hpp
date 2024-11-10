@@ -12,7 +12,8 @@ class Arm{
         void setPower(float power);
         void reset();
         void moveTo(float position, bool async = false);
-
+        void loadWallstake(float position = 1200, bool async = false);
+        void scoreWallstake(float position = 0, bool async = false);
     private:
         pros::MotorGroup* motors;
         pros::Rotation* rotation;

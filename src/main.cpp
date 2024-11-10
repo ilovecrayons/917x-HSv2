@@ -67,13 +67,6 @@ void competition_initialize() {}
 // this needs to be put outside a function
 ASSET(example_txt); // '.' replaced with "_" to make c++ happy
 
-void scoreWallStake(){
-    //ADD CODE
-}
-void loadWallStake(){
-    //ADD CODE
-}
-
 void autonomous() {
 //     chassis.setPose(-58,0,-90); // set the starting position of the robot
 //     chassis.moveToPoint(-62,0,1000,{},false); // move the robot 24 inches forward
@@ -93,7 +86,7 @@ void autonomous() {
 
     chassis.setPose(-58,0,-90); // set the starting position of the robot
     chassis.moveToPoint(-62,0,1000,{},false); // move the robot 24 inches forward
-    scoreWallStake();
+    arm.scoreWallstake();
     chassis.moveToPose(-52,-27,-60,1000,{.forwards = false,.maxSpeed = 90},false); 
     clamp.set_value(true); // clamp the stake
     pros::delay(750); // wait for the stake to be clamped
@@ -103,11 +96,11 @@ void autonomous() {
     chassis.moveToPoint(-24,-48,2000,{},false);
     chassis.moveToPose(0,-60,90,1000,{},false);
     chassis.moveToPoint(24,-48,1000,{},false);
-    loadWallStake();
+    arm.loadWallstake();
     chassis.turnToHeading(-90,1000,{.minSpeed = 90},false);
     chassis.moveToPoint(0,-60,1000,{},false);
     chassis.turnToHeading(0,1000,{.minSpeed = 90},false);
-    scoreWallStake();
+    arm.scoreWallstake();
     
 }
 
