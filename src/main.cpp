@@ -74,11 +74,13 @@ void resetArm(){
 
 void autonomous() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-    chassis.angularPID.setGains(2.8, 0, 20);
+    //chassis.angularPID.setGains(2.8, 0.55, 21);
     chassis.setPose(0,0,0);
     chassis.turnToHeading(90, 3000);
     chassis.waitUntilDone();
-    chassis.turnToHeading(0, 3000);
+    chassis.turnToHeading(-90, 3000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(0, 10000);
     while(true){
         pros::delay(10);
     }
