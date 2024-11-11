@@ -104,20 +104,26 @@ void autonomous() {
     chassis.moveToPoint(-24,-24,3000,{.maxSpeed = 70},false);
     chassis.turnToPoint(-24, -48, 10000, {}, false);
     chassis.moveToPoint(-24,-48,10000,{.maxSpeed = 70},false);
-    chassis.turnToPoint(0,-57,10000,{},false);
-    chassis.moveToPoint(0,-57,10000,{.maxSpeed = 90},false);
-    chassis.turnToPoint(23,-47,10000,{},false);
-    chassis.moveToPoint(23,-47,10000,{.maxSpeed = 70},false);
+
+    chassis.turnToPoint(0,-55,10000,{},false);
+    chassis.moveToPoint(0,-55,10000,{.maxSpeed = 90},false);
+    chassis.turnToPoint(23,-43,10000,{},false);
+    chassis.moveToPoint(23,-43,10000,{.maxSpeed = 70},false);
     pros::delay(500);
     // arm.loadWallstake();                                  Initialize once arm is tuned
     chassis.turnToHeading(-90,10000,{},false);
-    chassis.moveToPoint(-2,-58,10000,{.maxSpeed = 70},false);
+    chassis.moveToPoint(-5,-53,10000,{.maxSpeed = 70},false);
     chassis.turnToHeading(180,10000,{},false);
     // arm.scoreWallstake();                                 Initialize once arm is tuned
-    chassis.moveToPoint(-2,-50,10000,{.forwards = false},false);        
+    chassis.moveToPoint(-5,-40,10000,{.forwards = false},false);        
     chassis.turnToHeading(-90,10000,{.minSpeed = 90},false);
-    chassis.moveToPoint(-47,-48,10000,{.maxSpeed =  90},false);
-    chassis.moveToPoint(-58,-47,10000,{},false);
+    chassis.moveToPoint(-47,-46,10000,{.maxSpeed =  50},false);
+    chassis.moveToPoint(-58,-46,10000,{},false);
+    pros::delay(500);
+    chassis.moveToPoint(-38,-48,10000,{.forwards = false,.maxSpeed = 70},false);
+    chassis.turnToPoint(-48,-59,10000,{},false);
+    chassis.moveToPoint(-53,-59,10000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(70,10000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
 
     
 
