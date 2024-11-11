@@ -74,22 +74,17 @@ void resetArm(){
 
 void autonomous() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-//     chassis.setPose(-58,0,-90); // set the starting position of the robot
-//     chassis.moveToPoint(-62,0,1000,{},false); // move the robot 24 inches forward
-//     scoreWallStake();
-//     chassis.moveToPose(-52,-26,-60,1000,{.forwards = false,.maxSpeed = 90},false); 
-//     clamp.set_value(true); // clamp the stake
-//     pros::delay(750); // wait for the stake to be clamped
-// //first three rings
-//     intake.move(127); // start the intake
-//     chassis.moveToPose(-58,-48,110,1000,{},false);
-//     chassis.turnToHeading(90,1000,{.minSpeed = 90},false);
-//     chassis.moveToPose(-48,-48,90,1000,{},false);
-//     chassis.turnToHeading(180,1000,{.minSpeed = 90},false);
-//     chassis.moveToPoint(-48,-60,1000,{},false);
-//     chassis.turnToHeading(45,1000,{.minSpeed = 90},false)
-//     chassis.moveToPoint(-24,-48,1000,{},false);
+    chassis.angularPID.setGains(2.8, 0, 20);
+    chassis.setPose(0,0,0);
+    chassis.turnToHeading(90, 3000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(0, 3000);
+    while(true){
+        pros::delay(10);
+    }
 
+
+    
     chassis.setPose(-58,0,-90); // set the starting position of the robot
     chassis.moveToPoint(-52,0,10000,{.forwards = false},false);
     pros::delay(500);
@@ -138,8 +133,8 @@ void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t 
     down = mast.get_analog(turn);
     fwd = (exp(-f / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-f / 10))) * up;
     turning = -1 * down;
-    leftMotors.move(fwd * 0.9 - turning);
-    rightMotors.move(fwd * 0.9 + turning);
+    leftMotors.move(fwd - turning);
+    rightMotors.move(fwd + turning);
 }
 
 void opAsyncButtons() {
@@ -155,17 +150,14 @@ void opAsyncButtons() {
 }
 
 void opcontrol() {
-    arm.scoreWallstake();
-    arm.loadWallstake();
-    arm.scoreWallstake();
+    // arm.scoreWallstake();
+    // arm.loadWallstake();
+    // arm.scoreWallstake();
+    // arm.loadWallstake();
     
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
-        pros::lcd::print(5, "L: %d", leftMotors.get_temperature_all()[0], leftMotors.get_temperature_all()[1],
-                         leftMotors.get_temperature_all()[2]);
-        pros::lcd::print(6, "R: %d", rightMotors.get_temperature_all()[0], rightMotors.get_temperature_all()[1],
-                         rightMotors.get_temperature_all()[2]);
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
         //  red segregator
