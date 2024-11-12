@@ -116,7 +116,7 @@ void autonomous() {
     
 //grabbin second stake
     chassis.moveToPoint(-42,-7,1500,{.maxSpeed = 70},false);
-    chassis.turnToHeading(180,10000,{.minSpeed = 90},false);
+    chassis.turnToHeading(180,10000,{.maxSpeed = 100},false);
     intake.move(0);
     chassis.moveToPoint(-44,30,2000,{.forwards = false,.maxSpeed = 100},false);
     clamp.set_value(true); 
