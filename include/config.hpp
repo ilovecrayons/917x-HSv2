@@ -4,9 +4,10 @@
 #include "pros/distance.hpp"
 #include "pros/motor_group.hpp"
 #include "subsystem/arm.hpp"
+#include "subsystem/intake.hpp"
 
 extern pros::Controller controller;
-extern pros::Motor intake;
+extern Intake intake;
 extern pros::adi::DigitalOut clamp;
 extern pros::adi::DigitalOut dGate;
 extern pros::Optical topSort;

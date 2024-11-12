@@ -55,9 +55,13 @@ void displayCurrentAuton() {
 }
 
 void initialize() {
+    
     chassis.calibrate(); // calibrate the chassis
     pros::Task printOdomTask(printOdomValues); // create a task to print the odometry values
     arm.reset();
+    pros::Task task{[=] {
+        intake.intakeControl();
+    }};
 }
 
 void disabled() { displayCurrentAuton(); }
@@ -78,15 +82,15 @@ void autonomous() {
     
     chassis.setPose(-58,0,90); // set the starting position of the robot
     chassis.moveToPoint(-64,0,10000,{.forwards = false},false);
-    intake.move(127); // start the intake
+    intake.set(Intake::IntakeState::INTAKING); // start the intake
     pros::delay(1000);
     chassis.moveToPoint(-58,0,10000,{},false);
     chassis.turnToHeading(0,1000,{},false);
-    intake.move(0);
+    intake.set(Intake::IntakeState::STOPPED);
     chassis.moveToPose(-50,-27,-60,10000,{.forwards = false,.maxSpeed = 70},false); 
     clamp.set_value(true); // clamp the stake
     pros::delay(750); // wait for the stake to be clamped
-    intake.move(127);
+    intake.set(Intake::IntakeState::INTAKING);
 //first stake
     chassis.moveToPoint(-24,-24,3000,{.maxSpeed = 70},false);
     chassis.turnToPoint(-24, -48, 10000, {}, false);
@@ -116,13 +120,13 @@ void autonomous() {
     
 //grabbin second stake
     chassis.moveToPoint(-42,-7,1500,{.maxSpeed = 70},false);
-    chassis.turnToHeading(180,10000,{.maxSpeed = 100},false);
-    intake.move(0);
+    chassis.turnToHeading(180,10000,{.minSpeed = 90},false);
+    intake.set(Intake::IntakeState::STOPPED);
     chassis.moveToPoint(-44,30,2000,{.forwards = false,.maxSpeed = 100},false);
     clamp.set_value(true); 
     pros::delay(1000); //grab stake
 //begin scoring stake
-    intake.move(127);
+    intake.set(Intake::IntakeState::INTAKING);
     chassis.turnToPoint(-21,34,10000,{},false);
     chassis.moveToPoint(-21,34,10000,{.maxSpeed = 70},false);
     chassis.turnToHeading(135,10000,{},false);
@@ -174,34 +178,19 @@ void opcontrol() {
     while (true) {
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
-        //  red segregator
-        if (topSort.get_hue() == 0) {
-            sort = true;
-            intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-        }
-
-        if (sort) {
-            if (secondCounter < 50) {
-                secondCounter++;
-                intake.move(0);
-            } else {
-                sort = false;
-                intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-            }
-        }
         if (!sort) {
             if (controller.get_digital(DIGITAL_L2)) // outtake
             {
-                intake.move(-0);
+                intake.set(Intake::IntakeState::INTAKING);
             }
             if (controller.get_digital(DIGITAL_L1)) // outtake
             {
-                intake.move(-120);
+                intake.set(Intake::IntakeState::OUTTAKE);
             }
             if (controller.get_digital(DIGITAL_L1) == false &&
                 controller.get_digital(DIGITAL_L2) == false) // stop intake
             {
-                intake.move(127);
+                intake.set(Intake::IntakeState::STOPPED);
             }
         }
 

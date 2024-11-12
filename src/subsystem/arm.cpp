@@ -87,3 +87,11 @@ void Arm::scoreWallstake(float position, bool async) {
     }
 }
 
+void Arm::retract(float position, bool async) {
+    if(async){
+        moveTo(position, true);
+    } else {
+        moveTo(position, false);
+    }
+}
+

@@ -41,7 +41,8 @@ pros::MotorGroup wallstake({WALLSTAKE1, WALLSTAKE2});
 pros::Rotation wallstakeRot(WALLSTAKE_ROT);
 Arm arm(&wallstake, &wallstakeRot, 5, 0, 15);
 // intake
-pros::Motor intake(INTAKE_1);
+pros::Motor intakeMotor(INTAKE_1, pros::MotorGearset::blue);
+Intake intake(intakeMotor);
 
 // Clamp mechanism Piston
 pros::adi::DigitalOut clamp(CLAMP);
