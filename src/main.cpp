@@ -74,59 +74,71 @@ void resetArm(){
 
 void autonomous() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-    //chassis.angularPID.setGains(2.8, 0.55, 21);
-    chassis.setPose(0,0,0);
-    chassis.turnToHeading(90, 3000);
-    chassis.waitUntilDone();
-    chassis.turnToHeading(-90, 3000);
-    chassis.waitUntilDone();
-    chassis.turnToHeading(0, 10000);
-    while(true){
-        pros::delay(10);
-    }
-
 
     
-    chassis.setPose(-58,0,-90); // set the starting position of the robot
-    chassis.moveToPoint(-52,0,10000,{.forwards = false},false);
-    pros::delay(500);
-    // arm.scoreWallstake();                                 Initialize once arm is tuned
+    chassis.setPose(-58,0,90); // set the starting position of the robot
+    chassis.moveToPoint(-64,0,10000,{.forwards = false},false);
+    intake.move(127); // start the intake
+    pros::delay(1000);
     chassis.moveToPoint(-58,0,10000,{},false);
-    //resetArm();                                           Initialize once arm is tuned
-    chassis.moveToPose(-52,-27,-60,10000,{.forwards = false,.maxSpeed = 70},false); 
+    chassis.turnToHeading(0,1000,{},false);
+    intake.move(0);
+    chassis.moveToPose(-50,-27,-60,10000,{.forwards = false,.maxSpeed = 70},false); 
     clamp.set_value(true); // clamp the stake
     pros::delay(750); // wait for the stake to be clamped
+    intake.move(127);
 //first stake
-    intake.move(127); // start the intake
     chassis.moveToPoint(-24,-24,3000,{.maxSpeed = 70},false);
     chassis.turnToPoint(-24, -48, 10000, {}, false);
     chassis.moveToPoint(-24,-48,10000,{.maxSpeed = 70},false);
 
-    chassis.turnToPoint(0,-55,10000,{},false);
-    chassis.moveToPoint(0,-55,10000,{.maxSpeed = 90},false);
+    chassis.turnToPoint(0,-53,10000,{},false);
+    chassis.moveToPoint(0,-53,10000,{.maxSpeed = 90},false);
     chassis.turnToPoint(23,-43,10000,{},false);
     chassis.moveToPoint(23,-43,10000,{.maxSpeed = 70},false);
     pros::delay(500);
     // arm.loadWallstake();                                  Initialize once arm is tuned
-    chassis.turnToHeading(-90,10000,{},false);
+    chassis.turnToHeading(-90,5000,{},false);
     chassis.moveToPoint(-5,-53,10000,{.maxSpeed = 70},false);
     chassis.turnToHeading(180,10000,{},false);
     // arm.scoreWallstake();                                 Initialize once arm is tuned
     chassis.moveToPoint(-5,-40,10000,{.forwards = false},false);        
     chassis.turnToHeading(-90,10000,{.minSpeed = 90},false);
-    chassis.moveToPoint(-47,-46,10000,{.maxSpeed =  50},false);
-    chassis.moveToPoint(-58,-46,10000,{},false);
+    chassis.moveToPoint(-47,-43,10000,{.maxSpeed =  70},false);
+    chassis.moveToPoint(-58,-43,10000,{},false);
     pros::delay(500);
-    chassis.moveToPoint(-38,-48,10000,{.forwards = false,.maxSpeed = 70},false);
-    chassis.turnToPoint(-48,-59,10000,{},false);
-    chassis.moveToPoint(-53,-59,10000,{.maxSpeed = 70},false);
-    chassis.turnToHeading(70,10000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
+    chassis.moveToPoint(-38,-43,10000,{.forwards = false,.maxSpeed = 70},false);
+    chassis.turnToPoint(-48,-53,10000,{},false);
+    chassis.moveToPoint(-53,-53,10000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(70,5000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
+    clamp.set_value(false); //release stake
 
     
-
-    // chassis.moveToPoint(-59,-7,1500,{.maxSpeed = 70},false);
-    // chassis.turnToHeading(180,10000,{.minSpeed = 90},false);
-    // chassis.moveToPoint(-52,19,2000,{.forwards = false,.maxSpeed = 80},false);
+//grabbin second stake
+    chassis.moveToPoint(-42,-7,1500,{.maxSpeed = 70},false);
+    chassis.turnToHeading(180,10000,{.minSpeed = 90},false);
+    intake.move(0);
+    chassis.moveToPoint(-44,30,2000,{.forwards = false,.maxSpeed = 100},false);
+    clamp.set_value(true); 
+    pros::delay(1000); //grab stake
+//begin scoring stake
+    intake.move(127);
+    chassis.turnToPoint(-21,34,10000,{},false);
+    chassis.moveToPoint(-21,34,10000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(135,10000,{},false);
+    chassis.setPose(-24,24,135);
+    pros::delay(500);
+    chassis.moveToPoint(0,0,10000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(-50,10000,{},false);
+    chassis.moveToPose(-23,44,-10,10000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(-90,10000,{},false);
+    chassis.moveToPoint(-60,44,1000,{.maxSpeed = 70},false);
+    pros::delay(500);
+    chassis.moveToPoint(-40,44,10000,{.forwards = false},false);
+    chassis.turnToPoint(-48,50,10000,{},false);
+    chassis.moveToPoint(-48,50,10000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(90,10000,{.direction = AngularDirection::CW_CLOCKWISE},false);
+    
 
 }
 
