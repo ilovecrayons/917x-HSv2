@@ -2,6 +2,7 @@
 #include "lemlib/chassis/trackingWheel.hpp"
 #include "pros/distance.hpp"
 #include "pros/rotation.hpp"
+#include "subsystem/intake.hpp"
 
 // ports
 constexpr int RIGHT_F = 1;
@@ -36,13 +37,15 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::MotorGroup rightMotors({RIGHT_F, RIGHT_M, RIGHT_B}, pros::MotorGearset::blue);
 pros::MotorGroup leftMotors({LEFT_F, LEFT_M, LEFT_B}, pros::MotorGearset::blue);
 
+// intake
+pros::Motor intakeMotor(INTAKE_1, pros::MotorGearset::blue);
+Intake intake(intakeMotor);
+
 // wallstake
 pros::MotorGroup wallstake({WALLSTAKE1, WALLSTAKE2});
 pros::Rotation wallstakeRot(WALLSTAKE_ROT);
 Arm arm(&wallstake, &wallstakeRot, 5, 0, 15);
-// intake
-pros::Motor intakeMotor(INTAKE_1, pros::MotorGearset::blue);
-Intake intake(intakeMotor);
+
 
 // Clamp mechanism Piston
 pros::adi::DigitalOut clamp(CLAMP);

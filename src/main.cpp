@@ -5,6 +5,7 @@
 #include "pros/llemu.hpp"
 #include <fstream>
 #include <iostream>
+#include "pros/misc.h"
 #include "pros/screen.hpp"
 
 // PID Tuner
@@ -77,9 +78,14 @@ void resetArm(){
 }
 
 void autonomous() {
-    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
 
-    
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+    // TODO: remove this
+    chassis.setPose(0,0,0);
+    chassis.moveToPoint(0,24,1000,{},false);
+    while(true){
+        pros::delay(20);
+    }
     chassis.setPose(-58,0,90); // set the starting position of the robot
     chassis.moveToPoint(-64,0,10000,{.forwards = false},false);
     intake.set(Intake::IntakeState::INTAKING); // start the intake
@@ -151,8 +157,8 @@ void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t 
     down = mast.get_analog(turn);
     fwd = (exp(-f / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-f / 10))) * up;
     turning = -1 * down;
-    leftMotors.move(fwd - turning);
-    rightMotors.move(fwd + turning);
+    leftMotors.move(fwd*0.9 - turning);
+    rightMotors.move(fwd*0.9 + turning);
 }
 
 void opAsyncButtons() {
@@ -179,9 +185,9 @@ void opcontrol() {
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
         if (!sort) {
-            if (controller.get_digital(DIGITAL_L2)) // outtake
+            if (controller.get_digital(DIGITAL_L2)) // idle
             {
-                intake.set(Intake::IntakeState::INTAKING);
+                intake.set(Intake::IntakeState::STOPPED);
             }
             if (controller.get_digital(DIGITAL_L1)) // outtake
             {
@@ -190,10 +196,25 @@ void opcontrol() {
             if (controller.get_digital(DIGITAL_L1) == false &&
                 controller.get_digital(DIGITAL_L2) == false) // stop intake
             {
-                intake.set(Intake::IntakeState::STOPPED);
+                intake.set(Intake::IntakeState::INTAKING);
             }
         }
+        if(controller.get_digital(DIGITAL_UP)){
+            pros::Task task{[=] {
+            intake.set(Intake::IntakeState::OUTTAKE);
+            pros::delay(500);
+            intake.set(Intake::IntakeState::STOPPED);
+        }};
+            arm.scoreWallstake();
+        }
 
+        if(controller.get_digital(DIGITAL_DOWN)){
+            arm.retract();
+        }
+
+        if(controller.get_digital(DIGITAL_RIGHT)){
+            arm.loadWallstake();
+        }
         pros::delay(10);
     }
 }
