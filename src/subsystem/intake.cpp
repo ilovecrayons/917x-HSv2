@@ -12,7 +12,7 @@ void Intake::intakeControl(){
             pros::delay(250);
             while(this->state == INTAKING){
             
-                if(fabs(this->motor.get_actual_velocity()) < 10){
+                if(fabs(this->motor.get_actual_velocity()) < 10 && !pros::competition::is_autonomous()){
                     pros::delay(400);
                     this->motor.move(45);
                 }
