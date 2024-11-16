@@ -171,7 +171,7 @@ void awp(){
 }
 void autonomous() {
     //progSkills();
-    progSkills();
+    awp();
     
 }
 
