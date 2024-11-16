@@ -49,11 +49,11 @@ void competition_initialize() {}
 
 // get a path used for pure pursuit
 // this needs to be put outside a function
-ASSET(example_txt); // '.' replaced with "_" to make c++ happy
+ASSET(example_txt); 
 
-void autonomous() {
+void progSkills(){
+    
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-
     chassis.setPose(-58, 0, 90); // set the starting position of the robot
     chassis.moveToPoint(-64, 0, 10000, {.forwards = false}, false);
     intake.set(Intake::IntakeState::INTAKING); // start the intake
@@ -75,22 +75,6 @@ void autonomous() {
     chassis.turnToPoint(0, -53, 10000, {}, false);
     chassis.moveToPoint(0, -53, 10000, {.maxSpeed = 90}, false);
     pros::delay(500);
-    // chassis.turnToPoint(23, -43, 10000, {}, false);
-    // chassis.moveToPoint(23, -43, 10000, {.maxSpeed = 70});
-    // pros::delay(200);
-    // arm.loadWallstake();                               
-    // chassis.turnToPoint(-3,-51,1000,{},false);
-    // chassis.moveToPoint(-3,-51,10000,{.maxSpeed = 70},false);
-    // chassis.turnToHeading(180,10000,{},false);
-    // chassis.moveToPoint(-3,-57,10000,{.maxSpeed = 70},false);
-    // intake.set(Intake::IntakeState::STOPPED);
-    // pros::delay(500);
-    // arm.scoreWallstake();
-    // intake.set(Intake::IntakeState::INTAKING);
-    // pros::delay(500);
-    // arm.retract();
-    // chassis.moveToPoint(-5, -40, 10000, {.forwards = false}, false);
-    // chassis.turnToHeading(-90, 10000, {.minSpeed = 90}, false);
     chassis.turnToPoint(-47,-43,10000,{});
     intake.set(Intake::IntakeState::INTAKING);
     chassis.moveToPoint(-47, -43, 10000, {.maxSpeed = 70}, false);
@@ -138,6 +122,57 @@ void autonomous() {
     intake.set(Intake::IntakeState::OUTTAKE, 30);
     arm.scoreWallstake();
     intake.set(Intake::IntakeState::INTAKING, 110);
+}
+
+void awp(){
+    chassis.setPose(-56, -16, 0);
+    chassis.moveToPoint(-55, -1, 1000);
+    chassis.waitUntilDone();
+    chassis.turnToPoint(-63,3,1000, {.forwards = false});
+    chassis.moveToPoint(-63,3,1000, {.forwards = false});
+    chassis.waitUntilDone();
+    intake.set(Intake::IntakeState::INTAKING);
+    pros::delay(800);
+    intake.set(Intake::IntakeState::STOPPED);
+    chassis.moveToPoint(-55,3, 1000);
+    chassis.waitUntilDone();
+
+    //first stake
+    chassis.turnToPoint(-50, 14, 1000);
+    intake.set(Intake::IntakeState::INTAKING);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-50, 14, 1000);
+    chassis.waitUntilDone();
+    //go in
+    chassis.turnToPoint(-23, 27, 1000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-23, 27, 2000, {.forwards = false, .maxSpeed = 50});
+    chassis.waitUntil(18);
+    clamp.set_value(true);
+    chassis.waitUntilDone();
+    pros::delay(250);
+    intake.set(Intake::IntakeState::INTAKING);
+    chassis.moveToPose(-30, 47, 0, 1000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(90, 1000);
+    chassis.waitUntilDone();
+    chassis.moveFor(13, 1000);
+    chassis.waitUntilDone();
+    pros::delay(250);
+    chassis.moveToPoint(-43,40, 1000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.turnToHeading(135, 1000);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-30, 30, 2000, {.maxSpeed = 90});
+    chassis.waitUntilDone();
+    arm.setPower(70);
+
+
+}
+void autonomous() {
+    //progSkills();
+    awp();
+
 }
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
