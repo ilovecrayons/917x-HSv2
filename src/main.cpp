@@ -114,6 +114,7 @@ void autonomous() {
     chassis.moveToPoint(-38,-43,10000,{.forwards = false,.maxSpeed = 70},false);
     chassis.turnToPoint(-48,-53,10000,{},false);
     chassis.moveToPoint(-53,-53,10000,{.maxSpeed = 70},false);
+    pros::delay(500);
     chassis.turnToHeading(70,5000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
     clamp.set_value(false); //release stake
 
@@ -122,7 +123,7 @@ void autonomous() {
     chassis.moveToPoint(-42,-7,1500,{.maxSpeed = 70},false);
     chassis.turnToHeading(180,10000,{.minSpeed = 90},false);
     intake.set(Intake::IntakeState::STOPPED);
-    chassis.moveToPoint(-44,30,2000,{.forwards = false,.maxSpeed = 100},false);
+    chassis.moveToPoint(-44,32,2000,{.forwards = false,.maxSpeed = 100},false);
     clamp.set_value(true); 
     pros::delay(1000); //grab stake
 //begin scoring stake
@@ -133,16 +134,21 @@ void autonomous() {
     chassis.setPose(-24,24,135);
     pros::delay(500);
     chassis.moveToPoint(0,0,10000,{.maxSpeed = 70},false);
-    chassis.turnToHeading(-50,10000,{},false);
-    chassis.moveToPose(-23,44,-10,10000,{.maxSpeed = 70},false);
-    chassis.turnToHeading(-90,10000,{},false);
-    chassis.moveToPoint(-60,44,1000,{.maxSpeed = 70},false);
     pros::delay(500);
-    chassis.moveToPoint(-40,44,10000,{.forwards = false},false);
+    chassis.turnToHeading(-50,10000,{},false);
+    chassis.moveToPose(-23,42,-10,10000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(-90,10000,{},false);
+    chassis.moveToPoint(-60,42,1000,{.maxSpeed = 70},false);
+    pros::delay(500);
+    chassis.moveToPoint(-40,42,10000,{.forwards = false},false);
     chassis.turnToPoint(-48,50,10000,{},false);
     chassis.moveToPoint(-48,50,10000,{.maxSpeed = 70},false);
-    chassis.turnToHeading(90,10000,{.direction = AngularDirection::CW_CLOCKWISE},false);
-    
+    chassis.turnToHeading(110,10000,{.direction = AngularDirection::CW_CLOCKWISE},false);
+    clamp.set_value(false); //release stake
+    chassis.turnToPoint(0,60,10000,{},false);
+    chassis.moveToPoint(0,60,10000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(0,10000,{},false);
+    arm.scoreWallstake();
 
 }
 
