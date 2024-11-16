@@ -65,6 +65,9 @@ void initialize() {
     pros::Task task{[=] {
         intake.intakeControl();
     }};
+    if((static_cast<float>(arm.rotation->get_position())/100.0f) > 150){
+    arm.rotation->set_position(static_cast<float>(arm.rotation->get_position())/100.0f - 3.6f);
+}
 }
 
 void disabled() { displayCurrentAuton(); }

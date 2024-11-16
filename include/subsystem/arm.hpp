@@ -15,7 +15,7 @@ class Arm {
         void moveTo(int position, bool async = false);
         void loadWallstake(float position = 63, bool async = false);
         void scoreWallstake(float position = 160, bool async = false);
-        void retract(float position = 10, bool async = false);
+        void retract(float position = 20, bool async = false);
         pros::Rotation* rotation;
         void setState(int state);
     private:

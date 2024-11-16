@@ -21,7 +21,6 @@ Arm::Arm(pros::MotorGroup* motors, pros::Rotation* rotation, float kP, float kI,
       pid(kP, kI, kD),
       exitCondition(exitRange, exitTime) {
     motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    //rotation->reset();
     motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 };
 
@@ -61,6 +60,8 @@ void Arm::moveTo(int position, bool async) {
         pid.reset();
         exitCondition.reset();
         while (exitCondition.getExit() == false) {
+
+            
             int error = position - rotation->get_position()/100;
             motors->move(pid.update(error));
             exitCondition.update(error);
