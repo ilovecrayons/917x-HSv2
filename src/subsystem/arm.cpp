@@ -21,7 +21,8 @@ Arm::Arm(pros::MotorGroup* motors, pros::Rotation* rotation, float kP, float kI,
       pid(kP, kI, kD),
       exitCondition(exitRange, exitTime) {
     motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    rotation->reset();
+    //rotation->reset();
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 };
 
 void Arm::setPower(float power) { motors->move(power); }
@@ -33,8 +34,8 @@ void Arm::setPower(float power) { motors->move(power); }
  * brake mode to hold, and moves the motors to 0 power.
  */
 void Arm::reset() {
-    rotation->reset_position();
-    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    //rotation->reset_position();
+    
     motors->move(0);
 }
 
@@ -53,25 +54,26 @@ void Arm::reset() {
  *              background. If false, the function will block until the
  *              PID controller has finished moving the arm.
  */
-void Arm::moveTo(float position, bool async) {
+void Arm::moveTo(int position, bool async) {
     if (async) {
         pros::Task task {[=, this] { moveTo(position, false); }};
     } else {
         pid.reset();
         exitCondition.reset();
         while (exitCondition.getExit() == false) {
-            float error = position - rotation->get_position()/100;
+            int error = position - rotation->get_position()/100;
             motors->move(pid.update(error));
             exitCondition.update(error);
             pros::delay(10);
             motors->move(0);
-            pros::screen::print(pros::E_TEXT_MEDIUM, 6, "error: %f", error);
-            pros::screen::print(pros::E_TEXT_MEDIUM, 7, "position: %f", rotation->get_position()/100);
+            pros::screen::print(pros::E_TEXT_MEDIUM, 6, "error: %d", error);
+            
         }
     }
 }
 
 void Arm::loadWallstake(float position, bool async) {
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     if(async){
         moveTo(position, true);
     } else {
@@ -80,6 +82,7 @@ void Arm::loadWallstake(float position, bool async) {
 }
 
 void Arm::scoreWallstake(float position, bool async) {
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     if(async){
         moveTo(position, true);
     } else {
@@ -88,6 +91,7 @@ void Arm::scoreWallstake(float position, bool async) {
 }
 
 void Arm::retract(float position, bool async) {
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     if(async){
         moveTo(position, true);
     } else {

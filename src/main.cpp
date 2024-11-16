@@ -5,7 +5,9 @@
 #include "pros/llemu.hpp"
 #include <fstream>
 #include <iostream>
+#include "pros/misc.h"
 #include "pros/screen.hpp"
+#include "subsystem/intake.hpp"
 
 // PID Tuner
 std::ofstream myfile;
@@ -27,6 +29,7 @@ void printOdomValues() {
         pros::screen::print(TEXT_MEDIUM, 2, "y: %f", pose.y); // prints the y position
         pros::screen::print(TEXT_MEDIUM, 3, "theta: %f", pose.theta); // prints the heading
         pros::delay(20);
+        pros::screen::print(pros::E_TEXT_MEDIUM, 7, "position: %3d", (arm.rotation->get_position()/100) );
     }
 }
 
@@ -58,7 +61,7 @@ void initialize() {
     
     chassis.calibrate(); // calibrate the chassis
     pros::Task printOdomTask(printOdomValues); // create a task to print the odometry values
-    arm.reset();
+    
     pros::Task task{[=] {
         intake.intakeControl();
     }};
@@ -77,9 +80,14 @@ void resetArm(){
 }
 
 void autonomous() {
-    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
 
-    
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+    // TODO: remove this
+    chassis.setPose(0,0,0);
+    chassis.moveToPoint(0,24,1000,{},false);
+    while(true){
+        pros::delay(20);
+    }
     chassis.setPose(-58,0,90); // set the starting position of the robot
     chassis.moveToPoint(-64,0,10000,{.forwards = false},false);
     intake.set(Intake::IntakeState::INTAKING); // start the intake
@@ -157,8 +165,8 @@ void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t 
     down = mast.get_analog(turn);
     fwd = (exp(-f / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-f / 10))) * up;
     turning = -1 * down;
-    leftMotors.move(fwd - turning);
-    rightMotors.move(fwd + turning);
+    leftMotors.move(fwd*0.9 - turning);
+    rightMotors.move(fwd*0.9 + turning);
 }
 
 void opAsyncButtons() {
@@ -169,23 +177,33 @@ void opAsyncButtons() {
             clamp.set_value(clamped);
             pros::delay(500);
         }
+        if(controller.get_digital(DIGITAL_UP)){
+            intake.set(Intake::IntakeState::OUTTAKE, 50);
+            
+            arm.scoreWallstake(165, false);
+            intake.set(Intake::IntakeState::STOPPED);
+        }
+
+        if(controller.get_digital(DIGITAL_DOWN)){
+            arm.retract(10, false);
+        }
+
+        if(controller.get_digital(DIGITAL_RIGHT)){
+            arm.loadWallstake(64, false);
+        }
         pros::delay(10);
     }
 }
 
 void opcontrol() {
-    // arm.scoreWallstake();
-    // arm.loadWallstake();
-    // arm.scoreWallstake();
-    // arm.loadWallstake();
-    
+    //arm.retract(10, true);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
         if (!sort) {
-            if (controller.get_digital(DIGITAL_L2)) // outtake
+            if (controller.get_digital(DIGITAL_L2)) // intake
             {
                 intake.set(Intake::IntakeState::INTAKING);
             }
@@ -194,12 +212,12 @@ void opcontrol() {
                 intake.set(Intake::IntakeState::OUTTAKE);
             }
             if (controller.get_digital(DIGITAL_L1) == false &&
-                controller.get_digital(DIGITAL_L2) == false) // stop intake
+                controller.get_digital(DIGITAL_L2) == false && controller.get_digital(DIGITAL_UP) == false ) // stop intake
             {
                 intake.set(Intake::IntakeState::STOPPED);
             }
         }
-
+        
         pros::delay(10);
     }
 }
