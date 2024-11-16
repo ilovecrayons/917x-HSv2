@@ -106,9 +106,9 @@ void autonomous() {
     chassis.turnToPoint(23,-43,10000,{},false);
     chassis.moveToPoint(23,-43,10000,{.maxSpeed = 70});
     pros::delay(200);
-    arm.loadWallstake();                                  
+    arm.loadWallstake();                               
     chassis.turnToHeading(-90,1000,{},false);
-    chassis.moveToPoint(-5,-53,10000,{.maxSpeed = 70},false);
+    chassis.moveToPoint(-5,-56,10000,{.maxSpeed = 70},false);
     chassis.turnToHeading(180,10000,{},false);
     intake.set(Intake::IntakeState::OUTTAKE,10);
     pros::delay(500);
