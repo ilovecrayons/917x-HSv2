@@ -171,8 +171,8 @@ void awp(){
 }
 void autonomous() {
     //progSkills();
-    awp();
-
+    progSkills();
+    
 }
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
