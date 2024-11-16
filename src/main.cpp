@@ -212,7 +212,7 @@ void opAsyncButtons() {
 }
 
 void opcontrol() {
-    // arm.retract(10, true);
+    arm.retract(20, true);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
