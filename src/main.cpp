@@ -47,12 +47,9 @@ void disabled() {}
 
 void competition_initialize() {}
 
-// get a path used for pure pursuit
-// this needs to be put outside a function
-ASSET(example_txt); 
-
 void progSkills(){
-    
+    chassis.lateralPID.setGains(10, 0, 15);
+    chassis.angularPID.setGains(2.8,0.55,21);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
     chassis.setPose(-58, 0, 90); // set the starting position of the robot
     chassis.moveToPoint(-64, 0, 10000, {.forwards = false}, false);
@@ -124,7 +121,7 @@ void progSkills(){
     intake.set(Intake::IntakeState::INTAKING, 110);
 }
 
-void awp(){
+void awpRed(){
     chassis.setPose(-56, -16, 0);
     chassis.moveToPoint(-55, -1, 1000);
     chassis.waitUntilDone();
@@ -156,7 +153,7 @@ void awp(){
     chassis.waitUntilDone();
     chassis.turnToHeading(90, 1000);
     chassis.waitUntilDone();
-    chassis.moveFor(13, 1000);
+    chassis.moveFor(12, 1000);
     chassis.waitUntilDone();
     pros::delay(250);
     chassis.moveToPoint(-43,40, 1000, {.forwards = false});
@@ -165,13 +162,102 @@ void awp(){
     chassis.waitUntilDone();
     chassis.moveToPoint(-30, 30, 2000, {.maxSpeed = 90});
     chassis.waitUntilDone();
-    arm.setPower(70);
+    arm.setPower(50);
 
 
 }
+
+void awpBlue(){
+    chassis.setPose(56, -16, 0);
+    chassis.moveToPoint(55, -2, 1000);
+    chassis.waitUntilDone();
+    chassis.turnToPoint(63,-2,1000, {.forwards = false});
+    chassis.moveToPoint(63,-2,1000, {.forwards = false});
+    chassis.waitUntilDone();
+    intake.set(Intake::IntakeState::INTAKING);
+    pros::delay(800);
+    intake.set(Intake::IntakeState::STOPPED);
+    chassis.moveToPoint(57,-2, 1000);
+    chassis.waitUntilDone();
+
+    //first stake
+    chassis.turnToPoint(22, 26, 1000);
+    intake.set(Intake::IntakeState::INTAKING);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(42,6, 1000);
+    chassis.waitUntilDone();
+    //go in
+    chassis.turnToPoint(22, 26, 1000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.moveToPoint(22, 26, 2000, {.forwards = false, .maxSpeed = 50});
+    intake.set(Intake::IntakeState::STOPPED);
+    chassis.waitUntil(15);
+    clamp.set_value(true);
+    chassis.waitUntilDone();
+    pros::delay(250);
+    intake.set(Intake::IntakeState::INTAKING);
+    chassis.moveToPose(30, 47, 0, 1000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(-90, 1000);
+    chassis.waitUntilDone();
+    chassis.moveFor(12, 1000);
+    chassis.waitUntilDone();
+    pros::delay(250);
+    chassis.moveToPoint(43,40, 1000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.turnToHeading(-135, 1000);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(25, 20, 2000, {.minSpeed = 0});
+    chassis.waitUntilDone();
+    arm.setPower(100);
+    pros::delay(500);
+    arm.setPower(30);
+
+
+}
+
+void  autonBlue() {
+    chassis.setPose(-56, -16, 0);
+    chassis.moveToPoint(-55, -1, 1000);
+    chassis.waitUntilDone();
+    chassis.turnToPoint(-63,3,1000, {.forwards = false});
+    chassis.moveToPoint(-63,3,1000, {.forwards = false});
+    chassis.waitUntilDone();
+    intake.set(Intake::IntakeState::INTAKING);
+    pros::delay(800);
+    intake.set(Intake::IntakeState::STOPPED);
+    chassis.moveToPoint(-55,3, 1000);
+    chassis.waitUntilDone();
+
+    //first stake
+    chassis.turnToPoint(-50, 14, 1000);
+    intake.set(Intake::IntakeState::INTAKING);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-54, 14, 1000);
+    chassis.waitUntilDone();
+    //go in
+    chassis.turnToPoint(-23, 27, 1000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-23, 27, 2000, {.forwards = false, .maxSpeed = 50});
+    chassis.waitUntil(18);
+    clamp.set_value(true);
+    chassis.waitUntilDone();
+    pros::delay(250);
+    intake.set(Intake::IntakeState::INTAKING);
+    chassis.moveToPose(-30, 47, 0, 1000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(90, 1000);
+    chassis.waitUntilDone();
+    chassis.moveFor(12, 1000);
+    chassis.waitUntilDone();
+    pros::delay(250);
+    chassis.turnToHeading(70, 1000);
+    chassis.moveFor(2,1000);
+}
 void autonomous() {
     //progSkills();
-    awp();
+    autonBlue();
+
     
 }
 
@@ -198,7 +284,7 @@ void opAsyncButtons() {
             if (armState > 2) { armState = 0; }
             switch (armState) {
                 case 0: arm.retract(20, false); break;
-                case 1: arm.loadWallstake(64, false); break;
+                case 1: arm.loadWallstake(60, false); break;
                 case 2:
                     intake.set(Intake::IntakeState::OUTTAKE, 50);
                     arm.scoreWallstake(165, false);
