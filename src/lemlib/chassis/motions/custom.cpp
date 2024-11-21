@@ -52,7 +52,7 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
 
     // initialize vars used between iterations
     Pose lastPose = getPose(false);
-    float currentAngle = getPose(false).theta;
+    float targetAngle = getPose(false).theta;
     distTraveled = 0;
     Timer timer(timeout);
     bool close = false;
@@ -79,18 +79,9 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
             params.maxSpeed = fmax(fabs(prevLateralOut), 60); // slows down robot
         }
 
-        // motion chaining
-        // calculate angle difference between current pose and target theta angle
-        const float currentAngleDiff = angleError(currentAngle, pose.theta, false);
-
-        // calculate angle difference between previous pose and target theta angle
-        const float previousAngleDiff = angleError(currentAngle, lastPose.theta, false);
-
-        // exit if signs of angle differences are different and params.minSpeed is non-zero
-        if (sgn(currentAngleDiff) != sgn(previousAngleDiff) && params.minSpeed != 0) break;
 
         // calculate error
-        const float angularError = angleError(currentAngle, pose.theta);
+        const float angularError = targetAngle - pose.theta;
 
         lateralSmallExit.update(distTarget);
         lateralLargeExit.update(distTarget);

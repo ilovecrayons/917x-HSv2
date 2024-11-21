@@ -9,9 +9,6 @@
 #include "pros/screen.hpp"
 #include "subsystem/intake.hpp"
 
-// PID Tuner
-std::ofstream myfile;
-
 // runtime variables
 bool sort = false;
 double fwd;
