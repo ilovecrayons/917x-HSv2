@@ -21,8 +21,7 @@ Arm::Arm(pros::MotorGroup* motors, pros::Rotation* rotation, float kP, float kI,
       pid(kP, kI, kD),
       exitCondition(exitRange, exitTime) {
     motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-};
+}
 
 void Arm::setPower(float power) { motors->move(power); }
 
@@ -32,10 +31,10 @@ void Arm::setPower(float power) { motors->move(power); }
  * Resets the arm's rotation sensor to zero, and sets the motor group's
  * brake mode to hold, and moves the motors to 0 power.
  */
-void Arm::reset() {
-    //rotation->reset_position();
-    
-    motors->move(0);
+void Arm::initialize() {
+    if ((rotation->get_position() / 100) > 250) {
+        rotation->set_position((rotation->get_position() / 100 - 360) * 100);
+    }
 }
 
 /**
@@ -60,22 +59,19 @@ void Arm::moveTo(int position, bool async) {
         pid.reset();
         exitCondition.reset();
         while (exitCondition.getExit() == false) {
-
-            
-            int error = position - rotation->get_position()/100;
+            int error = position - rotation->get_position() / 100;
             motors->move(pid.update(error));
             exitCondition.update(error);
             pros::delay(10);
             motors->move(0);
             pros::screen::print(pros::E_TEXT_MEDIUM, 6, "error: %d", error);
-            
         }
     }
 }
 
 void Arm::loadWallstake(float position, bool async) {
     motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    if(async){
+    if (async) {
         moveTo(position, true);
     } else {
         moveTo(position, false);
@@ -84,7 +80,7 @@ void Arm::loadWallstake(float position, bool async) {
 
 void Arm::scoreWallstake(float position, bool async) {
     motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    if(async){
+    if (async) {
         moveTo(position, true);
     } else {
         moveTo(position, false);
@@ -93,10 +89,29 @@ void Arm::scoreWallstake(float position, bool async) {
 
 void Arm::retract(float position, bool async) {
     motors->set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    if(async){
+    if (async) {
         moveTo(position, true);
     } else {
         moveTo(position, false);
     }
 }
 
+/**
+ * @brief Set the state of the arm
+ *
+ * This function sets the internal state variable of the arm to the specified value.
+ *
+ * @param state The new state to set for the arm
+ */
+void Arm::setState(int state) { this->state = state; }
+
+/**
+ * @brief Get the current position of the arm
+ *
+ * This function returns the current position of the arm by reading the
+ * rotation sensor. The position is returned in the units of the rotation
+ * sensor divided by 100.
+ *
+ * @return The current position of the arm
+ */
+int Arm::getPosition() { return rotation->get_position() / 100; }

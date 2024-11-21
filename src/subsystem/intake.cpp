@@ -9,16 +9,6 @@ void Intake::intakeControl(){
             this->motor.move(0);
         } else if(this->state == INTAKING){
             this->motor.move(this->speed);
-            pros::delay(250);
-            // while(this->state == INTAKING){
-            
-            //     if(fabs(this->motor.get_actual_velocity()) < 10 && !pros::competition::is_autonomous()){
-            //         pros::delay(400);
-            //         this->motor.move(45);
-            //     }
-            //     pros::delay(20);
-            // }
-            
         } else if(this->state == OUTTAKE){
             this->motor.move(-this->speed);
         }
