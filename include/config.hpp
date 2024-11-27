@@ -7,6 +7,7 @@
 #include "subsystem/intake.hpp"
 
 extern pros::Controller controller;
+extern pros::Motor intakeMotor;
 extern Intake intake;
 extern pros::adi::DigitalOut clamp;
 extern pros::adi::DigitalOut dGate;

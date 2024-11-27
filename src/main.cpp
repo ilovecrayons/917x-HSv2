@@ -34,6 +34,7 @@ void initialize() {
     chassis.calibrate(); // calibrate the chassis
     pros::Task printOdomTask(printTelemetry); // create a task to print the odometry values
     pros::Task task {[=] { intake.intakeControl(); }};
+    intakeMotor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
 }
 
 void disabled() {}
@@ -247,11 +248,20 @@ void opAsyncButtons() {
     }
 }
 
+
+int SEPARATION_WAIT = 0;    
+int timeToCompleteSeparation = 20;         //milliseconds divided by 10
+double INITIAL_POSITION = 0;
+double SEPARATION_MOVEMENT = 3700;  //Degrees
 void opcontrol() {
     arm.retract(20, true);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
+        if (topSort.get_hue()<30 && topSort.get_hue()>=0) {
+            sort = true;
+            INITIAL_POSITION = intakeMotor.get_position();
+        }
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
         if (!sort) {
@@ -269,7 +279,18 @@ void opcontrol() {
                 intake.set(Intake::IntakeState::STOPPED);
             }
         }
-
+        else if (sort && (INITIAL_POSITION+SEPARATION_MOVEMENT) < intakeMotor.get_position()) {
+            intake.set(Intake::IntakeState::INTAKING);
+        }
+        else if (sort && (INITIAL_POSITION+SEPARATION_MOVEMENT) >= intakeMotor.get_position() && SEPARATION_WAIT < timeToCompleteSeparation) {
+            intake.set(Intake::IntakeState::STOPPED);
+            SEPARATION_WAIT++;
+        }
+        else {
+            intake.set(Intake::IntakeState::STOPPED);
+            sort = !sort;
+            SEPARATION_WAIT = 0;
+        }
         pros::delay(10);
     }
 }
