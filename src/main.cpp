@@ -250,10 +250,11 @@ void opAsyncButtons() {
 
 
 int SEPARATION_WAIT = 0;    
-int timeToCompleteSeparation = 20;         //milliseconds divided by 10
+int timeToCompleteSeparation = 50;         //milliseconds divided by 10
 double INITIAL_POSITION = 0;
-double SEPARATION_MOVEMENT = 3700;  //Degrees
+double SEPARATION_MOVEMENT = 45;  //Degrees
 void opcontrol() {
+    intakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     arm.retract(20, true);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
@@ -279,10 +280,10 @@ void opcontrol() {
                 intake.set(Intake::IntakeState::STOPPED);
             }
         }
-        else if (sort && (INITIAL_POSITION+SEPARATION_MOVEMENT) < intakeMotor.get_position()) {
+        else if (sort && (INITIAL_POSITION+SEPARATION_MOVEMENT) > intakeMotor.get_position()) {
             intake.set(Intake::IntakeState::INTAKING);
         }
-        else if (sort && (INITIAL_POSITION+SEPARATION_MOVEMENT) >= intakeMotor.get_position() && SEPARATION_WAIT < timeToCompleteSeparation) {
+        else if (sort && (INITIAL_POSITION+SEPARATION_MOVEMENT) <= intakeMotor.get_position() && SEPARATION_WAIT < timeToCompleteSeparation) {
             intake.set(Intake::IntakeState::STOPPED);
             SEPARATION_WAIT++;
         }
