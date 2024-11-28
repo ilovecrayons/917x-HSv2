@@ -267,7 +267,7 @@ void opcontrol() {
             }
         }
         else {
-            if (topSort.get_hue()<210 && topSort.get_hue()>=270) {
+            if (topSort.get_hue()>100 && topSort.get_hue()<=270) {
                 sort = true;
                 INITIAL_POSITION = intakeMotor.get_position();
             }
