@@ -253,15 +253,24 @@ int SEPARATION_WAIT = 0;
 int timeToCompleteSeparation = 50;         //milliseconds divided by 10
 double INITIAL_POSITION = 0;
 double SEPARATION_MOVEMENT = 45;  //Degrees
+bool blueAlliance = true;
 void opcontrol() {
     intakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     arm.retract(20, true);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
-        if (topSort.get_hue()<30 && topSort.get_hue()>=0) {
-            sort = true;
-            INITIAL_POSITION = intakeMotor.get_position();
+        if (blueAlliance){
+            if (topSort.get_hue()<30 && topSort.get_hue()>=0) {
+                sort = true;
+                INITIAL_POSITION = intakeMotor.get_position();
+            }
+        }
+        else {
+            if (topSort.get_hue()<210 && topSort.get_hue()>=270) {
+                sort = true;
+                INITIAL_POSITION = intakeMotor.get_position();
+            }
         }
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
