@@ -19,6 +19,8 @@ bool clamped = false;
 int armState = 0;
 int secondCounter = 0;
 
+bool blueAlliance = true;
+
 void printTelemetry() {
     while (true) {
         lemlib::Pose pose = chassis.getPose(); // get the current position of the robot
@@ -253,7 +255,6 @@ int SEPARATION_WAIT = 0;
 int timeToCompleteSeparation = 50;         //milliseconds divided by 10
 double INITIAL_POSITION = 0;
 double SEPARATION_MOVEMENT = 45;  //Degrees
-bool blueAlliance = true;
 void opcontrol() {
     intakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     arm.retract(20, true);
