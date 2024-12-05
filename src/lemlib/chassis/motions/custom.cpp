@@ -181,10 +181,10 @@ float lemlib::Chassis::filterDistance(std::vector<float> distances) {
  * @param distanceSensor The distance sensor from which measurements are collected.
  */
 void lemlib::Chassis::collectDistances(pros::Distance& distanceSensor) {
-    this->inDistanceCollection = true;
+    this->inDistanceCollection = true; // indicate that distance collection is running. 
     this->collectedDistances.clear();
-    while (this->inDistanceCollection) {
-        this->collectedDistances.push_back(distanceSensor.get_distance() / 25.4);
+    while (this->inDistanceCollection) { // class field can be modified externally to end distance collection
+        this->collectedDistances.push_back(distanceSensor.get_distance() / 25.4); // convert from cm to in
         pros::delay(25);
     }
 }

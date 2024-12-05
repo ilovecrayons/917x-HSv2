@@ -77,23 +77,23 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
 lemlib::ControllerSettings linearController(10, // proportional gain (kP)
                                             0, // integral gain (kI)
                                             3, // derivative gain (kD)
-                                            3, // anti windup  3
-                                            1, // small error range, in inches  1
-                                            100, // small error range timeout, in milliseconds  100
-                                            3, // large error range, in inches  3
-                                            500, // large error range timeout, in milliseconds  500
-                                            20 // maximum acceleration (slew)  20
+                                            3, // anti windup  
+                                            1, // small error range, in inches  
+                                            100, // small error range timeout, in milliseconds 
+                                            3, // large error range, in inches  
+                                            500, // large error range timeout, in milliseconds 
+                                            20 // maximum acceleration (slew)  
 );
 
-// angular motion controller TUNED
-lemlib::ControllerSettings angularController(3, // proportional gain (kP)  4
-                                             0, // integral gain (kI)  -0.2
-                                             10, // derivative gain (kD)  37
-                                             3, // anti windup  3
-                                             1, // small error range, in degrees  1
-                                             100, // small error range timeout, in milliseconds  100
-                                             3, // large error range, in degrees  3
-                                             500, // large error range timeout, in milliseconds  500
+// angular motion controller
+lemlib::ControllerSettings angularController(3, // proportional gain (kP)  
+                                             0, // integral gain (kI)  
+                                             10, // derivative gain (kD)  
+                                             3, // anti windup  
+                                             1, // small error range, in degrees  
+                                             100, // small error range timeout, in milliseconds  
+                                             3, // large error range, in degrees  
+                                             500, // large error range timeout, in milliseconds  
                                              0 // maximum acceleration (slew)
 );
 
