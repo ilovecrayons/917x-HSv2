@@ -25,7 +25,7 @@ constexpr int WALLSTAKE_ROT = 3;
 constexpr char CLAMP = 'A';
 constexpr char DGATE = 'B';
 
-constexpr char TOP_SORT = 10;
+constexpr char TOP_SORT = 3;
 // constexpr char BOTTOM_SORT = 18;
 
 constexpr char IMU = 17;
