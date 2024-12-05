@@ -17,7 +17,6 @@ float up;
 float down;
 bool clamped = false;
 int armState = 0;
-int secondCounter = 0;
 
 bool blueAlliance = true;
 
@@ -158,7 +157,6 @@ void awpRed() {
     intake.set(Intake::IntakeState::STOPPED);
     chassis.moveToPoint(-55, 3, 1000);
     chassis.waitUntilDone();
-
     // first stake
     chassis.turnToPoint(-50, 14, 1000);
     intake.set(Intake::IntakeState::INTAKING);

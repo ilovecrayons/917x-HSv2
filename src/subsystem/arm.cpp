@@ -56,16 +56,18 @@ void Arm::moveTo(int position, bool async) {
     if (async) {
         pros::Task task {[=, this] { moveTo(position, false); }};
     } else {
-        pid.reset();
+        // reset controllers
+        pid.reset(); 
         exitCondition.reset();
+        // main loop
         while (exitCondition.getExit() == false) {
-            int error = position - rotation->get_position() / 100;
-            motors->move(pid.update(error));
-            exitCondition.update(error);
-            pros::delay(10);
-            motors->move(0);
-            pros::screen::print(pros::E_TEXT_MEDIUM, 6, "error: %d", error);
+            int error = position - rotation->get_position() / 100; // get the error between target and current in DEGREES
+            motors->move(pid.update(error)); // move the motors according to PID output
+            exitCondition.update(error); // update the exit condition
+            pros::delay(10); // delay to save resources 
+            pros::screen::print(pros::E_TEXT_MEDIUM, 6, "error: %d", error); // prints error to screen for debugging
         }
+        motors->move(0); // stops motor
     }
 }
 
