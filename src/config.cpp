@@ -5,30 +5,30 @@
 #include "subsystem/intake.hpp"
 
 // ports
-constexpr int RIGHT_F = 1;
-constexpr int RIGHT_M = -4;
-constexpr int RIGHT_B = 5;
+constexpr int RIGHT_F = 8;
+constexpr int RIGHT_M = -18;
+constexpr int RIGHT_B = 20;
 
-constexpr int LEFT_F = -17;
-constexpr int LEFT_M = 8;
-constexpr int LEFT_B = -14;
+constexpr int LEFT_F = -12;
+constexpr int LEFT_M = 13;
+constexpr int LEFT_B = -11;
 
-constexpr int HORI_ROT = 2;
+constexpr int VERT_ROT = 16;
 
-constexpr int INTAKE_1 = 2;
+constexpr int INTAKE_1 = 15;
 constexpr int DISTANCE = 3;
 
-constexpr int WALLSTAKE1 = 11;
+constexpr int WALLSTAKE1 = 1;
 constexpr int WALLSTAKE2 = -19;
 constexpr int WALLSTAKE_ROT = 12;
 
 constexpr char CLAMP = 'A';
 constexpr char DGATE = 'B';
 
-constexpr char TOP_SORT = 10;
+constexpr char TOP_SORT = 3;
 // constexpr char BOTTOM_SORT = 18;
 
-constexpr char IMU = 21;
+constexpr char IMU = 17;
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -60,8 +60,8 @@ pros::Imu imu(IMU);
 
 pros::Distance distance(DISTANCE);
 
-pros::Rotation horiRot(HORI_ROT);
-lemlib::TrackingWheel horiTrackingWheel(&horiRot, lemlib::Omniwheel::NEW_325, 0);
+pros::Rotation vertrot(VERT_ROT);
+lemlib::TrackingWheel vertTrackingWheel(&vertrot, lemlib::Omniwheel::NEW_2,0);
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
@@ -98,9 +98,9 @@ lemlib::ControllerSettings angularController(3, // proportional gain (kP)  4
 );
 
 // sensors for odometry
-lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel
+lemlib::OdomSensors sensors(&vertTrackingWheel, // vertical tracking wheel
                             nullptr, // vertical tracking wheel 2, set to nullptr as we don't have a second one
-                            &horiTrackingWheel, // horizontal tracking wheel
+                            nullptr, // horizontal tracking wheel
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
