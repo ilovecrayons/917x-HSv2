@@ -210,7 +210,19 @@ void elimsRed() {}
 
 void elimsBlue() {}
 
-void autonomous() {}
+void autonomous() {
+    chassis.setPose(0,0,0);
+    chassis.turnToHeading(90, 10000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(-90, 10000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(0,10000);
+    // chassis.moveToPoint(0, 24, 10000);
+    // chassis.waitUntilDone();
+    // chassis.moveToPoint(0,0, 10000, {.forwards=false});
+    // chassis.waitUntilDone();
+
+}
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
     up = mast.get_analog(power);
@@ -255,7 +267,7 @@ double INITIAL_POSITION = 0;
 double SEPARATION_MOVEMENT = 45;  //Degrees
 void opcontrol() {
     intakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    arm.retract(20, true);
+    //arm.retract(20, true);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {

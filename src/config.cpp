@@ -5,22 +5,22 @@
 #include "subsystem/intake.hpp"
 
 // ports
-constexpr int RIGHT_F = 1;
-constexpr int RIGHT_M = -4;
-constexpr int RIGHT_B = 5;
+constexpr int RIGHT_F = 8;
+constexpr int RIGHT_M = 20;
+constexpr int RIGHT_B = -18;
 
-constexpr int LEFT_F = -17;
-constexpr int LEFT_M = 8;
-constexpr int LEFT_B = -14;
+constexpr int LEFT_F = -12;
+constexpr int LEFT_M = -11;
+constexpr int LEFT_B = 13;
 
-constexpr int HORI_ROT = 2;
+constexpr int VERTI_ROT = 16;
 
-constexpr int INTAKE_1 = 2;
-constexpr int DISTANCE = 3;
+constexpr int INTAKE_1 = 15;
+constexpr int DISTANCE = 4;
 
-constexpr int WALLSTAKE1 = 11;
-constexpr int WALLSTAKE2 = -19;
-constexpr int WALLSTAKE_ROT = 12;
+constexpr int WALLSTAKE1 = 1;
+constexpr int WALLSTAKE2 = -2;
+constexpr int WALLSTAKE_ROT = 3;
 
 constexpr char CLAMP = 'A';
 constexpr char DGATE = 'B';
@@ -28,7 +28,7 @@ constexpr char DGATE = 'B';
 constexpr char TOP_SORT = 10;
 // constexpr char BOTTOM_SORT = 18;
 
-constexpr char IMU = 21;
+constexpr char IMU = 17;
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -46,7 +46,6 @@ pros::MotorGroup wallstake({WALLSTAKE1, WALLSTAKE2});
 pros::Rotation wallstakeRot(WALLSTAKE_ROT);
 Arm arm(&wallstake, &wallstakeRot, 5, 0, 15);
 
-
 // Clamp mechanism Piston
 pros::adi::DigitalOut clamp(CLAMP);
 
@@ -60,8 +59,8 @@ pros::Imu imu(IMU);
 
 pros::Distance distance(DISTANCE);
 
-pros::Rotation horiRot(HORI_ROT);
-lemlib::TrackingWheel horiTrackingWheel(&horiRot, lemlib::Omniwheel::NEW_325, 0);
+pros::Rotation vertiRot(VERTI_ROT);
+lemlib::TrackingWheel vertiTrackingWheel(&vertiRot, lemlib::Omniwheel::NEW_2, 0.05);
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
@@ -77,30 +76,30 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
 lemlib::ControllerSettings linearController(10, // proportional gain (kP)
                                             0, // integral gain (kI)
                                             3, // derivative gain (kD)
-                                            3, // anti windup  
-                                            1, // small error range, in inches  
-                                            100, // small error range timeout, in milliseconds 
-                                            3, // large error range, in inches  
-                                            500, // large error range timeout, in milliseconds 
-                                            20 // maximum acceleration (slew)  
+                                            3, // anti windup
+                                            1, // small error range, in inches
+                                            100, // small error range timeout, in milliseconds
+                                            3, // large error range, in inches
+                                            500, // large error range timeout, in milliseconds
+                                            20 // maximum acceleration (slew)
 );
 
 // angular motion controller
-lemlib::ControllerSettings angularController(3, // proportional gain (kP)  
-                                             0, // integral gain (kI)  
-                                             10, // derivative gain (kD)  
-                                             3, // anti windup  
-                                             1, // small error range, in degrees  
-                                             100, // small error range timeout, in milliseconds  
-                                             3, // large error range, in degrees  
-                                             500, // large error range timeout, in milliseconds  
+lemlib::ControllerSettings angularController(9, // proportional gain (kP)
+                                             0, // integral gain (kI)
+                                             69, // derivative gain (kD)
+                                             0, // anti windup
+                                             1, // small error range, in degrees
+                                             100, // small error range timeout, in milliseconds
+                                             3, // large error range, in degrees
+                                             500, // large error range timeout, in milliseconds
                                              0 // maximum acceleration (slew)
 );
 
 // sensors for odometry
-lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel
+lemlib::OdomSensors sensors(&vertiTrackingWheel, // vertical tracking wheel
                             nullptr, // vertical tracking wheel 2, set to nullptr as we don't have a second one
-                            &horiTrackingWheel, // horizontal tracking wheel
+                            nullptr, // horizontal tracking wheel
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
