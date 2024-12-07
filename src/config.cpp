@@ -18,8 +18,8 @@ constexpr int VERTI_ROT = 16;
 constexpr int INTAKE_1 = 15;
 constexpr int DISTANCE = 4;
 
-constexpr int WALLSTAKE1 = 1;
-constexpr int WALLSTAKE2 = -2;
+constexpr int WALLSTAKE1 = -1;
+constexpr int WALLSTAKE2 = 4;
 constexpr int WALLSTAKE_ROT = 3;
 
 constexpr char CLAMP = 'A';
@@ -73,9 +73,9 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
 );
 
 // lateral motion controller
-lemlib::ControllerSettings linearController(10, // proportional gain (kP)
+lemlib::ControllerSettings linearController(14, // proportional gain (kP) //was 15
                                             0, // integral gain (kI)
-                                            3, // derivative gain (kD)
+                                            65, // derivative gain (kD)
                                             3, // anti windup
                                             1, // small error range, in inches
                                             100, // small error range timeout, in milliseconds
