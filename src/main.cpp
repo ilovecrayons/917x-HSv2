@@ -68,7 +68,6 @@ void progSkills(){
     chassis.moveToPoint(0,-59,1000,{},false);
     chassis.turnToHeading(180,1000,{},false);
     pros::delay(500);
-    
 }
 
 void oldprogSkills() {
