@@ -242,13 +242,15 @@ void autonomous() {
     chassis.setPose(0,0,0);
     chassis.turnToHeading(90, 10000);
     chassis.waitUntilDone();
-    chassis.turnToHeading(-90, 10000);
-    chassis.waitUntilDone();
+    
     chassis.turnToHeading(0,10000);
-    // chassis.moveToPoint(0, 24, 10000);
-    // chassis.waitUntilDone();
-    // chassis.moveToPoint(0,0, 10000, {.forwards=false});
-    // chassis.waitUntilDone();
+    chassis.waitUntilDone();
+    //11 0 50
+    //chassis.lateralPID.setGains(16.5, 0, 100);
+    chassis.moveToPoint(48,48, 10000, {.maxSpeed = 70});
+    chassis.waitUntilDone();
+    chassis.moveToPoint(0,0, 10000, {.forwards=false});
+    chassis.waitUntilDone();
 
 }
 
