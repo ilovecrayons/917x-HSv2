@@ -8,6 +8,7 @@
 
 extern pros::Controller controller;
 extern pros::Motor intakeMotor;
+extern pros::MotorGroup wallstake;
 extern Intake intake;
 extern pros::adi::DigitalOut clamp;
 extern pros::adi::DigitalOut dGate;
