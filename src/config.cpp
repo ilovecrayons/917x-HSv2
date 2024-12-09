@@ -20,7 +20,7 @@ constexpr int DISTANCE = 4;
 
 constexpr int WALLSTAKE1 = -1;
 constexpr int WALLSTAKE2 = 5;
-constexpr int WALLSTAKE_ROT = 4;
+constexpr int WALLSTAKE_ROT = 6;
 
 constexpr char CLAMP = 'A';
 constexpr char DGATE = 'B';
