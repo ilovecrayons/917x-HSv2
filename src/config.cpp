@@ -18,9 +18,9 @@ constexpr int VERTI_ROT = 16;
 constexpr int INTAKE_1 = 15;
 constexpr int DISTANCE = 4;
 
-constexpr int WALLSTAKE1 = -1;
-constexpr int WALLSTAKE2 = 5;
-constexpr int WALLSTAKE_ROT = 6;
+constexpr int WALLSTAKE1 = 1;
+constexpr int WALLSTAKE2 = -5;
+constexpr int WALLSTAKE_ROT = 19;
 
 constexpr char CLAMP = 'A';
 constexpr char DGATE = 'B';
@@ -44,7 +44,7 @@ Intake intake(intakeMotor);
 // wallstake
 pros::MotorGroup wallstake({WALLSTAKE1, WALLSTAKE2});
 pros::Rotation wallstakeRot(WALLSTAKE_ROT);
-Arm arm(&wallstake, &wallstakeRot, 5, 0, 15);
+Arm arm(&wallstake, &wallstakeRot, 10, 0, 20);
 
 // Clamp mechanism Piston
 pros::adi::DigitalOut clamp(CLAMP);

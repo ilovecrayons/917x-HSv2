@@ -13,10 +13,9 @@ class Arm {
         void setPower(float power);
         void initialize();
         void moveTo(int position, bool async = false);
-        void loadWallstake(float position = 310, bool async = false);
-        void scoreWallstake(float position = 101, bool async = false);
-        void retract(float position = 120, bool async = false);
-        void setState(int state);
+        void loadWallstake(float position = 34, bool async = false);
+        void scoreWallstake(float position = 164, bool async = false);
+        void retract(float position = 10, bool async = false);
         int getPosition();
     private:
         pros::Rotation* rotation;

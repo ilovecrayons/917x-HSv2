@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include "pros/misc.h"
+#include "pros/motors.h"
 #include "pros/screen.hpp"
 #include "subsystem/intake.hpp"
 
@@ -36,6 +37,7 @@ void initialize() {
     pros::Task printOdomTask(printTelemetry); // create a task to print the odometry values
     pros::Task task {[=] { intake.intakeControl(); }};
     intakeMotor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+    arm.initialize();
 }
 
 void disabled() {}
@@ -388,16 +390,16 @@ void opAsyncButtons() {
             clamp.set_value(clamped);
             pros::delay(500);
         }
-        arm.setState(pros::E_MOTOR_BRAKE_HOLD);
+        
         if (controller.get_digital(DIGITAL_R2)) {
             armState++;
             if (armState > 2) { armState = 0; }
             switch (armState) {
-                case 0: arm.retract(120, false); break;
-                case 1: arm.loadWallstake(101, false); break;
+                case 0: arm.retract(); break;
+                case 1: arm.loadWallstake(); break;
                 case 2:
                     intake.set(Intake::IntakeState::OUTTAKE, 50);
-                    arm.scoreWallstake(310, false);
+                    arm.scoreWallstake();
                     intake.set(Intake::IntakeState::STOPPED);
                     break;
                 default: break;
@@ -413,23 +415,29 @@ int timeToCompleteSeparation = 50;         //milliseconds divided by 10
 double INITIAL_POSITION = 0;
 double SEPARATION_MOVEMENT = 45;  //Degrees
 void opcontrol() {
-    intakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    intakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     //arm.retract(20, true);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
-        if (blueAlliance){
-            if (topSort.get_hue()<30 && topSort.get_hue()>=0) {
-                sort = true;
-                INITIAL_POSITION = intakeMotor.get_position();
-            }
-        }
-        else {
-            if (topSort.get_hue()>100 && topSort.get_hue()<=270) {
-                sort = true;
-                INITIAL_POSITION = intakeMotor.get_position();
-            }
-        }
+        // if(sort){
+        //     intake.motor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+        // } else {
+        //     intake.motor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+        // }
+
+        // if (blueAlliance){
+        //     if (topSort.get_hue()<30 && topSort.get_hue()>=0) {
+        //         sort = true;
+        //         INITIAL_POSITION = intakeMotor.get_position();
+        //     }
+        // }
+        // else {
+        //     if (topSort.get_hue()>100 && topSort.get_hue()<=270) {
+        //         sort = true;
+        //         INITIAL_POSITION = intakeMotor.get_position();
+        //     }
+        // }
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
         if (!sort) {
