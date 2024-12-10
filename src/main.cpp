@@ -342,7 +342,16 @@ void elimsRed() {}
 void elimsBlue() {}
 
 void autonomous() {
-    // chassis.setPose(0,0,0);
+    chassis.setPose(0,0,0);
+    chassis.moveFor(24, 10000, {.maxSpeed = 70});
+    chassis.waitUntilDone();
+    chassis.moveFor(24, 10000, {.forwards=false, .maxSpeed = 70});
+    chassis.waitUntilDone();
+    chassis.moveFor(24, 10000, {.maxSpeed = 70});
+    chassis.waitUntilDone();
+    chassis.moveFor(24, 10000, {.forwards=false, .maxSpeed = 70});
+    chassis.waitUntilDone();
+    
     // chassis.turnToHeading(90, 10000);
     // chassis.waitUntilDone();
     
@@ -355,7 +364,7 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.forwards=false});
     // chassis.waitUntilDone();
 
-    progSkills();
+    //progSkills();
 
 
 

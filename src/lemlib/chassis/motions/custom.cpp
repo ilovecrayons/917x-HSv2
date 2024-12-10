@@ -51,8 +51,8 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
     angularPID.reset();
 
     // initialize vars used between iterations
-    Pose lastPose = getPose(false);
-    float targetAngle = getPose(false).theta;
+    Pose startingPose = getPose(false);
+    float targetAngle = startingPose.theta;
     distTraveled = 0;
     Timer timer(timeout);
     bool close = false;
@@ -68,8 +68,7 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
         const Pose pose = getPose(false);
 
         // update distance traveled
-        distTraveled += pose.distance(lastPose);
-        lastPose = pose;
+        distTraveled = pose.distance(startingPose);
 
         // calculate distnace to the target
         const float distTarget = distance - distTraveled;
@@ -88,6 +87,7 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
 
         // get output for PIDs
         float lateralOut = lateralPID.update(distTarget);
+
         float angularOut = angularPID.update(angularError);
         if (close) angularOut = 0;
 
@@ -101,9 +101,9 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
         // constrain lateral output by max accel, but not for deceleration
         if (!close) lateralOut = slew(lateralOut, prevLateralOut, lateralSettings.slew);
 
-        // prevent moving in the wrong direction
-        if (params.forwards && !close) lateralOut = std::fmax(lateralOut, 0);
-        else if (!params.forwards && !close) lateralOut = std::fmin(lateralOut, 0);
+        // // prevent moving in the wrong direction
+        // if (params.forwards && !close) lateralOut = std::fmax(lateralOut, 0);
+        // else if (!params.forwards && !close) lateralOut = std::fmin(lateralOut, 0);
 
         // constrain lateral output by the minimum speed
         if (params.forwards && lateralOut < fabs(params.minSpeed) && lateralOut > 0) lateralOut = fabs(params.minSpeed);
@@ -116,6 +116,9 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
 
         infoSink()->debug("Angular Out: {}, Lateral Out: {}", angularOut, lateralOut);
 
+        // apply direction
+        if(!params.forwards) lateralOut = -lateralOut;
+
         // ratio the speeds to respect the max speed
         float leftPower = lateralOut + angularOut * 1;
         float rightPower = lateralOut - angularOut * 1;
@@ -125,6 +128,7 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
             rightPower /= ratio;
         }
 
+        
         // move the drivetrain
         drivetrain.leftMotors->move(leftPower);
         drivetrain.rightMotors->move(rightPower);
