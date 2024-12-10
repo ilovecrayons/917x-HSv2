@@ -67,7 +67,7 @@ void Arm::moveTo(int position, bool async) {
             pros::delay(10); // delay to save resources 
             pros::screen::print(pros::E_TEXT_MEDIUM, 6, "error: %d", error); // prints error to screen for debugging
         }
-        motors->move(0); // stops motor
+        motors->brake(); // stops motor
     }
 }
 
@@ -98,14 +98,6 @@ void Arm::retract(float position, bool async) {
     }
 }
 
-/**
- * @brief Set the state of the arm
- *
- * This function sets the internal state variable of the arm to the specified value.
- *
- * @param state The new state to set for the arm
- */
-void Arm::setState(int state) { this->state = state; }
 
 /**
  * @brief Get the current position of the arm
