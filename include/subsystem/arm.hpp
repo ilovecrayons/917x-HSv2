@@ -13,7 +13,7 @@ class Arm {
         void setPower(float power);
         void initialize();
         void moveTo(int position, bool async = false);
-        void loadWallstake(float position = 34, bool async = false);
+        void loadWallstake(float position = 33, bool async = false);
         void scoreWallstake(float position = 164, bool async = false);
         void retract(float position = 10, bool async = false);
         int getPosition();

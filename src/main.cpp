@@ -45,21 +45,20 @@ void disabled() {}
 void competition_initialize() {}
 
 void progSkills(){
-    arm.retract();
     wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     clamp.set_value(true);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
     chassis.setPose(-60, 0, 90); // set the starting position of the robot
     intake.set(Intake::IntakeState::INTAKING); // start the intake
     pros::delay(750);
-    chassis.moveToPoint(-48, 0, 500, {.minSpeed = 90,}, false);
+    chassis.moveToPoint(-48, 0, 500, {.maxSpeed = 70,}, false);
     intake.set(Intake::IntakeState::STOPPED);
     chassis.turnToHeading(0, 750, {}, false);
     chassis.moveToPoint(-48,-32,1000,{.forwards = false, .maxSpeed = 70},true);
     chassis.waitUntil(24.5);
     clamp.set_value(false); // clamp the stake
     chassis.waitUntilDone();
-    pros::delay(750);
+    pros::delay(500);
     chassis.moveToPose(-23,-24,90,1000,{.minSpeed = 90},true);
     intake.set(Intake::IntakeState::INTAKING);
     chassis.turnToPoint(-23,-50,1000,{},false);
@@ -67,7 +66,7 @@ void progSkills(){
     chassis.turnToPoint(28,-48,500,{},false);
     chassis.moveToPoint(28,-48,2000,{.minSpeed = 70},false);
     pros::delay(750);
-    chassis.moveToPoint(48,-48,1000,{ .maxSpeed = 90},false);
+    chassis.moveToPoint(48,-48,1000,{ .maxSpeed = 70},false);
 
 //code if we get our wedge
     // chassis.moveToPoint(64,-48,1000,{},false);
@@ -77,20 +76,22 @@ void progSkills(){
 
 
     arm.loadWallstake(); 
-    pros::delay(750);
+    pros::delay(500);
+    chassis.turnToPoint(4,-45,100,{.forwards = false,},false);
+    chassis.moveToPoint(4,-45,2000,{.forwards = false,.maxSpeed = 70},false);
+    chassis.turnToHeading(180,2000,{},false);
+    chassis.moveToPoint(4,-54.75,1000,{},false);
+    chassis.turnToHeading(180,2000,{},false);
     intake.set(Intake::IntakeState::STOPPED);
-    chassis.turnToPoint(2,-45,500,{.forwards = false,.minSpeed = 60},false);
-    chassis.moveToPoint(2,-45,1000,{.forwards = false, .minSpeed = 90},false);
-    chassis.turnToHeading(180,1000,{.minSpeed = 60},false);
-    chassis.moveToPoint(2,-58,1000,{},false);
     arm.scoreWallstake();
     arm.loadWallstake();
-    intake.set(Intake::IntakeState::INTAKING);
-    pros::delay(500);
+    intake.set(Intake::IntakeState::INTAKING,100);
+    chassis.moveToPoint(4,-59,1000,{},false);
+    chassis.moveToPoint(4,-54.75,2000,{.forwards = false},false);
+    pros::delay(1000);
     intake.set(Intake::IntakeState::STOPPED);
     arm.scoreWallstake();
     arm.retract();
-    pros::delay(3000);  //compensation for the time it takes to score the stake REMOVE ONCE WALLSTAKE IS FIXED
 
     // intake.set(Intake::IntakeState::INTAKING);
     // chassis.turnToPoint(-24,-46,500,{.minSpeed = 80},false);
