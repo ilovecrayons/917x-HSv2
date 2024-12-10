@@ -342,29 +342,29 @@ void elimsRed() {}
 void elimsBlue() {}
 
 void autonomous() {
-    chassis.setPose(0,0,0);
-    chassis.moveFor(24, 10000, {.maxSpeed = 70});
-    chassis.waitUntilDone();
-    chassis.moveFor(24, 10000, {.forwards=false, .maxSpeed = 70});
-    chassis.waitUntilDone();
-    chassis.moveFor(24, 10000, {.maxSpeed = 70});
-    chassis.waitUntilDone();
-    chassis.moveFor(24, 10000, {.forwards=false, .maxSpeed = 70});
-    chassis.waitUntilDone();
-    
-    // chassis.turnToHeading(90, 10000);
+    // chassis.setPose(0,0,0);
+    // chassis.moveFor(24, 10000, {.maxSpeed = 70});
     // chassis.waitUntilDone();
-    
-    // chassis.turnToHeading(0,10000);
+    // chassis.moveFor(24, 10000, {.forwards=false, .maxSpeed = 70});
     // chassis.waitUntilDone();
-    // //11 0 50
-    // //chassis.lateralPID.setGains(16.5, 0, 100);
-    // chassis.moveToPoint(48,48, 10000, {.maxSpeed = 70});
+    // chassis.moveFor(24, 10000, {.maxSpeed = 70});
     // chassis.waitUntilDone();
-    // chassis.moveToPoint(0,0, 10000, {.forwards=false});
+    // chassis.moveFor(24, 10000, {.forwards=false, .maxSpeed = 70});
     // chassis.waitUntilDone();
 
-    //progSkills();
+    // // chassis.turnToHeading(90, 10000);
+    // // chassis.waitUntilDone();
+    
+    // // chassis.turnToHeading(0,10000);
+    // // chassis.waitUntilDone();
+    // // //11 0 50
+    // // //chassis.lateralPID.setGains(16.5, 0, 100);
+    // // chassis.moveToPoint(48,48, 10000, {.maxSpeed = 70});
+    // // chassis.waitUntilDone();
+    // // chassis.moveToPoint(0,0, 10000, {.forwards=false});
+    // // chassis.waitUntilDone();
+
+    progSkills();
 
 
 
