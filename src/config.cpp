@@ -23,10 +23,9 @@ constexpr int WALLSTAKE2 = -5;
 constexpr int WALLSTAKE_ROT = 19;
 
 constexpr char CLAMP = 'A';
-constexpr char DGATE = 'B';
+constexpr char HOOK = 'B';
 
 constexpr char TOP_SORT = 3;
-// constexpr char BOTTOM_SORT = 18;
 
 constexpr char IMU = 17;
 
@@ -50,7 +49,7 @@ Arm arm(&wallstake, &wallstakeRot, 10, 0, 20);
 pros::adi::DigitalOut clamp(CLAMP);
 
 // sorting mechanism
-pros::adi::DigitalOut dGate(DGATE);
+pros::adi::DigitalOut hook(HOOK);
 pros::Optical topSort(TOP_SORT);
 // pros::Optical bottomSort(BOTTOM_SORT);
 
