@@ -442,18 +442,32 @@ void rightRed() {
     chassis.moveToPoint(-20, -54, 2000,{.forwards = false});
     chassis.waitUntilDone();
     hook.set_value(false);
-    chassis.moveToPoint(-13, -55, 2000, {.forwards = true});
+    chassis.moveToPoint(-12.5, -55, 2000, {.forwards = true});
     chassis.waitUntilDone();
 
     chassis.swingToHeading(125, lemlib::DriveSide::RIGHT, 2000);
     intake.set(Intake::IntakeState::STOPPED);
     chassis.waitUntilDone();
     arm.scoreWallstake();
-    chassis.moveToPoint(-39, -57, 2000, {.forwards = false});
+    chassis.moveToPoint(-34, -52, 2000, {.forwards = false});
     arm.retract();
     chassis.waitUntilDone();
-    intake.set(Intake::IntakeState::INTAKING, 100);
-    chassis.moveToPoint(-23, -46, 2000);
+    intake.set(Intake::IntakeState::INTAKING);
+    chassis.moveToPoint(-20, -43, 2000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(180,2000);
+    intake.set(Intake::IntakeState::INTAKING, 20);
+    chassis.moveFor(26, 2000, {.forwards = false, .maxSpeed = 50});
+    chassis.waitUntil(23);
+    clamp.set_value(true);
+    intake.set(Intake::IntakeState::INTAKING, 127);
+    pros::delay(500);
+    chassis.moveToPoint(-12,-15,2000);
+    chassis.waitUntilDone();
+    arm.setPower(50);
+
+
+
 
 
 }
