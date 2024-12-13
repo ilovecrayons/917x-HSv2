@@ -431,7 +431,7 @@ void awpBlue() {
 
 void rightRed() {
     chassis.setPose(-52, -54, 90);
-    arm.loadWallstake();
+    arm.loadWallstake(33, true);
     chassis.moveToPoint(-24, -56, 3000, {.minSpeed = 50, .earlyExitRange = 10});
 
     chassis.moveToPoint(-7, -52, 2000, {.maxSpeed = 70});
@@ -441,8 +441,6 @@ void rightRed() {
     chassis.waitUntilDone();
     chassis.moveToPoint(-20, -54, 2000,{.forwards = false});
     chassis.waitUntilDone();
-    // chassis.turnToHeading(-60, 2000);
-    // chassis.waitUntilDone();
     hook.set_value(false);
     chassis.moveToPoint(-13, -55, 2000, {.forwards = true});
     chassis.waitUntilDone();
@@ -450,9 +448,12 @@ void rightRed() {
     chassis.swingToHeading(125, lemlib::DriveSide::RIGHT, 2000);
     intake.set(Intake::IntakeState::STOPPED);
     chassis.waitUntilDone();
-    // chassis.moveFor(4, 1000);
-    // chassis.waitUntilDone();
     arm.scoreWallstake();
+    chassis.moveToPoint(-39, -57, 2000, {.forwards = false});
+    arm.retract();
+    chassis.waitUntilDone();
+    intake.set(Intake::IntakeState::INTAKING, 100);
+    chassis.moveToPoint(-23, -46, 2000);
 
 
 }
