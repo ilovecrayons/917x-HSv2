@@ -20,7 +20,6 @@ float down;
 bool clamped = false;
 int armState = 0;
 
-bool blueAlliance = true;
 
 void printTelemetry() {
     while (true) {
