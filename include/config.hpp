@@ -19,4 +19,6 @@ extern pros::MotorGroup leftMotors;
 extern pros::Distance distance;
 extern lemlib::Chassis chassis;
 extern Arm arm;
+extern pros::Imu imu;
+
 
