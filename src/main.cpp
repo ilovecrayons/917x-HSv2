@@ -393,7 +393,20 @@ void oldprogSkills() {
     intake.set(Intake::IntakeState::INTAKING, 110);
 }
 
-void awpRed() {}
+void awpRed() {
+    chassis.setPose(-58, 12, -140);
+    arm.scoreWallstake(150, true);
+    pros::delay(500);
+    chassis.moveFor(7, 2000);
+    chassis.waitUntilDone();
+    pros::delay(250);
+    chassis.moveToPoint(-47, 12, 2000,{.forwards = false, .maxSpeed = 80});
+    arm.retract();
+    chassis.waitUntilDone();
+    chassis.moveToPose(-24, 24, 60-180, 2000, {.forwards = false, .maxSpeed = 70});
+    chassis.waitUntil(25);
+    clamp.set_value(true);
+}
 
 void awpBlue() {
     chassis.setPose(56, -16, 0);
@@ -513,7 +526,8 @@ void autonomous() {
 
 
     // rightRed();
-    progSkillsWithOneWallstake();
+    //progSkillsWithOneWallstake();
+    awpRed();
 }
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
