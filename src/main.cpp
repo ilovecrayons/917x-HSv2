@@ -58,7 +58,7 @@ void progSkillsWithOneWallstake(){
                         false);
     intake.set(Intake::IntakeState::STOPPED);
     chassis.turnToHeading(0, 2000, {}, false);
-    chassis.moveToPoint(-46, -32, 2000, {.forwards = false, .maxSpeed = 70}, true);
+    chassis.moveToPoint(-45, -32, 2000, {.forwards = false, .maxSpeed = 70}, true);
     chassis.waitUntil(24.5);
     clamp.set_value(true); // clamp the stake
     chassis.waitUntilDone();
@@ -75,8 +75,8 @@ void progSkillsWithOneWallstake(){
     chassis.waitUntil(10);
     arm.loadWallstake();
 
-    chassis.moveToPoint(2.75,-45.25,3000,{.forwards = false,.maxSpeed = 70},false);
-    chassis.turnToHeading(180,2000,{},false);
+    chassis.moveToPoint(0,-45.25,3000,{.forwards = false,.maxSpeed = 70},false);
+    chassis.turnToHeading(180,3000,{.maxSpeed = 100},false);
     chassis.moveFor(11,1000);
     // chassis.moveToPoint(4,-54.75,1000,{},false);
     chassis.turnToHeading(180,2000,{},false);
@@ -90,7 +90,7 @@ void progSkillsWithOneWallstake(){
     intake.set(Intake::IntakeState::INTAKING);
     pros::delay(500);
     chassis.turnToPoint(-24, -46, 2000, {}, false);
-    chassis.moveToPose(-59, -52, -90, 2000, {.maxSpeed = 80}, false);
+    chassis.moveToPose(-58, -52, -90, 2000, {.maxSpeed = 80}, false);
     pros::delay(250);
     chassis.moveToPoint(-50,-48,2000,{.forwards = false,.minSpeed = 90},false);
     chassis.turnToHeading(80, 2000, {.direction = AngularDirection::CCW_COUNTERCLOCKWISE}, false);
@@ -104,7 +104,7 @@ void progSkillsWithOneWallstake(){
     chassis.moveToPoint(-50.8, 0, 3000, {.maxSpeed = 70}, false);
     chassis.turnToHeading(180, 2000, {}, false);
     intake.set(Intake::IntakeState::STOPPED);
-    chassis.moveToPoint(-50.4, 22, 2000, {.forwards = false, .maxSpeed = 60}, false);
+    chassis.moveToPoint(-50.2, 22, 2000, {.forwards = false, .maxSpeed = 60}, false);
     chassis.waitUntil(21);
     clamp.set_value(true);
     chassis.waitUntilDone();
@@ -115,10 +115,10 @@ void progSkillsWithOneWallstake(){
     chassis.moveToPoint(-24, 20, 2000, {.minSpeed = 90, .earlyExitRange = 6}, true);
     chassis.moveToPose(-1, -13, 90 + 45, 3000, {}, false);
     chassis.waitUntil(-19);
-    chassis.setPose(-3, -4, 90 + 45);
+    // chassis.setPose(-3, -4, 90 + 45);
     pros::delay(750);
     chassis.turnToHeading(-45, 1000, {}, false);
-    chassis.moveToPose(-24, 50, 0, 2000, {}, false);
+    chassis.moveToPose(-26, 50, 0, 3000, {}, false);
     chassis.turnToPoint(-62, 52, 1000, {}, false);
     chassis.moveToPoint(-62, 52, 1000, {.maxSpeed = 80}, false);
     pros::delay(500);

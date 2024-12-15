@@ -13,7 +13,8 @@ constexpr int LEFT_F = -12;
 constexpr int LEFT_M = -11;
 constexpr int LEFT_B = 13;
 
-constexpr int VERTI_ROT = 16;
+constexpr int VERTI_ROT = -9;
+constexpr int HOR_ROT = 16;
 
 constexpr int INTAKE_1 = 15;
 constexpr int DISTANCE = 4;
@@ -59,7 +60,10 @@ pros::Imu imu(IMU);
 pros::Distance distance(DISTANCE);
 
 pros::Rotation vertiRot(VERTI_ROT);
-lemlib::TrackingWheel vertiTrackingWheel(&vertiRot, lemlib::Omniwheel::NEW_2, 0.05);
+lemlib::TrackingWheel vertiTrackingWheel(&vertiRot, lemlib::Omniwheel::NEW_2,-1.4);
+
+pros::Rotation horRot(HOR_ROT);
+lemlib::TrackingWheel horTrackingWheel(&horRot, lemlib::Omniwheel::NEW_2,-2);
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
@@ -98,7 +102,7 @@ lemlib::ControllerSettings angularController(7.5, // proportional gain (kP)
 // sensors for odometry
 lemlib::OdomSensors sensors(&vertiTrackingWheel, // vertical tracking wheel
                             nullptr, // vertical tracking wheel 2, set to nullptr as we don't have a second one
-                            nullptr, // horizontal tracking wheel
+                            &horTrackingWheel, // horizontal tracking wheel
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
