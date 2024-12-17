@@ -32,13 +32,16 @@ constexpr char IMU = 19;
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
+// optical
+pros::Optical topSort(TOP_SORT);
+
 // drivetrain
 pros::MotorGroup rightMotors({RIGHT_F, RIGHT_M, RIGHT_B}, pros::MotorGearset::blue);
 pros::MotorGroup leftMotors({LEFT_F, LEFT_M, LEFT_B}, pros::MotorGearset::blue);
 
 // intake
 pros::Motor intakeMotor(INTAKE_1, pros::MotorGearset::blue);
-Intake intake(intakeMotor);
+Intake intake(intakeMotor, topSort);
 
 // wallstake
 pros::MotorGroup wallstake({WALLSTAKE1, WALLSTAKE2});
@@ -50,7 +53,6 @@ pros::adi::DigitalOut clamp(CLAMP);
 
 // sorting mechanism
 pros::adi::DigitalOut hook(HOOK);
-pros::Optical topSort(TOP_SORT);
 // pros::Optical bottomSort(BOTTOM_SORT);
 
 // Inertial Sensor on port 10
@@ -98,7 +100,7 @@ lemlib::ControllerSettings angularController(7.5, // proportional gain (kP)
 // sensors for odometry
 lemlib::OdomSensors sensors(&vertiTrackingWheel, // vertical tracking wheel
                             nullptr, // vertical tracking wheel 2, set to nullptr as we don't have a second one
-                            &horTrackingWheel, // horizontal tracking wheel
+                            nullptr, // horizontal tracking wheel
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
