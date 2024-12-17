@@ -11,9 +11,6 @@ class Intake {
         enum IntakeState{ STOPPED , INTAKING , OUTTAKE };
         enum Ring { BLUE , RED , NONE };
 
-        enum Ring { BLUE, RED , NONE };
-        enum IntakeState { STOPPED, INTAKING, OUTTAKE };
-
         void intakeControl();
         void set(IntakeState state, int speed = 127);
         void setSeparation(Ring ring);

@@ -47,8 +47,8 @@ void printTelemetry() {
 
 void initialize() {
 
-    init_separation();
-    
+    init_separation(Intake::Ring::RED);
+
     pros::delay(500);
     chassis.calibrate(); // calibrate the chassis
     pros::Task printOdomTask(printTelemetry); // create a task to print the odometry values
