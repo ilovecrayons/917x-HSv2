@@ -45,6 +45,20 @@ void printTelemetry() {
     }
 }
 
+
+void init_separation(Intake::Ring ring){
+    intake.ring = ring;
+    if (intake.ring == Intake::Ring::BLUE){
+        separationState = 1;
+    }
+    else if (intake.ring == Intake::Ring::RED){
+        separationState = 0;
+    }
+    else if (intake.ring == Intake::Ring::NONE){
+        separationState = 2;
+    }
+}
+
 void initialize() {
 
     init_separation(Intake::Ring::RED);
@@ -588,18 +602,6 @@ void opAsyncButtons() {
     }
 }
 
-void init_separation(Intake::Ring ring){
-    intake.ring = ring;
-    if (intake.ring == Intake::Ring::BLUE){
-        separationState = 1;
-    }
-    else if (intake.ring == Intake::Ring::RED){
-        separationState = 0;
-    }
-    else if (intake.ring == Intake::Ring::NONE){
-        separationState = 2;
-    }
-}
 
 void switchSeparation(){
     if (controller.get_digital(DIGITAL_UP) && controller.get_digital(DIGITAL_DOWN)){
