@@ -4,8 +4,6 @@
 #include "lemlib/api.hpp"
 #include "lemlib/chassis/chassis.hpp"
 #include "pros/adi.hpp"
-#include "pros/llemu.hpp"
-#include <fstream>
 #include <iostream>
 #include "pros/misc.h"
 #include "pros/motors.h"
