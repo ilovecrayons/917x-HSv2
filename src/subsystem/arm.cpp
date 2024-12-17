@@ -1,6 +1,6 @@
 #include "subsystem/arm.hpp"
 #include "pros/screen.hpp"
-
+#include "lemlib/timer.hpp"
 /**
  * @brief Construct a new Arm object
  *
@@ -52,15 +52,16 @@ void Arm::initialize() {
  *              background. If false, the function will block until the
  *              PID controller has finished moving the arm.
  */
-void Arm::moveTo(int position, bool async) {
+void Arm::moveTo(int position, bool async, int timeout) {
     if (async) {
         pros::Task task {[=, this] { moveTo(position, false); }};
     } else {
         // reset controllers
         pid.reset(); 
         exitCondition.reset();
+        lemlib::Timer timer(timeout);
         // main loop
-        while (exitCondition.getExit() == false) {
+        while (exitCondition.getExit() == false && !timer.isDone()) {
             int error = position - rotation->get_position() / 100; // get the error between target and current in DEGREES
             motors->move(pid.update(error)); // move the motors according to PID output
             exitCondition.update(error); // update the exit condition
