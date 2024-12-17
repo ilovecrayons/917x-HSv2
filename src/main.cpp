@@ -601,7 +601,7 @@ void init_separation(Intake::Ring ring){
     }
 }
 
-void switchSeparation( Intake::Ring ring){
+void switchSeparation(){
     if (controller.get_digital(DIGITAL_UP) && controller.get_digital(DIGITAL_DOWN)){
         
         separationState++;
