@@ -16,7 +16,9 @@ void Intake::checkForSort(){
             sort = true;
             INITIAL_POSITION = motor.get_position();
         }
-        if (topSort.get_hue()>100 && topSort.get_hue()<=270) {
+    }
+    else if (ring == Ring::RED){
+        if (topSort.get_hue()<30 && topSort.get_hue()>=0) {
             sort = true;
             INITIAL_POSITION = motor.get_position();
         }

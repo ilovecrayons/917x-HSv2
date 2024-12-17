@@ -19,6 +19,7 @@ float down;
 bool clamped = false;
 bool hooked = false;
 int armState = 0;
+int separationState = 0;
 
 
 void printTelemetry() {
@@ -29,11 +30,25 @@ void printTelemetry() {
         pros::screen::print(TEXT_MEDIUM, 3, "theta: %f", pose.theta); // prints the heading
         pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Arm position: %d", arm.getPosition()); // prints the arm position
         std::cout<<pose.x<<" "<<pose.y<<" "<<imu.get_rotation()<<pose.theta<<std::endl;
+        switch (intake.ring){
+            case Intake::Ring::BLUE:
+                controller.print(1,1, "%s", "SEPARATING BLUE");
+            case Intake::Ring::RED:
+                controller.print(1,1,"%s","SEPARATING RED");
+            case Intake::Ring::NONE:
+                controller.print(1,1,"%s","SEPARATING NONE");
+            default:
+                break;
+        }
+        
         pros::delay(200);
     }
 }
 
 void initialize() {
+
+    init_separation();
+    
     pros::delay(500);
     chassis.calibrate(); // calibrate the chassis
     pros::Task printOdomTask(printTelemetry); // create a task to print the odometry values
@@ -573,12 +588,37 @@ void opAsyncButtons() {
     }
 }
 
-int SEPARATION_WAIT = 0;
-int timeToCompleteSeparation = 50; // milliseconds divided by 10
-double INITIAL_POSITION = 0;
-double SEPARATION_MOVEMENT = 45; // Degrees
+void init_separation(Intake::Ring ring){
+    intake.ring = ring;
+    if (intake.ring == Intake::Ring::BLUE){
+        separationState = 1;
+    }
+    else if (intake.ring == Intake::Ring::RED){
+        separationState = 0;
+    }
+    else if (intake.ring == Intake::Ring::NONE){
+        separationState = 2;
+    }
+}
+
+void switchSeparation( Intake::Ring ring){
+    if (controller.get_digital(DIGITAL_UP) && controller.get_digital(DIGITAL_DOWN)){
+        
+        separationState++;
+        if (separationState > 2) { separationState = 0; }
+        switch(separationState){
+            case 0: intake.setSeparation(Intake::Ring::RED); break;
+            case 1: intake.setSeparation(Intake::Ring::BLUE); break;
+            case 2: intake.setSeparation(Intake::Ring::NONE); break;
+        }
+    }
+}
+
 
 void opcontrol() {
+    
+    switchSeparation();
+
     intakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     // arm.retract(20, true);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
@@ -587,7 +627,7 @@ void opcontrol() {
     
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
-        if (!sort) {
+        if (!intake.sort) {
             if (controller.get_digital(DIGITAL_L2)) // intake
             {
                 intake.set(Intake::IntakeState::INTAKING);
