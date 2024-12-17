@@ -19,6 +19,7 @@ double turning;
 float up;
 float down;
 bool clamped = false;
+bool hooked = false;
 int armState = 0;
 
 
@@ -550,6 +551,12 @@ void opAsyncButtons() {
             pros::delay(500);
         }
 
+        if (controller.get_digital(DIGITAL_RIGHT)) {
+            hooked = !hooked;
+            hook.set_value(hooked);
+            pros::delay(500);
+        }
+
         if (controller.get_digital(DIGITAL_R2)) {
             armState++;
             if (armState > 2) { armState = 0; }
@@ -579,24 +586,7 @@ void opcontrol() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
     while (true) {
-        // if(sort){
-        //     intake.motor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
-        // } else {
-        //     intake.motor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-        // }
-
-        // if (blueAlliance){
-        //     if (topSort.get_hue()<30 && topSort.get_hue()>=0) {
-        //         sort = true;
-        //         INITIAL_POSITION = intakeMotor.get_position();
-        //     }
-        // }
-        // else {
-        //     if (topSort.get_hue()>100 && topSort.get_hue()<=270) {
-        //         sort = true;
-        //         INITIAL_POSITION = intakeMotor.get_position();
-        //     }
-        // }
+    
         arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, controller, 9.6);
 
         if (!sort) {
@@ -614,19 +604,6 @@ void opcontrol() {
                 intake.set(Intake::IntakeState::STOPPED);
             }
         }
-        // else if (sort && (INITIAL_POSITION+SEPARATION_MOVEMENT) > intakeMotor.get_position()) {
-        //     intake.set(Intake::IntakeState::INTAKING);
-        // }
-        // else if (sort && (INITIAL_POSITION+SEPARATION_MOVEMENT) <= intakeMotor.get_position() && SEPARATION_WAIT <
-        // timeToCompleteSeparation) {
-        //     intake.set(Intake::IntakeState::STOPPED);
-        //     SEPARATION_WAIT++;
-        // }
-        // else {
-        //     intake.set(Intake::IntakeState::STOPPED);
-        //     sort = !sort;
-        //     SEPARATION_WAIT = 0;
-        // }
         pros::delay(10);
     }
 }
