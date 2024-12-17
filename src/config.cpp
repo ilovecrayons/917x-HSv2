@@ -24,6 +24,7 @@ constexpr int WALLSTAKE_ROT = 16;
 
 constexpr char CLAMP = 'A';
 constexpr char HOOK = 'B';
+constexpr char HANG = 'G';
 
 constexpr char TOP_SORT = 3;
 
@@ -51,11 +52,14 @@ Arm arm(&wallstake, &wallstakeRot, 10, 0, 20);
 // Clamp mechanism Piston
 pros::adi::DigitalOut clamp(CLAMP);
 
+// hang piston
+pros::adi::DigitalOut hand(HANG); 
+
 // sorting mechanism
 pros::adi::DigitalOut hook(HOOK);
 // pros::Optical bottomSort(BOTTOM_SORT);
 
-// Inertial Sensor on port 10
+// Inertial Sensor 
 pros::Imu imu(IMU);
 
 pros::Distance distance(DISTANCE);
