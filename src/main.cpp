@@ -1,3 +1,4 @@
+// files
 #include "main.h"
 #include "config.hpp"
 #include "lemlib/api.hpp"
@@ -20,7 +21,6 @@ float down;
 bool clamped = false;
 int armState = 0;
 
-bool blueAlliance = true;
 
 void printTelemetry() {
     while (true) {
@@ -29,11 +29,13 @@ void printTelemetry() {
         pros::screen::print(TEXT_MEDIUM, 2, "y: %f", pose.y); // prints the y position
         pros::screen::print(TEXT_MEDIUM, 3, "theta: %f", pose.theta); // prints the heading
         pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Arm position: %d", arm.getPosition()); // prints the arm position
-        pros::delay(20);
+        std::cout<<pose.x<<" "<<pose.y<<" "<<imu.get_rotation()<<pose.theta<<std::endl;
+        pros::delay(200);
     }
 }
 
 void initialize() {
+    pros::delay(500);
     chassis.calibrate(); // calibrate the chassis
     pros::Task printOdomTask(printTelemetry); // create a task to print the odometry values
     pros::Task task {[=] { intake.intakeControl(); }};
@@ -67,11 +69,11 @@ void progSkillsWithOneWallstake(){
     intake.set(Intake::IntakeState::INTAKING);
     chassis.turnToPoint(-23, -50, 2000, {}, false);
     chassis.moveToPose(-23, -50, 90, 2000, {.minSpeed = 100}, false);
-    chassis.turnToPoint(28, -49, 2000, {}, false);
-    chassis.moveToPoint(28, -49, 2000, {.maxSpeed = 80}, false);
+    chassis.turnToPoint(28, -50, 2000, {}, false);
+    chassis.moveToPoint(28, -50, 2000, {.maxSpeed = 80}, false);
     pros::delay(250);  
       
-    chassis.moveToPoint(49, -49, 2000, {.maxSpeed = 70},true);
+    chassis.moveToPoint(49, -50, 2000, {.maxSpeed = 70},true);
     chassis.waitUntil(10);
     arm.loadWallstake();
 
@@ -83,11 +85,11 @@ void progSkillsWithOneWallstake(){
     intake.set(Intake::IntakeState::STOPPED);
     arm.scoreWallstake();
     arm.retract(10,true);
+    intake.set(Intake::IntakeState::INTAKING);
     chassis.moveFor(5, 1000,{},false);
     chassis.moveFor(5,1000,{.forwards = false},false);
 
 
-    intake.set(Intake::IntakeState::INTAKING);
     pros::delay(500);
     chassis.turnToPoint(-24, -46, 2000, {}, false);
     chassis.moveToPose(-58, -52, -90, 2000, {.maxSpeed = 80}, false);
@@ -101,7 +103,7 @@ void progSkillsWithOneWallstake(){
 
 
 //get next mobile goal
-    chassis.moveToPoint(-50.8, 0, 3000, {.maxSpeed = 70}, false);
+    chassis.moveToPoint(-50.2, 0, 3000, {.maxSpeed = 70}, false);
     chassis.turnToHeading(180, 2000, {}, false);
     intake.set(Intake::IntakeState::STOPPED);
     chassis.moveToPoint(-50.2, 22, 2000, {.forwards = false, .maxSpeed = 60}, false);
@@ -118,12 +120,12 @@ void progSkillsWithOneWallstake(){
     // chassis.setPose(-3, -4, 90 + 45);
     pros::delay(750);
     chassis.turnToHeading(-45, 1000, {}, false);
-    chassis.moveToPose(-26, 50, 0, 3000, {}, false);
-    chassis.turnToPoint(-62, 52, 1000, {}, false);
-    chassis.moveToPoint(-62, 52, 1000, {.maxSpeed = 80}, false);
+    chassis.moveToPose(-28, 49, 0, 2000, {}, false);
+    chassis.turnToPoint(-62, 49, 1000, {}, false);
+    chassis.moveToPoint(-62, 50, 1000, {.maxSpeed = 80}, false);
     pros::delay(500);
     chassis.moveToPoint(-34, 50, 1000, {.forwards = false}, false);
-    chassis.moveToPoint(-50, 60, 1000, {}, false);
+    chassis.moveToPoint(-52, 60, 1000, {}, false);
     pros::delay(500);
 
     //releasing stake
@@ -142,25 +144,25 @@ void progSkillsWithOneWallstake(){
 
     //clamping new mobile goal
     chassis.moveToPoint(50.8, 0, 2000, {.forwards = false, .maxSpeed = 70}, true);
-    chassis.waitUntil(22);  
-    clamp.set_value(true);  
-    pros::delay(500);
-    intake.set(Intake::IntakeState::INTAKING, 127);
+    chassis.waitUntil(21);  
+    clamp.set_value(true);
 
     //beginning scoring on new mobile goal
     chassis.turnToPoint(20,53,2000,{},false);
     chassis.moveToPoint(20,53,2000,{ .maxSpeed = 60 },false);
+    chassis.waitUntil(15);
+    intake.set(Intake::IntakeState::INTAKING, 127);
     chassis.turnToHeading(90,2000,{},false);
-    chassis.moveToPoint(48,54,2000,{.maxSpeed = 90},false);
+    chassis.moveToPoint(50,55,2000,{.maxSpeed = 90},false);
 
-    chassis.moveToPoint(30,54,2000,{.forwards = false,.maxSpeed = 100},false);
-    chassis.turnToPoint(49,67,2000,{},false);
-    chassis.moveToPoint(49,67,2000,{},false);
+    chassis.moveToPoint(30,55,2000,{.forwards = false,.maxSpeed = 100},false);
+    chassis.turnToPoint(49,68,2000,{},false);
+    chassis.moveToPoint(49,68,2000,{},false);
     chassis.turnToHeading(180+45,2000,{},false);
     chassis.moveToPoint(52,67,1000,{.forwards = false},false);
     intake.set(Intake::IntakeState::OUTTAKE, 30);
     clamp.set_value(false);
-    chassis.moveToPose(42,0,90+45,2000,{.minSpeed = 40,.earlyExitRange = 10},false);
+    chassis.moveToPose(38,0,90+45,2000,{.minSpeed = 40,.earlyExitRange = 10},false);
     intake.set(Intake::IntakeState::STOPPED);
     chassis.moveToPoint(63,-24,2000,{.minSpeed = 40, .earlyExitRange = 8},false);
     chassis.moveToPoint(63,-58,2000,{.maxSpeed = 90},false);
@@ -391,7 +393,20 @@ void oldprogSkills() {
     intake.set(Intake::IntakeState::INTAKING, 110);
 }
 
-void awpRed() {}
+void awpRed() {
+    chassis.setPose(-58, 12, -140);
+    arm.scoreWallstake(150, true);
+    pros::delay(500);
+    chassis.moveFor(7, 2000);
+    chassis.waitUntilDone();
+    pros::delay(250);
+    chassis.moveToPoint(-47, 12, 2000,{.forwards = false, .maxSpeed = 80});
+    arm.retract();
+    chassis.waitUntilDone();
+    chassis.moveToPose(-24, 24, 60-180, 2000, {.forwards = false, .maxSpeed = 70});
+    chassis.waitUntil(25);
+    clamp.set_value(true);
+}
 
 void awpBlue() {
     chassis.setPose(56, -16, 0);
@@ -513,7 +528,8 @@ void autonomous() {
 
 
     // rightRed();
-    progSkillsWithOneWallstake();
+    //progSkillsWithOneWallstake();
+    awpRed();
 }
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {

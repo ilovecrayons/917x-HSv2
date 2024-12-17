@@ -13,22 +13,21 @@ constexpr int LEFT_F = -12;
 constexpr int LEFT_M = -11;
 constexpr int LEFT_B = 13;
 
-constexpr int VERTI_ROT = -9;
-constexpr int HOR_ROT = 16;
+constexpr int VERTI_ROT = 6;
 
 constexpr int INTAKE_1 = 15;
 constexpr int DISTANCE = 4;
 
 constexpr int WALLSTAKE1 = 1;
 constexpr int WALLSTAKE2 = -5;
-constexpr int WALLSTAKE_ROT = 19;
+constexpr int WALLSTAKE_ROT = 16;
 
 constexpr char CLAMP = 'A';
 constexpr char HOOK = 'B';
 
 constexpr char TOP_SORT = 3;
 
-constexpr char IMU = 17;
+constexpr char IMU = 19;
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -60,10 +59,7 @@ pros::Imu imu(IMU);
 pros::Distance distance(DISTANCE);
 
 pros::Rotation vertiRot(VERTI_ROT);
-lemlib::TrackingWheel vertiTrackingWheel(&vertiRot, lemlib::Omniwheel::NEW_2,-1.4);
-
-pros::Rotation horRot(HOR_ROT);
-lemlib::TrackingWheel horTrackingWheel(&horRot, lemlib::Omniwheel::NEW_2,-2);
+lemlib::TrackingWheel vertiTrackingWheel(&vertiRot, lemlib::Omniwheel::NEW_2, 0.03);
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
