@@ -29,6 +29,7 @@ void Intake::intakeControl(){
     while(true){
         checkForSort();
         bool COMPLETED_MOVEMENT = (INITIAL_POSITION+SEPARATION_MOVEMENT) <= motor.get_position();
+
         bool COMPLETED_SEPARATION_WAIT = SEPARATION_WAIT >= TIME_TO_COMPLETE_SEP;
 
         if (sort && !COMPLETED_MOVEMENT) {
@@ -38,7 +39,7 @@ void Intake::intakeControl(){
             state = IntakeState::STOPPED;
             SEPARATION_WAIT++;
         }
-        else{
+        else if (sort && COMPLETED_MOVEMENT && COMPLETED_SEPARATION_WAIT) {
             state = IntakeState::STOPPED;
             sort = !sort;
             SEPARATION_WAIT = 0;

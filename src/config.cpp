@@ -5,7 +5,7 @@
 #include "subsystem/intake.hpp"
 
 // ports
-constexpr int RIGHT_F = 8;
+constexpr int RIGHT_F = 10;
 constexpr int RIGHT_M = 20;
 constexpr int RIGHT_B = -18;
 
@@ -28,7 +28,7 @@ constexpr char HANG = 'G';
 
 constexpr char TOP_SORT = 3;
 
-constexpr char IMU = 19;
+constexpr char IMU = 21;
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -86,7 +86,7 @@ lemlib::ControllerSettings linearController(16, // proportional gain (kP)
                                             100, // small error range timeout, in milliseconds
                                             3, // large error range, in inches
                                             500, // large error range timeout, in milliseconds
-                                            10 // maximum acceleration (slew)
+                                            6 // maximum acceleration (slew)
 );
 
 // angular motion controller
