@@ -105,7 +105,7 @@ void progSkillsWithOneWallstake() {
     arm.loadWallstake();
 
     // autistic ass mf of a wallstake
-    chassis.moveToPoint(-0.25, -45.5, 3000, {.forwards = false, .maxSpeed = 70}, false);   //was 0.7
+    chassis.moveToPoint(-0.1, -45.5, 3000, {.forwards = false, .maxSpeed = 70}, false);   //was 0.7
     chassis.turnToHeading(180, 3000, {.maxSpeed = 100}, false);
     chassis.moveFor(12.5, 1000);
     // chassis.moveToPoint(4,-54.75,1000,{},false);
@@ -181,7 +181,7 @@ void progSkillsWithOneWallstake() {
     chassis.moveToPoint(21, 48, 2000, {.maxSpeed = 60}, true);
     intake.set(Intake::IntakeState::INTAKING, 127);
     chassis.turnToHeading(90, 2000, {}, false);
-    chassis.moveToPoint(47, 47, 2000, {.maxSpeed = 70}, false);
+    chassis.moveToPoint(50, 47, 2000, {.maxSpeed = 70}, false);
 
     chassis.moveToPoint(27, 47, 2000, {.forwards = false, .maxSpeed = 100}, false);
     chassis.turnToPoint(47, 58, 2000, {}, false);
@@ -191,9 +191,9 @@ void progSkillsWithOneWallstake() {
     clamp.set_value(false);
     chassis.moveToPoint(58, 63, 1000, {.forwards = false}, false);
     
-    chassis.turnToHeading(170, 2000,{},false);
-    chassis.moveToPoint(63, -67, 4000, {.minSpeed = 120});
-    chassis.waitUntil(10);
+    chassis.turnToHeading(180, 2000,{},false);
+    chassis.moveToPoint(59, -67, 4000, {.minSpeed = 120});
+    chassis.waitUntil(20);
     chassis.cancelMotion();
     chassis.tank(127, 127);
     // not tested
