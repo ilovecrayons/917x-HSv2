@@ -25,7 +25,7 @@ class Intake {
         int speed = 127;
 
         double INITIAL_POSITION = 0;
-        double SEPARATION_MOVEMENT = 45;
+        double SEPARATION_MOVEMENT = 500;
         double SEPARATION_WAIT = 0;
-        double TIME_TO_COMPLETE_SEP = 45;
+        double TIME_TO_COMPLETE_SEP = 100; //45 before
 };

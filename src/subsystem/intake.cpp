@@ -27,34 +27,38 @@ void Intake::checkForSort(){
 
 void Intake::intakeControl(){
     while(true){
-        checkForSort();
+
+        if (!sort){
+            checkForSort();
+        }
         bool COMPLETED_MOVEMENT = (INITIAL_POSITION+SEPARATION_MOVEMENT) <= motor.get_position();
 
         bool COMPLETED_SEPARATION_WAIT = SEPARATION_WAIT >= TIME_TO_COMPLETE_SEP;
 
         if (sort && !COMPLETED_MOVEMENT) {
-            state = IntakeState::INTAKING;
+            set(IntakeState::INTAKING,90);
+            this->motor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
         }
         else if (sort && COMPLETED_MOVEMENT && !COMPLETED_SEPARATION_WAIT){
-            state = IntakeState::STOPPED;
+            this->state = STOPPED;
             SEPARATION_WAIT++;
         }
         else if (sort && COMPLETED_MOVEMENT && COMPLETED_SEPARATION_WAIT) {
-            state = IntakeState::STOPPED;
+            set(IntakeState::INTAKING,127);
             sort = !sort;
             SEPARATION_WAIT = 0;
+            this->motor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
         }
 
 
         if(this->state == STOPPED){
-            this->motor.move(0);
+            this->motor.brake();
         } else if(this->state == INTAKING){
             this->motor.move(this->speed);
         } else if(this->state == OUTTAKE){
             this->motor.move(-this->speed);
         }
-
-        pros::delay(20);
+        pros::delay(10);
     }
 }
 
