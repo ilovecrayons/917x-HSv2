@@ -40,14 +40,16 @@ pros::Optical topSort(TOP_SORT);
 pros::MotorGroup rightMotors({RIGHT_F, RIGHT_M, RIGHT_B}, pros::MotorGearset::blue);
 pros::MotorGroup leftMotors({LEFT_F, LEFT_M, LEFT_B}, pros::MotorGearset::blue);
 
-// intake
-pros::Motor intakeMotor(INTAKE_1, pros::MotorGearset::blue);
-Intake intake(intakeMotor, topSort);
-
 // wallstake
 pros::MotorGroup wallstake({WALLSTAKE1, WALLSTAKE2});
 pros::Rotation wallstakeRot(WALLSTAKE_ROT);
 Arm arm(&wallstake, &wallstakeRot, 10, 0, 20);
+
+// intake
+pros::Motor intakeMotor(INTAKE_1, pros::MotorGearset::blue);
+Intake intake(intakeMotor, topSort, arm);
+
+
 
 // Clamp mechanism Piston
 pros::adi::DigitalOut clamp(CLAMP);

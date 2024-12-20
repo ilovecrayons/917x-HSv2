@@ -1,4 +1,5 @@
 #include "subsystem/arm.hpp"
+#include "pros/motors.h"
 #include "pros/screen.hpp"
 #include "lemlib/timer.hpp"
 /**
@@ -88,6 +89,32 @@ void Arm::scoreWallstake(float position, bool async) {
     } else {
         moveTo(position, false);
     }
+}
+
+void Arm::separateRing(float position, bool async){
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+    if (async) {
+        pros::Task task {[=, this] { separateRing(position, false); }};
+    }
+
+    else {
+        pid.reset(); 
+        exitCondition.reset();
+        lemlib::Timer timer(1000);
+        // main loop
+        while (exitCondition.getExit() == false && !timer.isDone()) {
+            int error = position - rotation->get_position() / 100; // get the error between target and current in DEGREES
+            motors->move(pid.update(error)); // move the motors according to PID output
+            exitCondition.update(error); // update the exit condition
+            pros::delay(10); // delay to save resources 
+            pros::screen::print(pros::E_TEXT_MEDIUM, 6, "error: %d", error); // prints error to screen for debugging
+        }
+        motors->brake(); // stops motor
+        pros::delay(500);
+        retract(0);
+    }
+
 }
 
 void Arm::retract(float position, bool async) {

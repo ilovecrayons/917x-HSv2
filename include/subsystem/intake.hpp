@@ -1,12 +1,14 @@
 #pragma once
+#include "pros/motor_group.hpp"
 #include "pros/motors.hpp"
 #include "pros/optical.hpp"
 #include <cmath>
+#include "arm.hpp"
 
 class Intake {
     public:
 
-        Intake( pros::Motor& motor , pros::Optical& topSort);
+        Intake( pros::Motor& motor , pros::Optical& topSort, Arm& arm);
 
         enum IntakeState{ STOPPED , INTAKING , OUTTAKE };
         enum Ring { BLUE , RED , NONE };
@@ -18,6 +20,7 @@ class Intake {
 
         pros::Motor& motor;
         pros::Optical& topSort;
+        Arm& arm;
         IntakeState state = STOPPED;
         Ring ring = NONE;
 

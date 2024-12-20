@@ -15,6 +15,7 @@ class Arm {
         void moveTo(int position, bool async = false, int timeout = 3000);
         void loadWallstake(float position = 33, bool async = false);
         void scoreWallstake(float position = 164, bool async = false);
+        void separateRing(float position, bool async = false);
         void retract(float position = 10, bool async = false);
         int getPosition();
     private:

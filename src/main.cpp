@@ -30,9 +30,11 @@ void printTelemetry() {
         pros::screen::print(TEXT_MEDIUM, 3, "theta: %f", pose.theta); // prints the heading
         pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Arm position: %d", arm.getPosition()); // prints the arm position
 
-        pros::screen::print(pros::E_TEXT_MEDIUM, 5, "left temp: %.1f %.1f %.1f", leftMotors.get_temperature(0), leftMotors.get_temperature(1), leftMotors.get_temperature(2));
-       
-        pros::screen::print(pros::E_TEXT_MEDIUM, 6, "right temp: %.1f %.1f %.1f", rightMotors.get_temperature(0), rightMotors.get_temperature(1), rightMotors.get_temperature(2));
+        pros::screen::print(pros::E_TEXT_MEDIUM, 5, "left temp: %.1f %.1f %.1f", leftMotors.get_temperature(0),
+                            leftMotors.get_temperature(1), leftMotors.get_temperature(2));
+
+        pros::screen::print(pros::E_TEXT_MEDIUM, 6, "right temp: %.1f %.1f %.1f", rightMotors.get_temperature(0),
+                            rightMotors.get_temperature(1), rightMotors.get_temperature(2));
 
         pros::screen::print(pros::E_TEXT_MEDIUM, 7, "intake temp: %.1f", intake.motor.get_temperature());
 
@@ -91,7 +93,7 @@ void progSkillsWithOneWallstake() {
     chassis.waitUntil(24.5);
     clamp.set_value(true); // clamp the stake
     chassis.waitUntilDone();
-    chassis.moveToPose(-23, -24, 90, 2000, {.minSpeed = 90}, true);\
+    chassis.moveToPose(-23, -24, 90, 2000, {.minSpeed = 90}, true);
     chassis.waitUntil(5);
     intake.set(Intake::IntakeState::INTAKING);
     chassis.turnToPoint(-23, -50, 2000, {}, false);
@@ -105,7 +107,7 @@ void progSkillsWithOneWallstake() {
     arm.loadWallstake();
 
     // autistic ass mf of a wallstake
-    chassis.moveToPoint(-0.1, -45.5, 3000, {.forwards = false, .maxSpeed = 70}, false);   //was 0.7
+    chassis.moveToPoint(-0.1, -45.5, 3000, {.forwards = false, .maxSpeed = 70}, false); // was 0.7
     chassis.turnToHeading(180, 3000, {.maxSpeed = 100}, false);
     chassis.moveFor(12.5, 1000);
     // chassis.moveToPoint(4,-54.75,1000,{},false);
@@ -121,7 +123,7 @@ void progSkillsWithOneWallstake() {
     chassis.turnToPoint(-24, -48, 2000, {}, false);
     chassis.moveToPose(-58, -52, -90, 3000, {.maxSpeed = 80}, false);
     pros::delay(100);
-    
+
     chassis.moveToPoint(-50, -48, 2000, {.forwards = false}, false);
     chassis.turnToHeading(80, 2000, {.direction = AngularDirection::CCW_COUNTERCLOCKWISE}, false);
     intake.set(Intake::IntakeState::OUTTAKE, 50);
@@ -163,11 +165,15 @@ void progSkillsWithOneWallstake() {
     chassis.moveToPoint(0, 55, 2000, {.maxSpeed = 70, .minSpeed = 30, .earlyExitRange = 6}, false);
 
     // holding one rings in the intake
-    intake.set(Intake::IntakeState::INTAKING, 55);
+    intake.set(Intake::IntakeState::INTAKING, 60);
     chassis.moveToPoint(21, 20, 2000, {.maxSpeed = 70}, false);
     pros::delay(250);
-    chassis.turnToPoint(45, -3, 2000, {.forwards = false,}, true);
-    pros::delay(250);
+    chassis.turnToPoint(45, -3, 2000,
+                        {
+                            .forwards = false,
+                        },
+                        true);
+    pros::delay(200);
     intake.set(Intake::IntakeState::STOPPED);
 
     // clamping new mobile goal
@@ -192,11 +198,9 @@ void progSkillsWithOneWallstake() {
     chassis.moveToPoint(58, 63, 1000, {.forwards = false}, false);
     chassis.moveFor(5, 1000);
     chassis.waitUntilDone();
-    chassis.turnToHeading(180, 2000,{},false);
-    chassis.moveToPoint(55, -67, 4000, {.minSpeed = 120});
-    chassis.waitUntil(30);
-    chassis.cancelMotion();
-    chassis.tank(127, 127);
+    chassis.turnToHeading(172, 2000, {}, false);
+    chassis.moveFor(150, 4000);
+    
     // not tested
     //  chassis.turnToPoint(48,60,2000,{},false);
     //  chassis.turnToHeading(180+45,2000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
@@ -214,6 +218,114 @@ void progSkillsWithOneWallstake() {
     // pros::delay(500);
 
     // final rings
+}
+
+void leftElim_Red() {
+    chassis.setPose(-54.7, 45, 90);
+
+    // curve to hold first ring
+    intake.set(Intake::INTAKING, 50);
+    chassis.moveToPoint(-7, 40, 2000, {}, false);
+    pros::delay(500);
+    intake.set(Intake::STOPPED);
+
+    // aligning to stake
+
+    chassis.moveToPoint(-27, 19, 4000, {.forwards = false, .maxSpeed = 70}, true);
+    chassis.waitUntil(14);
+    clamp.set_value(true);
+
+    // second ring
+    chassis.turnToPoint(-22, 44, 2000, {}, false);
+    chassis.moveToPoint(-22, 44, 2000, {}, false);
+
+    // third ring for wallstake
+    chassis.turnToPoint(-6, 51, 2000, {}, false);
+
+    chassis.moveToPoint(-6, 51, 2000, {}, false);
+    arm.loadWallstake();
+
+    // wallstake
+    chassis.turnToHeading(-2, 60, {}, false);
+    chassis.moveToPoint(-2, 60, 1000, {.forwards = false}, false);
+    arm.scoreWallstake();
+
+    // score allianceStake
+    chassis.turnToPoint(-62, 5, 2000, {}, false);
+    chassis.moveToPoint(-62, 5, 3000, {.maxSpeed = 90}, true);
+    chassis.waitUntil(14);
+    arm.scoreWallstake(123, false);
+    chassis.waitUntilDone();
+    arm.scoreWallstake(130);
+}
+
+void leftElim_Blue() {
+    chassis.setPose(54.7, 45, -90);
+
+    // curve to hold first ring
+    intake.set(Intake::INTAKING, 50);
+    chassis.moveToPoint(7, 40, 2000, {}, false);
+    pros::delay(500);
+    intake.set(Intake::STOPPED);
+
+    // aligning to stake
+
+    chassis.moveToPoint(27, 19, 4000, {.forwards = false, .maxSpeed = 70}, true);
+    chassis.waitUntil(14);
+    clamp.set_value(true);
+
+    // second ring
+    chassis.turnToPoint(22, 44, 2000, {}, false);
+    chassis.moveToPoint(22, 44, 2000, {}, false);
+
+    // third ring for wallstake
+    chassis.turnToPoint(6, 51, 2000, {}, false);
+
+    chassis.moveToPoint(6, 51, 2000, {}, false);
+    arm.loadWallstake();
+
+    // wallstake
+    chassis.turnToHeading(2, 60, {}, false);
+    chassis.moveToPoint(2, 60, 1000, {.forwards = false}, false);
+    arm.scoreWallstake();
+
+    // score allianceStake
+    chassis.turnToPoint(62, 5, 2000, {}, false);
+    chassis.moveToPoint(62, 5, 3000, {.maxSpeed = 90}, true);
+    chassis.waitUntil(14);
+    arm.scoreWallstake(123, false);
+    chassis.waitUntilDone();
+    arm.scoreWallstake(130);
+}
+
+void mogoRush_Red() {
+    // add fking code
+    chassis.setPose(-58, -23, 90);
+
+    chassis.turnToPoint(-3, -43, 1000, {}, false);
+    chassis.moveToPoint(-3, -43, 4000, {}, false);
+    hook.set_value(true);
+
+    chassis.moveToPoint(-63, -19, 3000, {.forwards = false, .minSpeed = 30}, false);
+    hook.set_value(false);
+
+    chassis.turnToHeading(180, 1000, {}, false);
+    hook.set_value(false);
+
+    // clamp stake
+    chassis.moveToPoint(-22, -23, 2000, {}, true);
+    chassis.waitUntil(14);
+    clamp.set_value(true);
+
+    chassis.turnToPoint(-23, -46, 2000, {}, false);
+    chassis.moveToPoint(-23, -46, 2000, {}, false);
+
+    chassis.turnToPoint(-56, -11, 2000, {}, false);
+    chassis.moveToPoint(-65, -5, 2000, {}, true);
+    chassis.waitUntil(20);
+    arm.scoreWallstake(123);
+    chassis.waitUntilDone();
+    arm.scoreWallstake(130);
 }
 
 void progSkills() {
@@ -432,7 +544,7 @@ void awpRed() {
     chassis.moveFor(11.8, 2000);
     chassis.waitUntilDone();
     // arm.scoreWallstake(130, true);
-    //pros::delay(250);
+    // pros::delay(250);
     chassis.moveToPoint(-47, 12, 2000, {.forwards = false, .maxSpeed = 80});
     pros::delay(500);
     arm.retract();
@@ -441,44 +553,48 @@ void awpRed() {
     chassis.waitUntil(25);
     clamp.set_value(true);
 
-    //first ring
-    chassis.turnToPoint(-23,40,2000,{},true);
+    // first ring
+    chassis.turnToPoint(-23, 40, 2000, {}, true);
     pros::delay(250);
-    intake.set(Intake::IntakeState::INTAKING,127);
-    chassis.moveToPoint(-23, 44, 2000,{},true);
+    intake.set(Intake::IntakeState::INTAKING, 127);
+    chassis.moveToPoint(-23, 44, 2000, {}, true);
     pros::delay(200);
 
-    //second ring
-    chassis.moveToPoint(-10, 43,2000,{},false);
+    // second ring
+    chassis.moveToPoint(-10, 43, 2000, {}, false);
     pros::delay(30);
 
-    //third 
+    // third
 
-    //releasing stake near POSITIVE CORNER
-    chassis.turnToPoint(-40, 0, 2000,{},false);
-    chassis.moveToPoint(-40, 0, 3000,{.maxSpeed = 90,.minSpeed = 50,.earlyExitRange = 5,},false);
+    // releasing stake near POSITIVE CORNER
+    chassis.turnToPoint(-40, 0, 2000, {}, false);
+    chassis.moveToPoint(-40, 0, 3000,
+                        {
+                            .maxSpeed = 90,
+                            .minSpeed = 50,
+                            .earlyExitRange = 5,
+                        },
+                        false);
     intake.set(Intake::IntakeState::STOPPED);
 
-    chassis.moveToPoint(-43, -42, 3000,{.maxSpeed = 70},true);
+    chassis.moveToPoint(-44, -42, 3000, {.maxSpeed = 70}, true);
     chassis.waitUntil(15);
     clamp.set_value(false);
-    
-    //clamp next goal
-    chassis.turnToPoint(-21,-23,2000,{.forwards = false},false);
-    chassis.moveToPoint(-21, -23, 2000,{.forwards = false, .maxSpeed = 70},true);
+
+    // clamp next goal
+    chassis.turnToPoint(-21, -23, 2000, {.forwards = false}, false);
+    chassis.moveToPoint(-21, -23, 2000, {.forwards = false, .maxSpeed = 70}, true);
     chassis.waitUntil(15);
     clamp.set_value(true);
 
-    //scoring next ring
-    chassis.moveToPoint(-28, -48, 2000,{},true);
+    // scoring next ring
+    chassis.moveToPoint(-28, -48, 2000, {}, true);
     pros::delay(500);
-    intake.set(Intake::IntakeState::INTAKING,127);
+    intake.set(Intake::IntakeState::INTAKING, 127);
 
-    //touching bar
-    chassis.turnToPoint(-15,-28,2000,{.minSpeed = 50},false);
-    chassis.moveToPoint(-15, -28, 2000,{.minSpeed = 60},false);
-
-    
+    // touching bar
+    chassis.turnToPoint(-15, -28, 2000, {.minSpeed = 50}, false);
+    chassis.moveToPoint(-15, -28, 2000, {.minSpeed = 60}, false);
 }
 
 void awpBlue() {
@@ -488,7 +604,7 @@ void awpBlue() {
     chassis.moveFor(11.8, 2000);
     chassis.waitUntilDone();
     // arm.scoreWallstake(130, true);
-    //pros::delay(250);
+    // pros::delay(250);
     chassis.moveToPoint(47, 12, 2000, {.forwards = false, .maxSpeed = 80});
     pros::delay(500);
     arm.retract();
@@ -497,42 +613,48 @@ void awpBlue() {
     chassis.waitUntil(25);
     clamp.set_value(true);
 
-    //first ring
-    chassis.turnToPoint(23,40,2000,{},true);
+    // first ring
+    chassis.turnToPoint(23, 40, 2000, {}, true);
     pros::delay(250);
-    intake.set(Intake::IntakeState::INTAKING,127);
-    chassis.moveToPoint(23, 44, 2000,{},true);
+    intake.set(Intake::IntakeState::INTAKING, 127);
+    chassis.moveToPoint(23, 44, 2000, {}, true);
     pros::delay(200);
 
-    //second ring
-    chassis.moveToPoint(10, 43,2000,{},false);
+    // second ring
+    chassis.moveToPoint(10, 43, 2000, {}, false);
     pros::delay(30);
 
-    //third 
+    // third
 
-    //releasing stake near POSITIVE CORNER
-    chassis.turnToPoint(40, 0, 2000,{},false);
-    chassis.moveToPoint(40, 0, 3000,{.maxSpeed = 90,.minSpeed = 50,.earlyExitRange = 5,},false);
+    // releasing stake near POSITIVE CORNER
+    chassis.turnToPoint(40, 0, 2000, {}, false);
+    chassis.moveToPoint(40, 0, 3000,
+                        {
+                            .maxSpeed = 90,
+                            .minSpeed = 50,
+                            .earlyExitRange = 5,
+                        },
+                        false);
     intake.set(Intake::IntakeState::STOPPED);
 
-    chassis.moveToPoint(43, -42, 3000,{.maxSpeed = 70},true);
+    chassis.moveToPoint(44, -42, 3000, {.maxSpeed = 70}, true);
     chassis.waitUntil(15);
     clamp.set_value(false);
-    
-    //clamp next goal
-    chassis.turnToPoint(21,-23,2000,{.forwards = false},false);
-    chassis.moveToPoint(21, -23, 2000,{.forwards = false, .maxSpeed = 70},true);
+
+    // clamp next goal
+    chassis.turnToPoint(21, -23, 2000, {.forwards = false}, false);
+    chassis.moveToPoint(21, -23, 2000, {.forwards = false, .maxSpeed = 70}, true);
     chassis.waitUntil(15);
     clamp.set_value(true);
 
-    //scoring next ring
-    chassis.moveToPoint(28, -48, 2000,{},true);
+    // scoring next ring
+    chassis.moveToPoint(28, -48, 2000, {}, true);
     pros::delay(500);
-    intake.set(Intake::IntakeState::INTAKING,127);
+    intake.set(Intake::IntakeState::INTAKING, 127);
 
-    //touching bar
-    chassis.turnToPoint(15,-28,2000,{.minSpeed = 50},false);
-    chassis.moveToPoint(15, -28, 2000,{.minSpeed = 60},false);
+    // touching bar
+    chassis.turnToPoint(15, -28, 2000, {.minSpeed = 50}, false);
+    chassis.moveToPoint(15, -28, 2000, {.minSpeed = 60}, false);
 }
 
 void rightRed() {
@@ -545,7 +667,7 @@ void rightRed() {
     chassis.waitUntil(15);
     hook.set_value(true);
     chassis.waitUntilDone();
-    chassis.moveToPoint(-20, -54, 2000,{.forwards = false});
+    chassis.moveToPoint(-20, -54, 2000, {.forwards = false});
     chassis.waitUntilDone();
     hook.set_value(false);
     chassis.moveToPoint(-12.5, -53, 2000, {.forwards = true});
@@ -561,7 +683,8 @@ void rightRed() {
     intake.set(Intake::IntakeState::INTAKING);
     chassis.moveToPoint(-20, -43, 2000);
     chassis.waitUntilDone();
-    chassis.turnToHeading(180,2000);
+    pros::delay(500);
+    chassis.turnToHeading(180, 2000);
     intake.set(Intake::IntakeState::INTAKING, 20);
     chassis.moveFor(26, 2000, {.forwards = false, .maxSpeed = 50});
     chassis.waitUntil(23);
@@ -569,7 +692,7 @@ void rightRed() {
     chassis.waitUntilDone();
     intake.set(Intake::IntakeState::INTAKING, 127);
     pros::delay(500);
-    chassis.moveToPoint(-50,-35,2000, {.forwards = false, .maxSpeed = 80});
+    chassis.moveToPoint(-50, -35, 2000, {.forwards = false, .maxSpeed = 80});
     chassis.waitUntilDone();
     intake.set(Intake::IntakeState::OUTTAKE);
     clamp.set_value(false);
@@ -587,7 +710,7 @@ void rightBlue() {
     chassis.waitUntil(15);
     hook.set_value(true);
     chassis.waitUntilDone();
-    chassis.moveToPoint(20, -54, 2000,{.forwards = false});
+    chassis.moveToPoint(20, -54, 2000, {.forwards = false});
     chassis.waitUntilDone();
     hook.set_value(false);
     chassis.moveToPoint(12.5, -53, 2000, {.forwards = true});
@@ -603,7 +726,8 @@ void rightBlue() {
     intake.set(Intake::IntakeState::INTAKING);
     chassis.moveToPoint(20, -43, 2000);
     chassis.waitUntilDone();
-    chassis.turnToHeading(180,2000);
+    pros::delay(500);
+    chassis.turnToHeading(180, 2000);
     intake.set(Intake::IntakeState::INTAKING, 20);
     chassis.moveFor(26, 2000, {.forwards = false, .maxSpeed = 50});
     chassis.waitUntil(23);
@@ -611,7 +735,7 @@ void rightBlue() {
     chassis.waitUntilDone();
     intake.set(Intake::IntakeState::INTAKING, 127);
     pros::delay(500);
-    chassis.moveToPoint(50,-35,2000, {.forwards = false, .maxSpeed = 80});
+    chassis.moveToPoint(50, -35, 2000, {.forwards = false, .maxSpeed = 80});
     chassis.waitUntilDone();
     intake.set(Intake::IntakeState::OUTTAKE);
     clamp.set_value(false);
@@ -644,11 +768,13 @@ void autonomous() {
     // // chassis.waitUntilDone();
 
     // rightRed();
-    // progSkillsWithOneWallstake();
-    awpRed();
-    //awpBlue();
+    progSkillsWithOneWallstake();
+    // awpRed();
+    //  awpBlue();
+    // rightBlue();
+    //  leftElim_Red();
+    //  leftElim_Blue();
 }
-
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
     up = mast.get_analog(power);
@@ -689,10 +815,11 @@ void opAsyncButtons() {
             }
         }
 
-        if(controller.get_digital(DIGITAL_DOWN)) {
+        if (controller.get_digital(DIGITAL_DOWN)) {
             arm.scoreWallstake(125);
             armState = 1;
         }
+
         pros::delay(10);
     }
 }
@@ -733,6 +860,16 @@ void opcontrol() {
             {
                 intake.set(Intake::IntakeState::STOPPED);
             }
+
+            if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+                arm.retract();
+                armState = 0;
+            }
+
+            if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) { 
+                chassis.moveFor(5,1500,{.forwards =false}, false); 
+            }
         }
+        pros::delay(10);
     }
 }
