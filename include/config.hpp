@@ -3,6 +3,7 @@
 #include "lemlib/api.hpp"
 #include "pros/distance.hpp"
 #include "pros/motor_group.hpp"
+#include "pros/motors.hpp"
 #include "subsystem/arm.hpp"
 #include "subsystem/intake.hpp"
 
@@ -20,5 +21,3 @@ extern pros::Distance distance;
 extern lemlib::Chassis chassis;
 extern Arm arm;
 extern pros::Imu imu;
-
-

@@ -5,7 +5,7 @@
 #include "subsystem/intake.hpp"
 
 // ports
-constexpr int RIGHT_F = 10;
+constexpr int RIGHT_F = 8;
 constexpr int RIGHT_M = 20;
 constexpr int RIGHT_B = -18;
 
@@ -14,19 +14,20 @@ constexpr int LEFT_M = -11;
 constexpr int LEFT_B = 13;
 
 constexpr int VERTI_ROT = 6;
+constexpr int HORI_ROT = -5;
 
 constexpr int INTAKE_1 = 15;
-constexpr int DISTANCE = 4;
+constexpr int DISTANCE = 16;
 
 constexpr int WALLSTAKE1 = 1;
-constexpr int WALLSTAKE2 = -5;
-constexpr int WALLSTAKE_ROT = 16;
+constexpr int WALLSTAKE2 = -4;
+constexpr int WALLSTAKE_ROT = 3;
 
 constexpr char CLAMP = 'A';
 constexpr char HOOK = 'B';
 constexpr char HANG = 'G';
 
-constexpr char TOP_SORT = 3;
+constexpr char TOP_SORT = 10;
 
 constexpr char IMU = 21;
 
@@ -55,7 +56,7 @@ Intake intake(intakeMotor, topSort, arm);
 pros::adi::DigitalOut clamp(CLAMP);
 
 // hang piston
-pros::adi::DigitalOut hand(HANG); 
+pros::adi::DigitalOut hang(HANG); 
 
 // sorting mechanism
 pros::adi::DigitalOut hook(HOOK);
@@ -67,7 +68,9 @@ pros::Imu imu(IMU);
 pros::Distance distance(DISTANCE);
 
 pros::Rotation vertiRot(VERTI_ROT);
-lemlib::TrackingWheel vertiTrackingWheel(&vertiRot, lemlib::Omniwheel::NEW_2, 0.03);
+pros::Rotation horiRot(HORI_ROT);
+lemlib::TrackingWheel vertiTrackingWheel(&vertiRot, lemlib::Omniwheel::NEW_2, 0.98);
+lemlib::TrackingWheel horiTrackingWheel(&horiRot, lemlib::Omniwheel::NEW_2, 1.75,-1);
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
@@ -106,7 +109,7 @@ lemlib::ControllerSettings angularController(7.5, // proportional gain (kP)
 // sensors for odometry
 lemlib::OdomSensors sensors(&vertiTrackingWheel, // vertical tracking wheel
                             nullptr, // vertical tracking wheel 2, set to nullptr as we don't have a second one
-                            nullptr, // horizontal tracking wheel
+                            &horiTrackingWheel, // horizontal tracking wheel
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
