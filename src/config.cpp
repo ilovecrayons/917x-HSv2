@@ -69,8 +69,8 @@ pros::Distance distance(DISTANCE);
 
 pros::Rotation vertiRot(VERTI_ROT);
 pros::Rotation horiRot(HORI_ROT);
-lemlib::TrackingWheel vertiTrackingWheel(&vertiRot, lemlib::Omniwheel::NEW_2, 0.98);
-lemlib::TrackingWheel horiTrackingWheel(&horiRot, lemlib::Omniwheel::NEW_2, 1.75,-1);
+lemlib::TrackingWheel vertiTrackingWheel(&vertiRot, lemlib::Omniwheel::NEW_2, -1.5);
+lemlib::TrackingWheel horiTrackingWheel(&horiRot, lemlib::Omniwheel::NEW_2, -1.6,-1);
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group

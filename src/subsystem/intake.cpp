@@ -51,7 +51,7 @@ void Intake::intakeControl(){
         //     SEPARATION_WAIT = 0;
         //     this->motor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
         // }
-        if(sort){ arm.separateRing(5,true); sort = !sort; }
+        // if(sort){ arm.separateRing(5,true); sort = !sort; }
         
         
 

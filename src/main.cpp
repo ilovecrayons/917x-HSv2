@@ -28,7 +28,7 @@ void printTelemetry() {
         pros::screen::print(TEXT_MEDIUM, 1, "x: %f", pose.x); // prints the x position
         pros::screen::print(TEXT_MEDIUM, 2, "y: %f", pose.y); // prints the y position
         pros::screen::print(TEXT_MEDIUM, 3, "theta: %f", pose.theta); // prints the heading
-        pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Arm position: %i", arm.getPosition()); // prints the arm position
+        pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Arm position: %d", arm.getPosition()); // prints the arm position
 
         pros::screen::print(pros::E_TEXT_MEDIUM, 5, "left temp: %.1f %.1f %.1f", leftMotors.get_temperature(0),
                             leftMotors.get_temperature(1), leftMotors.get_temperature(2));
@@ -89,51 +89,47 @@ void progSkillsWithOneWallstake() {
     intake.set(Intake::IntakeState::STOPPED);
 
     chassis.turnToHeading(0, 2000, {}, false);
-    chassis.moveToPoint(-45, -32, 2000, {.forwards = false, .maxSpeed = 70}, true);
-    chassis.waitUntil(24.5);
+    chassis.moveToPoint(-45, -32, 2000, {.forwards = false, .maxSpeed = 60}, true);
+    chassis.waitUntil(23.5);
     clamp.set_value(true); // clamp the stake
     chassis.waitUntilDone();
     chassis.moveToPose(-23, -24, 90, 2000, {.minSpeed = 90}, true);
     chassis.waitUntil(5);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.turnToPoint(-23, -50, 2000, {}, false);
-    chassis.moveToPoint(-23, -52, 2000, {.maxSpeed = 60}, false);
+    chassis.turnToPoint(-20, -50, 2000, {}, false);
+    chassis.moveToPoint(-20, -50, 2000, {.maxSpeed = 60}, false);
     chassis.turnToPoint(28, -52, 2000, {}, false);
-    chassis.moveToPoint(28, -52, 2000, {.maxSpeed = 80}, false);
+    chassis.moveToPoint(28, -52, 2000, {.maxSpeed = 70}, false);
     pros::delay(250);
 
-    chassis.moveToPoint(49, -51, 2000, {.maxSpeed = 70}, true);
+    chassis.moveToPoint(49, -51, 2000, {.maxSpeed = 90}, true);
     chassis.waitUntil(15);
-    arm.loadWallstake();
-
+    // arm.loadWallstake();
+//
     // autistic ass mf of a wallstake
-    chassis.moveToPoint(-0.1, -45.5, 3000, {.forwards = false, .maxSpeed = 70}, false); // was 0.7
+    chassis.moveToPoint(4.5, -45.5, 3000, {.forwards = false, .maxSpeed = 70}, false); // was 0.7
     chassis.turnToHeading(180, 3000, {.maxSpeed = 100}, false);
-    chassis.moveFor(15.5, 1000);
+    chassis.moveFor(18, 3000, {.maxSpeed = 60});
     // chassis.moveToPoint(4,-54.75,1000,{},false);
     chassis.turnToHeading(180, 3000, {.maxSpeed = 100}, false);
     intake.set(Intake::IntakeState::STOPPED);
-    arm.scoreWallstake();
-    arm.retract();
+    // arm.scoreWallstake();
+    // arm.retract();
     intake.set(Intake::IntakeState::INTAKING);
-    arm.loadWallstake();
     pros::delay(500);
-    arm.scoreWallstake();
-    arm.retract();
-    // chassis.moveFor(5, 1000, {}, false);
-    // chassis.moveFor(5, 1000, {.forwards = false}, false);
+    chassis.moveFor(5, 1000, {.forwards = false}, false);
 
-    // chassis.turnToPoint(-24, -48, 2000, {}, false);
-    // chassis.moveToPose(-58, -52, -90, 3000, {.maxSpeed = 80}, false);
-    // pros::delay(100);
+    chassis.turnToPoint(-24, -48, 2000, {}, false);
+    chassis.moveToPose(-60, -52, -90, 3000, {.maxSpeed = 80}, false);
+    pros::delay(100);
 
-    // chassis.moveToPoint(-50, -48, 2000, {.forwards = false}, false);
-    // chassis.turnToHeading(80, 2000, {.direction = AngularDirection::CCW_COUNTERCLOCKWISE}, false);
-    // intake.set(Intake::IntakeState::OUTTAKE, 50);
-    // chassis.moveToPoint(-61, -63, 2000, {.forwards = false}, false);
-    // clamp.set_value(false);
-    // pros::delay(200);
-
+    chassis.moveToPoint(-50, -48, 2000, {.forwards = false}, false);
+    chassis.turnToHeading(80, 2000, {.direction = AngularDirection::CCW_COUNTERCLOCKWISE}, false);
+    intake.set(Intake::IntakeState::OUTTAKE, 50);
+    chassis.moveToPoint(-63, -65, 2000, {.forwards = false}, false);
+    clamp.set_value(false);
+    pros::delay(200);
+//
     // // get next mobile goal
     // chassis.moveToPoint(-50, 0, 4000, {.maxSpeed = 65}, false);
     // chassis.turnToHeading(180, 2000, {}, false);
