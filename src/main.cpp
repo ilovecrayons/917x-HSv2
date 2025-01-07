@@ -52,6 +52,7 @@ void printTelemetry() {
 
 void init_separation(Intake::Ring ring) {
     intakeMotor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+    topSort.set_led_pwm(100);
     intake.ring = ring;
     if (intake.ring == Intake::Ring::BLUE) {
         separationState = 1;

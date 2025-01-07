@@ -11,16 +11,16 @@ void Intake::setSeparation(Ring ring){
 
 void Intake::checkForSort(){
     if (ring == Ring::NONE){
-       sort = false; 
+        sort = false;
     }
     else if (ring == Ring::BLUE){
-        if (topSort.get_hue()>200 && topSort.get_hue()<=270){
+        if (topSort.get_hue()>200 && topSort.get_hue()<=270 &&topSort.get_proximity()<100){   //TUNE PROXIMITY
             sort = true;
             INITIAL_POSITION = motor.get_position();
         }
     }
     else if (ring == Ring::RED){
-        if (topSort.get_hue()<30 && topSort.get_hue()>=0) {
+        if (topSort.get_hue()<30 && topSort.get_hue()>=0 &&topSort.get_proximity()<100) {  //TUNE PROXIMITY
             sort = true;
             INITIAL_POSITION = motor.get_position();
         }
@@ -33,25 +33,24 @@ void Intake::intakeControl(){
         if (!sort){
             checkForSort();
         }
-        // bool COMPLETED_MOVEMENT = (INITIAL_POSITION+SEPARATION_MOVEMENT) <= motor.get_position();
+        bool COMPLETED_MOVEMENT = (INITIAL_POSITION+SEPARATION_MOVEMENT) <= motor.get_position();
 
-        // bool COMPLETED_SEPARATION_WAIT = SEPARATION_WAIT >= TIME_TO_COMPLETE_SEP;
+        bool COMPLETED_SEPARATION_WAIT = SEPARATION_WAIT >= TIME_TO_COMPLETE_SEP;
 
-        // if (sort && !COMPLETED_MOVEMENT) {
-        //     set(IntakeState::INTAKING,90);
-        //     this->motor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
-        // }
-        // else if (sort && COMPLETED_MOVEMENT && !COMPLETED_SEPARATION_WAIT){
-        //     this->state = STOPPED;
-        //     SEPARATION_WAIT++;
-        // }
-        // else if (sort && COMPLETED_MOVEMENT && COMPLETED_SEPARATION_WAIT) {
-        //     set(IntakeState::INTAKING,127);
-        //     sort = !sort;
-        //     SEPARATION_WAIT = 0;
-        //     this->motor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-        // }
-        // if(sort){ arm.separateRing(5,true); sort = !sort; }
+        if (sort && !COMPLETED_MOVEMENT) {
+            set(IntakeState::INTAKING,90);
+            this->motor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+        }
+        else if (sort && COMPLETED_MOVEMENT && !COMPLETED_SEPARATION_WAIT){
+            this->state = STOPPED;
+            SEPARATION_WAIT++;
+        }
+        else if (sort && COMPLETED_MOVEMENT && COMPLETED_SEPARATION_WAIT) {
+            set(IntakeState::INTAKING,127);
+            sort = !sort;
+            SEPARATION_WAIT = 0;
+            this->motor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+        }
         
         
 
