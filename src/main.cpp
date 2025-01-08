@@ -100,10 +100,10 @@ void progSkillsWithOneWallstake() {
     chassis.turnToPoint(-20, -50, 2000, {}, false);
     chassis.moveToPoint(-20, -50, 2000, {.maxSpeed = 60}, false);
     chassis.turnToPoint(28, -52, 2000, {}, false);
-    chassis.moveToPoint(28, -52, 2000, {.maxSpeed = 90}, false);
+    chassis.moveToPoint(28, -52, 2000, {.maxSpeed = 75}, false);
     pros::delay(250);
 
-    chassis.moveToPoint(51, -52, 2000, {}, true);
+    chassis.moveToPoint(51, -52, 2000, {.maxSpeed = 75}, true);
     chassis.waitUntil(15);
     arm.loadWallstake();
     chassis.waitUntilDone();
@@ -125,7 +125,7 @@ void progSkillsWithOneWallstake() {
     chassis.moveFor(5, 1000, {.forwards = false}, false);
 
     chassis.turnToPoint(-24, -48, 2000, {}, false);
-    chassis.moveToPose(-54, -55, -90, 3000, {.maxSpeed = 80}, false);
+    chassis.moveToPose(-54, -55, -90, 3000, {.maxSpeed = 75}, false);
     pros::delay(100);
 
     chassis.moveFor(10,1000,{.forwards = false},false);
