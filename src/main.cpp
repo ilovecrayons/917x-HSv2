@@ -105,7 +105,7 @@ void progSkillsWithOneWallstake() {
 
     chassis.moveToPoint(51, -52, 2000, {}, true);
     chassis.waitUntil(15);
-    // arm.loadWallstake();
+    arm.loadWallstake();
     chassis.waitUntilDone();
     pros::delay(500);
 //
@@ -116,8 +116,8 @@ void progSkillsWithOneWallstake() {
     // chassis.moveToPoint(4,-54.75,1000,{},false);
     chassis.turnToHeading(180, 3000, {.maxSpeed = 100}, false);
     intake.set(Intake::IntakeState::STOPPED);
-    // arm.scoreWallstake();
-    // arm.retract();
+    arm.scoreWallstake();
+    arm.retract();
     intake.set(Intake::IntakeState::INTAKING);
     pros::delay(500);
     chassis.moveFor(5, 1000, {.forwards = false}, false);

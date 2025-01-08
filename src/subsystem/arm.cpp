@@ -33,9 +33,8 @@ void Arm::setPower(float power) { motors->move(power); }
  * brake mode to hold, and moves the motors to 0 power.
  */
 void Arm::initialize() {
-    if ((rotation->get_position() / 100) > 250) {
-        rotation->set_position((rotation->get_position() / 100 - 360) * 100);
-    }
+    rotation->reset();
+    rotation->reset_position();
 }
 
 /**
@@ -63,7 +62,7 @@ void Arm::moveTo(int position, bool async, int timeout) {
         lemlib::Timer timer(timeout);
         // main loop
         while (exitCondition.getExit() == false && !timer.isDone()) {
-            int error = position - rotation->get_position() / 100; // get the error between target and current in DEGREES
+            int error = position - this->getPosition(); // get the error between target and current in DEGREES
             motors->move(pid.update(error)); // move the motors according to PID output
             exitCondition.update(error); // update the exit condition
             pros::delay(10); // delay to save resources 
@@ -136,4 +135,4 @@ void Arm::retract(float position, bool async) {
  * @return The current position of the arm
  */
 
-int Arm::getPosition() { return rotation->get_position() / 100; }
+int Arm::getPosition() { return rotation->get_position() / 100 / 3; }
