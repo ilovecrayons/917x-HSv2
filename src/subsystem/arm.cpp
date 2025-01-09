@@ -21,7 +21,9 @@ Arm::Arm(pros::MotorGroup* motors, pros::Rotation* rotation, float kP, float kI,
       rotation(rotation),
       pid(kP, kI, kD),
       exitCondition(exitRange, exitTime) {
-    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD, 0);
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD, 1);
+
 }
 
 void Arm::setPower(float power) { motors->move(power); }
@@ -88,6 +90,10 @@ void Arm::scoreWallstake(float position, bool async) {
     } else {
         moveTo(position, false);
     }
+}
+
+void Arm::brake(){
+    motors->brake();
 }
 
 // void Arm::separateRing(float position, bool async){

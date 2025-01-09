@@ -782,9 +782,9 @@ void autonomous() {
     //progSkillsWithOneWallstake();
     // awpRed();
     //awpBlue();
-//  rightBlue();
+    rightBlue();
     //topElim_Red();
-    progSkillsWithOneWallstake();
+    //progSkillsWithOneWallstake();
 }
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
@@ -829,6 +829,19 @@ void opAsyncButtons() {
         if (controller.get_digital(DIGITAL_DOWN)) {
             arm.scoreWallstake(125);
             armState = 1;
+        }
+        if(controller.get_digital(DIGITAL_X)){
+            arm.setPower(50);       
+        } else if(controller.get_digital(DIGITAL_A)){
+            arm.setPower(-50);       
+        } else {
+            arm.brake();
+        }
+
+        if(controller.get_digital(DIGITAL_Y)){
+            arm.brake();
+            arm.initialize();
+            pros::delay(500);
         }
 
         pros::delay(10);
@@ -875,10 +888,6 @@ void opcontrol() {
             if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
                 arm.retract();
                 armState = 0;
-            }
-
-            if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) { 
-                chassis.moveFor(5,1500,{.forwards =false}, false); 
             }
         }
         pros::delay(10);
