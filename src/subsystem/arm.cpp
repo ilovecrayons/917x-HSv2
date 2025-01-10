@@ -141,4 +141,4 @@ void Arm::retract(float position, bool async) {
  * @return The current position of the arm
  */
 
-int Arm::getPosition() { return rotation->get_position() / 100 / 3; }
+int Arm::getPosition() { return rotation->get_position() / 100; }
