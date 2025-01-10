@@ -35,8 +35,11 @@ void Arm::setPower(float power) { motors->move(power); }
  * brake mode to hold, and moves the motors to 0 power.
  */
 void Arm::initialize() {
-    rotation->reset();
-    rotation->reset_position();
+    //rotation->reset();
+    //rotation->reset_position();
+    if ((rotation->get_position() / 100) > 250) {
+        rotation->set_position((rotation->get_position() / 100 - 360) * 100);
+    }
 }
 
 /**
@@ -75,7 +78,8 @@ void Arm::moveTo(int position, bool async, int timeout) {
 }
 
 void Arm::loadWallstake(float position, bool async) {
-    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD, 0);
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD, 1);
     if (async) {
         moveTo(position, true);
     } else {
@@ -84,7 +88,8 @@ void Arm::loadWallstake(float position, bool async) {
 }
 
 void Arm::scoreWallstake(float position, bool async) {
-    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD, 0);
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD, 1);
     if (async) {
         moveTo(position, true);
     } else {
@@ -123,7 +128,8 @@ void Arm::brake(){
 // }
 
 void Arm::retract(float position, bool async) {
-    motors->set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_COAST, 0);
+    motors->set_brake_mode(pros::E_MOTOR_BRAKE_COAST, 1);
     if (async) {
         moveTo(position, true);
     } else {

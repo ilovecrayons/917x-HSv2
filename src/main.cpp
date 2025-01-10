@@ -765,12 +765,12 @@ void autonomous() {
     // chassis.waitUntilDone();
     // chassis.moveFor(24, 10000, {.forwards=false, .maxSpeed = 70});
     // chassis.waitUntilDone();
+    chassis.angularPID.setGains(5.2, 0, 45);
+    chassis.turnToHeading(90, 10000);
+    chassis.waitUntilDone();
 
-    // // chassis.turnToHeading(90, 10000);
-    // // chassis.waitUntilDone();
-
-    // // chassis.turnToHeading(0,10000);
-    // // chassis.waitUntilDone();
+    chassis.turnToHeading(0,10000);
+    chassis.waitUntilDone();
     // // //11 0 50
     // // //chassis.lateralPID.setGains(16.5, 0, 100);
     // // chassis.moveToPoint(48,48, 10000, {.maxSpeed = 70});
@@ -829,19 +829,6 @@ void opAsyncButtons() {
         if (controller.get_digital(DIGITAL_DOWN)) {
             arm.scoreWallstake(125);
             armState = 1;
-        }
-        if(controller.get_digital(DIGITAL_X)){
-            arm.setPower(50);       
-        } else if(controller.get_digital(DIGITAL_A)){
-            arm.setPower(-50);       
-        } else {
-            arm.brake();
-        }
-
-        if(controller.get_digital(DIGITAL_Y)){
-            arm.brake();
-            arm.initialize();
-            pros::delay(500);
         }
 
         pros::delay(10);

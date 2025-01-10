@@ -44,7 +44,7 @@ pros::MotorGroup leftMotors({LEFT_F, LEFT_M, LEFT_B}, pros::MotorGearset::blue);
 // wallstake
 pros::MotorGroup wallstake({WALLSTAKE1, WALLSTAKE2});
 pros::Rotation wallstakeRot(WALLSTAKE_ROT);
-Arm arm(&wallstake, &wallstakeRot, 10, 0, 45);
+Arm arm(&wallstake, &wallstakeRot, 2, 0, 2);
 
 // intake
 pros::Motor intakeMotor(INTAKE_1, pros::MotorGearset::blue);
@@ -95,9 +95,9 @@ lemlib::ControllerSettings linearController(16, // proportional gain (kP)
 );
 
 // angular motion controller
-lemlib::ControllerSettings angularController(7.5, // proportional gain (kP)
+lemlib::ControllerSettings angularController(5.2, // proportional gain (kP)
                                              0, // integral gain (kI)
-                                             70, // derivative gain (kD)
+                                             45, // derivative gain (kD)
                                              3, // anti windup
                                              1, // small error range, in degrees
                                              100, // small error range timeout, in milliseconds
