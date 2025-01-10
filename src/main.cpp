@@ -552,30 +552,26 @@ void awpRed() {
     chassis.setPose(-56, 11, -120);
     arm.scoreWallstake(123, true);
     pros::delay(500);
-    chassis.moveFor(11.8, 2000);
+    chassis.moveFor(9, 2000);
     chassis.waitUntilDone();
-    // arm.scoreWallstake(130, true);
-    // pros::delay(250);
-    chassis.moveToPoint(-47, 12, 2000, {.forwards = false, .maxSpeed = 80});
+    chassis.moveToPoint(-21, 28.5, 2000, {.forwards = false, .maxSpeed = 60});
+    //chassis.moveToPoint(-50, 12, 2000, {.forwards = false, .maxSpeed = 80});
     pros::delay(500);
     arm.retract();
-    chassis.waitUntilDone();
-    chassis.moveToPoint(-21, 25, 2000, {.forwards = false, .maxSpeed = 70});
-    chassis.waitUntil(25);
+    //chassis.waitUntilDone();
+    chassis.waitUntil(43);
     clamp.set_value(true);
 
     // first ring
-    chassis.turnToPoint(-23, 40, 2000, {}, true);
+    chassis.turnToPoint(-26, 40, 2000, {}, true);
     pros::delay(250);
     intake.set(Intake::IntakeState::INTAKING, 127);
-    chassis.moveToPoint(-23, 44, 2000, {}, true);
+    chassis.moveToPoint(-26, 44, 2000, {}, true);
     pros::delay(200);
 
     // second ring
     chassis.moveToPoint(-10, 43, 2000, {}, false);
     pros::delay(30);
-
-    // third
 
     // releasing stake near POSITIVE CORNER
     chassis.turnToPoint(-40, 0, 2000, {}, false);
@@ -588,24 +584,24 @@ void awpRed() {
                         false);
     intake.set(Intake::IntakeState::STOPPED);
 
-    chassis.moveToPoint(-44, -42, 3000, {.maxSpeed = 70}, true);
+    chassis.moveToPoint(-44, -44, 3000, {.maxSpeed = 70}, true);
     chassis.waitUntil(15);
     clamp.set_value(false);
 
     // clamp next goal
-    chassis.turnToPoint(-21, -23, 2000, {.forwards = false}, false);
-    chassis.moveToPoint(-21, -23, 2000, {.forwards = false, .maxSpeed = 70}, true);
-    chassis.waitUntil(15);
+    chassis.turnToPoint(-21, -25, 2000, {.forwards = false}, false);
+    chassis.moveToPoint(-21, -25, 2000, {.forwards = false, .maxSpeed = 70}, true);
+    chassis.waitUntil(25);
     clamp.set_value(true);
 
     // scoring next ring
-    chassis.moveToPoint(-28, -48, 2000, {}, true);
+    chassis.moveToPoint(-23, -48, 2000, {}, true);
     pros::delay(500);
     intake.set(Intake::IntakeState::INTAKING, 127);
 
     // touching bar
     chassis.turnToPoint(-15, -28, 2000, {.minSpeed = 50}, false);
-    chassis.moveToPoint(-15, -28, 2000, {.minSpeed = 60}, false);
+    chassis.moveToPoint(-13, -25, 2000, {.minSpeed = 60}, false);
 }
 
 void awpBlue() {
@@ -765,24 +761,24 @@ void autonomous() {
     // chassis.waitUntilDone();
     // chassis.moveFor(24, 10000, {.forwards=false, .maxSpeed = 70});
     // chassis.waitUntilDone();
-    chassis.angularPID.setGains(5.2, 0, 45);
-    chassis.turnToHeading(90, 10000);
-    chassis.waitUntilDone();
+    //chassis.angularPID.setGains(5.2, 0, 45);
+    // chassis.turnToHeading(90, 10000);
+    // chassis.waitUntilDone();
 
-    chassis.turnToHeading(0,10000);
-    chassis.waitUntilDone();
+    // chassis.turnToHeading(0,10000);
+    // chassis.waitUntilDone();
     // // //11 0 50
-    // // //chassis.lateralPID.setGains(16.5, 0, 100);
-    // // chassis.moveToPoint(48,48, 10000, {.maxSpeed = 70});
-    // // chassis.waitUntilDone();
-    // // chassis.moveToPoint(0,0, 10000, {.forwards=false});
-    // // chassis.waitUntilDone();
-
+    //chassis.lateralPID.setGains(26,0,150);
+    
+    // chassis.moveToPoint(0,-30, 10000, {.forwards=false, .maxSpeed = 80});
+    // chassis.waitUntilDone();
+    // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
+    // chassis.waitUntilDone();
     // rightRed();
     //progSkillsWithOneWallstake();
-    // awpRed();
+    awpRed();
     //awpBlue();
-    rightBlue();
+    //rightBlue();
     //topElim_Red();
     //progSkillsWithOneWallstake();
 }
