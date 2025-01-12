@@ -21,12 +21,11 @@ constexpr int DISTANCE = 16;
 
 constexpr int WALLSTAKE1 = -1;
 constexpr int WALLSTAKE2 = 4;
-constexpr int WALLSTAKE_ROT = -3;
+constexpr int WALLSTAKE_ROT = 3;
 
 constexpr char CLAMP = 'A';
 constexpr char HOOK = 'B';
 constexpr char HANG = 'G';
-
 constexpr char TOP_SORT = 10;
 
 constexpr char IMU = 21;
