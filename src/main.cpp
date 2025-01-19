@@ -785,9 +785,9 @@ void autonomous() {
     // chassis.waitUntilDone();
     // rightRed();
     //progSkillsWithOneWallstake();
-    awpRed();
+    // awpRed();
     //awpBlue();
-    // elimRedTopSide();
+    elimRedTopSide();
     //rightBlue();
     //topElim_Red();
     // progSkillsWithOneWallstake();
