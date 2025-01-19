@@ -16,7 +16,7 @@ constexpr int LEFT_B = 13;
 constexpr int VERTI_ROT = 6;
 constexpr int HORI_ROT = -5;
 
-constexpr int INTAKE_1 = 15;
+constexpr int INTAKE_1 = -15;
 constexpr int DISTANCE = 16;
 
 constexpr int WALLSTAKE1 = -1;
