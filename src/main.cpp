@@ -159,14 +159,14 @@ void elimRedTopSide(){
     clamp.set_value(true);
     
 
-    chassis.turnToPoint(-7, 40, 2000,{},false);
+    chassis.turnToPoint(-8, 40, 2000,{},false);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveToPoint(-7, 40, 2000,{},false);
+    chassis.moveToPose(-8, 52,0, 2000,{},false);
     pros::delay(750);
     chassis.moveFor(3,2000,{.forwards = false},false); 
-    // second ring
-    chassis.moveToPoint(-10, 50, 2000, {.maxSpeed = 90}, false);
-    pros::delay(750);
+    // // second ring
+    // chassis.moveToPoint(-10, 50, 2000, {.maxSpeed = 90}, false);
+    // pros::delay(750);
 
     // first ring
     chassis.turnToPoint(-30, 48, 2000, {}, true);
@@ -174,8 +174,8 @@ void elimRedTopSide(){
     intake.set(Intake::IntakeState::INTAKING, 127);
     arm.loadWallstake();
     chassis.moveToPoint(-26, 48, 2000, {}, false);
-    chassis.turnToPoint(-8,62,2000,{},false);
-    chassis.moveToPose(-8,62,60,2000,{},false);
+    chassis.turnToPoint(-12,65,3000,{},false);
+    chassis.moveToPoint(-12,65,3000,{},false);
     intake.set(Intake::IntakeState::STOPPED);
     arm.scoreWallstake();
 //     pros::delay(3000);
