@@ -2,9 +2,9 @@
 
 void awpRed() {
     chassis.setPose(-56, 11.5, -120);
-    arm.scoreWallstake(125, true);
+    arm.scoreWallstake(125, true, 10);
     pros::delay(500);
-    chassis.moveFor(13, 2000);
+    chassis.moveFor(12.5, 2100);
     chassis.waitUntilDone();
     chassis.moveToPoint(-21, 28.5, 2000, {.forwards = false, .maxSpeed = 60});
     //chassis.moveToPoint(-50, 12, 2000, {.forwards = false, .maxSpeed = 80});

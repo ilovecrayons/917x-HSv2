@@ -1,5 +1,6 @@
 // files
 #include "main.h"
+#include "autons/topSide.hpp"
 #include "config.hpp"
 #include "lemlib/api.hpp"
 #include "lemlib/chassis/chassis.hpp"
@@ -396,9 +397,9 @@ void autonomous() {
     // chassis.waitUntilDone();
     // rightRed();
     //progSkillsWithOneWallstake();
-    // awpRed();
+    awpRed();
     //awpBlue();
-    elimRedTopSide();
+    //elimRedTopSide();
     //rightBlue();
     //topElim_Red();
     // progSkillsWithOneWallstake();
