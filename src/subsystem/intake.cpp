@@ -4,7 +4,6 @@
 
 Intake::Intake(pros::Motor& motor, pros::Optical& topSort, Arm& arm): motor(motor) , topSort(topSort) , arm(arm){};
 
-
 void Intake::setSeparation(Ring ring){
     this->ring = ring;
 }

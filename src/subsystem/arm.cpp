@@ -1,4 +1,5 @@
 #include "subsystem/arm.hpp"
+#include "lemlib/util.hpp"
 #include "pros/motors.h"
 #include "pros/screen.hpp"
 #include "lemlib/timer.hpp"
@@ -57,7 +58,7 @@ void Arm::initialize() {
  *              background. If false, the function will block until the
  *              PID controller has finished moving the arm.
  */
-void Arm::moveTo(int position, bool async, int timeout) {
+void Arm::moveTo(int position, bool async, int timeout, int slewrate) {
     if (async) {
         pros::Task task {[=, this] { moveTo(position, false); }};
     } else {
@@ -65,11 +66,15 @@ void Arm::moveTo(int position, bool async, int timeout) {
         pid.reset(); 
         exitCondition.reset();
         lemlib::Timer timer(timeout);
+        int prevMotorOutput = 0;
         // main loop
         while (exitCondition.getExit() == false && !timer.isDone()) {
             int error = position - this->getPosition(); // get the error between target and current in DEGREES
-            motors->move(pid.update(error)); // move the motors according to PID output
+            int motorOutput = lemlib::slew(pid.update(error), prevMotorOutput, slewrate);
+            prevMotorOutput = motorOutput;
+            motors->move(motorOutput); // move the motors according to PID output
             exitCondition.update(error); // update the exit condition
+
             pros::delay(10); // delay to save resources 
             pros::screen::print(pros::E_TEXT_MEDIUM, 6, "error: %d", error); // prints error to screen for debugging
         }
@@ -87,13 +92,13 @@ void Arm::loadWallstake(float position, bool async) {
     }
 }
 
-void Arm::scoreWallstake(float position, bool async) {
+void Arm::scoreWallstake(float position, bool async, int slewrate) {
     motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD, 0);
     motors->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD, 1);
     if (async) {
-        moveTo(position, true);
+        moveTo(position, true, 2000, slewrate);
     } else {
-        moveTo(position, false);
+        moveTo(position, false, 2000, slewrate);
     }
 }
 

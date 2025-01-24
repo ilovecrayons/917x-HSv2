@@ -1,5 +1,6 @@
 // files
 #include "main.h"
+#include "autons/topSide.hpp"
 #include "config.hpp"
 #include "lemlib/api.hpp"
 #include "lemlib/chassis/chassis.hpp"

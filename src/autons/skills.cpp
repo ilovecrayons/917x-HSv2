@@ -1,6 +1,6 @@
-#include "skills.hpp"
+#include "autons/skills.hpp"
 
-void skills(){
+void skills() {
     wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
     chassis.setPose(-60, 0, 90); // set the starting position of the robot
