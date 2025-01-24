@@ -181,7 +181,7 @@ void progSkillsWithOneWallstake() {
     intake.set(Intake::IntakeState::OUTTAKE, 30);
 
 //score second wallstake
-    chassis.moveToPoint(12, 45,3000,{.maxSpeed = 60},true);
+    chassis.moveToPoint(11, 45,3000,{.maxSpeed = 60},true);
     chassis.waitUntil(8);
     arm.loadWallstake();
     intake.set(Intake::IntakeState::INTAKING);
