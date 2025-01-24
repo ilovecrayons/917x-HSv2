@@ -94,7 +94,7 @@ void progSkillsWithOneWallstake() {
     chassis.waitUntil(23.5);
     clamp.set_value(true); // clamp the stake
     chassis.waitUntilDone();
-    chassis.moveToPose(-23, -24, 90, 2000, {.minSpeed = 90}, true);
+    chassis.moveToPose(-23, -24, 90, 2000, {}, true); //used to be min speed 90
     chassis.waitUntil(5);
     intake.set(Intake::IntakeState::INTAKING);
     chassis.turnToPoint(-20, -50, 2000, {}, false);
@@ -102,7 +102,7 @@ void progSkillsWithOneWallstake() {
     chassis.turnToPoint(8, -64, 2000, {}, false);
     chassis.moveToPoint(8, -64, 2000, {.maxSpeed = 65, .minSpeed = 30,.earlyExitRange = 6});
     chassis.moveToPoint(28, -54, 2000, {.maxSpeed = 65}, false);
-    pros::delay(250);
+    pros::delay(500);
 
     chassis.moveToPoint(51, -52, 2000, {.maxSpeed = 75}, true);
     chassis.waitUntil(15);
@@ -111,13 +111,13 @@ void progSkillsWithOneWallstake() {
     pros::delay(200);
 //
     // autistic ass mf of a wallstake
-    chassis.moveToPoint(6.3, -45.5, 3000, {.forwards = false, .maxSpeed = 70}, false); // was 0.7
+    chassis.moveToPoint(5.5, -45.5, 3000, {.forwards = false, .maxSpeed = 70}, false); // was 6.3
     chassis.turnToHeading(180, 3000, {.maxSpeed = 100});
     intake.set(Intake::IntakeState::STOPPED);
     pros::delay(200);
     intake.set(Intake::IntakeState::INTAKING);
     chassis.waitUntilDone();
-    chassis.moveFor(22, 1000, {.maxSpeed = 70},false);
+    chassis.moveFor(20, 1000, {.maxSpeed = 70},false);
     // chassis.moveToPoint(4,-54.75,1000,{},false);
 
     intake.set(Intake::IntakeState::OUTTAKE, 30);
@@ -135,35 +135,39 @@ void progSkillsWithOneWallstake() {
     chassis.moveFor(13,1000,{.forwards = false},false);
     chassis.turnToPoint(-57,-69, 2000, {.forwards = false, .direction = AngularDirection::CCW_COUNTERCLOCKWISE}, false);
     intake.set(Intake::IntakeState::OUTTAKE, 50);
-    chassis.moveToPoint(-57, -69, 2000, {.forwards = false}, false);
+    chassis.moveToPoint(-56, -66, 2000, {.forwards = false}, false);
     clamp.set_value(false);
     pros::delay(200);
 
     // get next mobile goal
-    chassis.moveToPoint(-45, 0, 4000, {.maxSpeed = 70}, false);
+    chassis.moveToPoint(-44, 0, 4000, {.maxSpeed = 70}, false);
     chassis.turnToHeading(180, 2000, {}, false);
     intake.set(Intake::IntakeState::STOPPED);
-    chassis.moveToPoint(-45.5, 24, 2000, {.forwards = false, .maxSpeed = 60}, false);
-    chassis.waitUntil(21);
+    chassis.moveToPoint(-44.5, 28, 2000, {.forwards = false, .maxSpeed = 60}, true);
+    chassis.waitUntil(23);
     clamp.set_value(true);
     chassis.waitUntilDone();
     pros::delay(200);
 
-    chassis.turnToPoint(-20, 22, 2000, {}, true);
+    chassis.turnToPoint(-20, 20, 2000, {}, true);
     pros::delay(300);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveToPoint(-20, 22, 2000, {}, false);
-    pros::delay(300);
-    chassis.moveToPose(9, -11, 90 + 45, 5000, {}, false);
+    chassis.moveToPoint(-16, 20, 2000, {.maxSpeed = 80}, false);
+    pros::delay(750);
+    intake.set(Intake::IntakeState::STOPPED);
+    chassis.moveToPose(9, -11, 90 + 45, 5000, {}, true);
+    chassis.waitUntil(5);
+    intake.set(Intake::IntakeState::INTAKING);
     chassis.turnToHeading(-30, 1000, {}, false);
 
-    chassis.moveToPoint(-17,28,2000,{.minSpeed = 40, .earlyExitRange = 13},true);
-    chassis.moveToPoint(-17, 42, 3000, {.maxSpeed = 80}, false);
+    chassis.moveToPoint(-13,28,2000,{.minSpeed = 40, .earlyExitRange = 13},true);
+    chassis.moveToPoint(-13, 47, 3000, {.maxSpeed = 80}, false);
+    pros::delay(500);
     //chassis.moveToPose(-22, 43, 0, 2000, {}, false);
     chassis.turnToPoint(-62, 48, 1000, {.maxSpeed = 90}, false);
-    pros::delay(250);
-    chassis.moveToPoint(-40,48,1000,{},false);
-    chassis.moveToPoint(-51, 48, 1000, {.maxSpeed = 65}, false);
+    chassis.moveToPoint(-40,49,1000,{},false);
+    pros::delay(500);
+    chassis.moveToPoint(-51, 49, 1000, {.maxSpeed = 65}, false);
     pros::delay(500);
     chassis.moveToPoint(-27, 45, 1000, {.forwards = false}, false);
     chassis.moveToPoint(-47, 62, 1000, {}, false);
@@ -177,14 +181,14 @@ void progSkillsWithOneWallstake() {
     intake.set(Intake::IntakeState::OUTTAKE, 30);
 
 //score second wallstake
-    chassis.moveToPoint(11, 45,3000,{.maxSpeed = 70},true);
+    chassis.moveToPoint(12, 45,3000,{.maxSpeed = 60},true);
     chassis.waitUntil(8);
     arm.loadWallstake();
     intake.set(Intake::IntakeState::INTAKING);
     chassis.turnToHeading(0, 1000);
-    chassis.moveFor(20,2000,{.maxSpeed = 60},true);
+    chassis.moveFor(17,2000,{.maxSpeed = 60},true);
     chassis.waitUntilDone();
-    pros::delay(500);
+    pros::delay(750);
     intake.set(Intake::IntakeState::OUTTAKE, 30);
     arm.scoreWallstake();
     arm.retract();
@@ -193,7 +197,7 @@ void progSkillsWithOneWallstake() {
     intake.set(Intake::IntakeState::INTAKING, 80);
     chassis.moveToPoint(38, 20, 2000, {.maxSpeed = 70}, false);
     pros::delay(250);
-    chassis.turnToPoint(65, -5,300,
+    chassis.turnToPoint(70, -5,300,
                         {
                             .forwards = false,
                         },
@@ -202,18 +206,21 @@ void progSkillsWithOneWallstake() {
     intake.set(Intake::IntakeState::STOPPED);
 
     // clamping new mobile goal
-    chassis.moveToPoint(67,4, 3000, {.forwards = false, .maxSpeed = 70}, false);
+    chassis.moveToPoint(70,-3, 4000, {.forwards = false, .maxSpeed = 70}, true);
+    chassis.waitUntil(36);
     clamp.set_value(true);
     pros::delay(200);
     chassis.turnToHeading(-5, 2000, {}, false);
     intake.set(Intake::INTAKING);
-    chassis.moveToPoint(60,55, 3000, {}, false);
+    chassis.moveToPoint(60,55, 3000, {.maxSpeed = 90}, false);
     // chassis.moveFor(60,3000,{},true);
     chassis.turnToPoint(69,65,2000,{.forwards = false},false);
+    intake.set(Intake::IntakeState::OUTTAKE,50);
     clamp.set_value(false);
     chassis.moveToPoint(69,65,2000,{.forwards = false},false);
-    intake.set(Intake::IntakeState::OUTTAKE,50);
-    chassis.moveToPoint(76,24,2000,{.minSpeed = 120,.earlyExitRange = 6});
+
+    chassis.moveToPoint(73,24,2000,{.minSpeed = 120,.earlyExitRange = 6});
+    intake.set(Intake::IntakeState::STOPPED);
     chassis.moveToPoint(78,-69,5000,{.minSpeed = 120},false);
 
     // // beginning scoring on new mobile goal
@@ -789,10 +796,10 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
     // rightRed();
-    //progSkillsWithOneWallstake();
+    progSkillsWithOneWallstake();
     // awpRed();
     //awpBlue();
-    elimRedTopSide();
+    // elimRedTopSide();
     //rightBlue();
     //topElim_Red();
     // progSkillsWithOneWallstake();
