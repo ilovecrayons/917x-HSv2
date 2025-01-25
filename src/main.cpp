@@ -295,16 +295,16 @@ void mogoRush_Red() {
 
 void awpRed() {
     chassis.setPose(-56, 11.5, -120);
-    arm.scoreWallstake(125, true);
+    arm.scoreWallstake(125, true, 10);
     pros::delay(500);
-    chassis.moveFor(13, 2000);
+    chassis.moveFor(12, 2000);
     chassis.waitUntilDone();
-    chassis.moveToPoint(-21, 28.5, 2000, {.forwards = false, .maxSpeed = 60});
+    chassis.moveToPoint(-20, 28.5, 2000, {.forwards = false, .maxSpeed = 60});
     //chassis.moveToPoint(-50, 12, 2000, {.forwards = false, .maxSpeed = 80});
     pros::delay(500);
     arm.retract();
     //chassis.waitUntilDone();
-    chassis.waitUntil(43);
+    chassis.waitUntil(40);
     clamp.set_value(true);
 
     // first ring
@@ -329,7 +329,7 @@ void awpRed() {
                         false);
     intake.set(Intake::IntakeState::STOPPED);
 
-    chassis.moveToPoint(-44, -45, 3000, {.maxSpeed = 70}, true);
+    chassis.moveToPoint(-44, -47, 3000, {.maxSpeed = 70}, true);
     chassis.waitUntil(15);
     clamp.set_value(false);
 
@@ -340,7 +340,7 @@ void awpRed() {
     clamp.set_value(true);
 
     // scoring next ring
-    chassis.moveToPoint(-21, -50, 2000, {}, true);
+    chassis.moveToPoint(-23, -50, 2000, {.maxSpeed = 60}, true);
     pros::delay(500);
     intake.set(Intake::IntakeState::INTAKING, 127);
 
@@ -724,8 +724,8 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
     // rightRed();
-    prog();
-    // awpRed();
+    //prog();
+    awpRed();
     //awpBlue();
     // elimRedTopSide();
     //rightBlue();
