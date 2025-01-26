@@ -350,16 +350,16 @@ void awpRed() {
 
 void awpBlue() {
     chassis.setPose(56, 11.5, 120);
-    arm.scoreWallstake(125, true);
+    arm.scoreWallstake(125, true, 10);
     pros::delay(500);
-    chassis.moveFor(13, 2000);
+    chassis.moveFor(12, 2000);
     chassis.waitUntilDone();
-    chassis.moveToPoint(21, 28.5, 2000, {.forwards = false, .maxSpeed = 60});
+    chassis.moveToPoint(20, 28.5, 2000, {.forwards = false, .maxSpeed = 60});
     //chassis.moveToPoint(-50, 12, 2000, {.forwards = false, .maxSpeed = 80});
     pros::delay(500);
     arm.retract();
     //chassis.waitUntilDone();
-    chassis.waitUntil(43);
+    chassis.waitUntil(40);
     clamp.set_value(true);
 
     // first ring
@@ -384,7 +384,7 @@ void awpBlue() {
                         false);
     intake.set(Intake::IntakeState::STOPPED);
 
-    chassis.moveToPoint(44, -45, 3000, {.maxSpeed = 70}, true);
+    chassis.moveToPoint(44, -47, 3000, {.maxSpeed = 70}, true);
     chassis.waitUntil(15);
     clamp.set_value(false);
 
@@ -395,7 +395,7 @@ void awpBlue() {
     clamp.set_value(true);
 
     // scoring next ring
-    chassis.moveToPoint(21, -50, 2000, {}, true);
+    chassis.moveToPoint(23, -50, 2000, {.maxSpeed = 60}, true);
     pros::delay(500);
     intake.set(Intake::IntakeState::INTAKING, 127);
 
@@ -473,11 +473,11 @@ chassis.moveFor(20, 1000,{.forwards = false});
 
 void elimRedTopSide(){
     chassis.setPose(-56, 11.5, -120);
-    arm.scoreWallstake(125, true);
+    arm.scoreWallstake(125, true, 8);
     pros::delay(500);
     chassis.moveFor(13, 2000);
     chassis.waitUntilDone();
-    chassis.moveToPoint(-21, 28.5, 2000, {.forwards = false, .maxSpeed = 60});
+    chassis.moveToPoint(-21, 27.5, 2000, {.forwards = false, .maxSpeed = 60});
     //chassis.moveToPoint(-50, 12, 2000, {.forwards = false, .maxSpeed = 80});
     pros::delay(500);
     arm.retract();
@@ -486,9 +486,9 @@ void elimRedTopSide(){
     clamp.set_value(true);
     
 
-    chassis.turnToPoint(-8, 40, 2000,{},false);
+    chassis.turnToPoint(-8.75, 40, 2000, {}, false);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveToPose(-8, 52,0, 2000,{},false);
+    chassis.moveToPose(-8.75, 51,0, 5000,{.maxSpeed = 70},false);
     pros::delay(750);
     chassis.moveFor(3,2000,{.forwards = false},false); 
     // // second ring
@@ -501,10 +501,11 @@ void elimRedTopSide(){
     intake.set(Intake::IntakeState::INTAKING, 127);
     arm.loadWallstake();
     chassis.moveToPoint(-26, 48, 2000, {}, false);
-    chassis.turnToPoint(-12,65,3000,{},false);
-    chassis.moveToPoint(-12,65,3000,{},false);
+    chassis.turnToPoint(-14,65,3000,{},false);
+    chassis.moveToPoint(-11,63,3000,{},false);
     intake.set(Intake::IntakeState::STOPPED);
     arm.scoreWallstake();
+    arm.retract();
 //     pros::delay(3000);
 //     intake.set(Intake::IntakeState::OUTTAKE,90);
 //     chassis.moveFor(15, 1000,{},false);
@@ -724,9 +725,9 @@ void autonomous() {
     // chassis.waitUntilDone();
     // rightRed();
     //prog();
-    awpRed();
-    //awpBlue();
-    // elimRedTopSide();
+    //awpRed();
+    awpBlue();
+    // elimRedTopSide();H
     //rightBlue();
     //topElim_Red();
     // progSkillsWithOneWallstake();
