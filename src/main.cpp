@@ -292,6 +292,9 @@ void mogoRush_Red() {
     arm.scoreWallstake(130);
 }
 
+void mogoRush_Blue(){
+    chassis.setPose(0,)
+}
 void awpRed() {
     chassis.setPose(-56, 11.5, -120);
     arm.scoreWallstake(125, true, 10);
@@ -724,9 +727,9 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
     // rightRed();
-    //prog();
+    prog();
     //awpRed();
-    awpBlue();
+    // awpBlue();
     // elimRedTopSide();H
     //rightBlue();
     //topElim_Red();
