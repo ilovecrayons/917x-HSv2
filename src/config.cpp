@@ -5,7 +5,7 @@
 #include "subsystem/intake.hpp"
 
 // ports
-constexpr int RIGHT_F = 8;
+constexpr int RIGHT_F = 7;
 constexpr int RIGHT_M = 20;
 constexpr int RIGHT_B = -18;
 
