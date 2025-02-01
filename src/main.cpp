@@ -263,42 +263,38 @@ void prog() {
 }
 
 void mogoRush_Red() {
-    chassis.setPose(-54,-32,90);
-    intake.set(Intake::IntakeState::INTAKING, 127);
-    chassis.turnToPoint(-24,-50,2000,{},true);
-    chassis.moveToPose(-24,-48,80,3000,{},false);
-    intake.set(Intake::IntakeState::STOPPED);
-    chassis.moveFor(15,2000,{},false);
-    hook.set_value(true);
-
-    chassis.moveFor(24,2000,{.forwards = false},false);
-    hook.set_value(false);
-    chassis.moveToPoint(-20, -20, 2000, {.forwards = false}, true);
-    chassis.waitUntil(20);
-    clamp.set_value(true);
-    intake.set(Intake::IntakeState::INTAKING);
-    chassis.turnToPoint(-54,-32,2000,{},true);
-    chassis.moveToPoint(-54,-32,2000,{},true);
+    
 
 }
 
 void mogoRush_Blue(){
     chassis.setPose(54,-36,-90);
-    intake.set(Intake::IntakeState::INTAKING, 127);
-    chassis.moveToPose(12,-48,-100,2000,{},false);
+    intake.set(Intake::IntakeState::INTAKING, 127); 
+    chassis.moveToPose(12,-50,-100,2000,{.maxSpeed = 90},true);
+    arm.loadWallstake();
+    chassis.waitUntilDone();
     hook.set_value(true);
-    pros::delay(1000);
+    pros::delay(500);
     // chassis.moveFor(30,2000,{.forwards = false},true);
     // chassis.waitUntil(25);
     // intake.set(Intake::IntakeState::STOPPED);
     // chassis.waitUntilDone();
-    chassis.turnToHeading(10,2000,{},false);
-    intake.set(Intake::IntakeState::STOPPED);
+    chassis.turnToHeading(90,2000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
     hook.set_value(false);
-    chassis.turnToPoint(22,-20,2000,{.forwards = false},false);
-    chassis.moveToPoint(22,-20,2000,{.forwards = false},true);
-    chassis.waitUntil(20);
+    chassis.turnToPoint(28,-15,2000,{.forwards = false},false);
+    chassis.moveToPoint(28,-15,2000,{.forwards = false,.maxSpeed = 80},true);
+    chassis.waitUntil(33);
     clamp.set_value(true);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(4,-60,2000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(-90-47,2000,{},false);
+    intake.set(Intake::IntakeState::STOPPED);
+    arm.scoreWallstake();
+    arm.retract();
+    chassis.moveFor(10,2000,{.forwards = false},false);
+    chassis.turnToPoint(58,-22,2000,{},true);
+    intake.set(Intake::IntakeState::INTAKING);
+    chassis.moveToPose(58,-22,90,2000,{},true);
 }
 void awpRed() {
     chassis.setPose(-56, 11.5, -120);
@@ -799,7 +795,7 @@ void autonomous() {
     //topElim_Red();
     // progSkillsWithOneWallstake();
     // mogoRush_Red();
-    positiveRed();
+    //positiveRed();
     // chassis.moveFor(12,2000,{},false);
 }
 // remember to attend the 1v1 meowing
