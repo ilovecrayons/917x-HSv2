@@ -263,33 +263,23 @@ void prog() {
 }
 
 void mogoRush_Red() {
-    // add fking code
-    chassis.setPose(-58, -23, 90);
-
-    chassis.turnToPoint(-3, -43, 1000, {}, false);
-    chassis.moveToPoint(-3, -43, 4000, {}, false);
+    chassis.setPose(-54,-32,90);
+    intake.set(Intake::IntakeState::INTAKING, 127);
+    chassis.turnToPoint(-24,-50,2000,{},true);
+    chassis.moveToPose(-24,-48,80,3000,{},false);
+    intake.set(Intake::IntakeState::STOPPED);
+    chassis.moveFor(15,2000,{},false);
     hook.set_value(true);
 
-    chassis.moveToPoint(-63, -19, 3000, {.forwards = false, .minSpeed = 30}, false);
+    chassis.moveFor(24,2000,{.forwards = false},false);
     hook.set_value(false);
-
-    chassis.turnToHeading(180, 1000, {}, false);
-    hook.set_value(false);
-
-    // clamp stake
-    chassis.moveToPoint(-22, -23, 2000, {}, true);
-    chassis.waitUntil(14);
-    clamp.set_value(true);
-
-    chassis.turnToPoint(-23, -46, 2000, {}, false);
-    chassis.moveToPoint(-23, -46, 2000, {}, false);
-
-    chassis.turnToPoint(-56, -11, 2000, {}, false);
-    chassis.moveToPoint(-65, -5, 2000, {}, true);
+    chassis.moveToPoint(-20, -20, 2000, {.forwards = false}, true);
     chassis.waitUntil(20);
-    arm.scoreWallstake(123);
-    chassis.waitUntilDone();
-    arm.scoreWallstake(130);
+    clamp.set_value(true);
+    intake.set(Intake::IntakeState::INTAKING);
+    chassis.turnToPoint(-54,-32,2000,{},true);
+    chassis.moveToPoint(-54,-32,2000,{},true);
+
 }
 
 void mogoRush_Blue(){
@@ -366,6 +356,36 @@ void awpRed() {
     chassis.moveToPoint(-13, -24, 2000, {.minSpeed = 60}, false);
 }
 
+void positiveBlue() {
+    chassis.setPose(-56, 11.5, -120);
+    arm.scoreWallstake(125, true, 10);
+    pros::delay(500);
+    chassis.moveFor(12, 2000);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-20, 28.5, 2000, {.forwards = false, .maxSpeed = 60});
+    //chassis.moveToPoint(-50, 12, 2000, {.forwards = false, .maxSpeed = 80});
+    pros::delay(500);
+    arm.retract();
+    //chassis.waitUntilDone();
+    chassis.waitUntil(40);
+    clamp.set_value(true);
+
+    // first ring
+    chassis.turnToPoint(-26, 40, 2000, {}, true);
+    pros::delay(250);
+    intake.set(Intake::IntakeState::INTAKING, 127);
+    chassis.moveToPoint(-26, 50, 2000, {}, true);
+    pros::delay(2000);
+
+
+    chassis.moveToPoint(-46,50, 2000, {},true);
+    chassis.waitUntil(2);
+    clamp.set_value(false);
+    
+    intake.set(Intake::IntakeState::STOPPED);
+    
+}
+
 void awpBlue() {
     chassis.setPose(56, 11.5, 120);
     arm.scoreWallstake(125, true, 10);
@@ -420,6 +440,35 @@ void awpBlue() {
     // touching bar
     chassis.turnToPoint(13, -24, 2000, {.minSpeed = 50}, false);
     chassis.moveToPoint(13, -24, 2000, {.minSpeed = 60}, false);
+}
+
+void positiveRed(){
+   chassis.setPose(56, 11.5, 120);
+    arm.scoreWallstake(125, true, 7);
+    pros::delay(500);
+    chassis.moveFor(12, 2000);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(20, 28.5, 2000, {.forwards = false, .maxSpeed = 60});
+    //chassis.moveToPoint(-50, 12, 2000, {.forwards = false, .maxSpeed = 80});
+    pros::delay(500);
+    arm.retract();
+    //chassis.waitUntilDone();
+    chassis.waitUntil(40);
+    clamp.set_value(true);
+
+    // first ring
+    chassis.turnToPoint(26, 40, 2000, {}, true);
+    pros::delay(250);
+    intake.set(Intake::IntakeState::INTAKING, 127);
+    chassis.moveToPoint(26, 50, 2000, {}, true);
+    pros::delay(4000);
+
+
+    clamp.set_value(false);
+
+    chassis.moveToPoint(46,50, 2000, {},true);
+    
+    intake.set(Intake::IntakeState::STOPPED);
 }
 
 void elimBlueTopSide(){
@@ -749,6 +798,9 @@ void autonomous() {
     //rightBlue();
     //topElim_Red();
     // progSkillsWithOneWallstake();
+    // mogoRush_Red();
+    positiveRed();
+    // chassis.moveFor(12,2000,{},false);
 }
 // remember to attend the 1v1 meowing
 
