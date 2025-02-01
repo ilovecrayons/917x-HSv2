@@ -263,8 +263,33 @@ void prog() {
 }
 
 void mogoRush_Red() {
-    
-
+    chassis.setPose(-54,-36,90);
+    intake.set(Intake::IntakeState::INTAKING, 127); 
+    chassis.moveToPose(-12,-50,100,2000,{.maxSpeed = 90},true);
+    arm.loadWallstake();
+    chassis.waitUntilDone();
+    hook.set_value(true);
+    pros::delay(500);
+    // chassis.moveFor(30,2000,{.forwards = false},true);
+    // chassis.waitUntil(25);
+    // intake.set(Intake::IntakeState::STOPPED);
+    // chassis.waitUntilDone();
+    chassis.turnToHeading(-90,2000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
+    hook.set_value(false);
+    chassis.turnToPoint(-28,-15,2000,{.forwards = false},false);
+    chassis.moveToPoint(-28,-15,2000,{.forwards = false,.maxSpeed = 80},true);
+    chassis.waitUntil(33);
+    clamp.set_value(true);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-4,-60,2000,{.maxSpeed = 70},false);
+    chassis.turnToHeading(90+47,2000,{},false);
+    intake.set(Intake::IntakeState::STOPPED);
+    arm.scoreWallstake();
+    arm.retract();
+    chassis.moveFor(10,2000,{.forwards = false},false);
+    chassis.turnToPoint(-58,-22,2000,{},true);
+    intake.set(Intake::IntakeState::INTAKING);
+    chassis.moveToPose(-58,-22,-90,2000,{},true);
 }
 
 void mogoRush_Blue(){
