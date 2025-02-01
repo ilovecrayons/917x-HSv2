@@ -293,7 +293,22 @@ void mogoRush_Red() {
 }
 
 void mogoRush_Blue(){
-    chassis.setPose(0,)
+    chassis.setPose(54,-36,-90);
+    intake.set(Intake::IntakeState::INTAKING, 127);
+    chassis.moveToPose(12,-48,-100,2000,{},false);
+    hook.set_value(true);
+    pros::delay(1000);
+    // chassis.moveFor(30,2000,{.forwards = false},true);
+    // chassis.waitUntil(25);
+    // intake.set(Intake::IntakeState::STOPPED);
+    // chassis.waitUntilDone();
+    chassis.turnToHeading(10,2000,{},false);
+    intake.set(Intake::IntakeState::STOPPED);
+    hook.set_value(false);
+    chassis.turnToPoint(22,-20,2000,{.forwards = false},false);
+    chassis.moveToPoint(22,-20,2000,{.forwards = false},true);
+    chassis.waitUntil(20);
+    clamp.set_value(true);
 }
 void awpRed() {
     chassis.setPose(-56, 11.5, -120);
@@ -727,7 +742,7 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
     // rightRed();
-    prog();
+    mogoRush_Blue();
     //awpRed();
     // awpBlue();
     // elimRedTopSide();H
