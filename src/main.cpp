@@ -355,6 +355,12 @@ void awpRed() {
                             .earlyExitRange = 5,
                         },
                         false);
+
+    // chassis.cancelAllMotions();
+    // while(true){
+    //     pros::delay(200);
+    // }
+
     intake.set(Intake::IntakeState::STOPPED);
 
     chassis.moveToPoint(-44, -47, 3000, {.maxSpeed = 70}, true);
@@ -812,13 +818,13 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
     // rightRed();
-    mogoRush_Blue();
+    //mogoRush_Blue();
     //awpRed();
-    // awpBlue();
+    awpBlue();
     // elimRedTopSide();H
     //rightBlue();
     //topElim_Red();
-    // progSkillsWithOneWallstake();
+    //prog();
     // mogoRush_Red();
     //positiveRed();
     // chassis.moveFor(12,2000,{},false);
