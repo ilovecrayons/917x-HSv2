@@ -283,7 +283,7 @@ void mogoRush_Red() {
 }
 
 void mogoRush_Blue(){
-    chassis.setPose(0,)
+    //chassis.setPose(0,)
 }
 void awpRed() {
     chassis.setPose(-56, 11.5, -120);
