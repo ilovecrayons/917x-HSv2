@@ -265,30 +265,31 @@ void prog() {
 void mogoRush_Red() {
     chassis.setPose(-54,-36,90);
     intake.set(Intake::IntakeState::INTAKING, 127); 
-    chassis.moveToPose(-12,-44,100,2000,{.maxSpeed = 90},true);
+    chassis.moveToPose(-10,-43,90,2000,{.maxSpeed = 90},true);
     arm.loadWallstake();
-    chassis.waitUntilDone();
+    chassis.waitUntil(34);
     hook.set_value(true);
-    pros::delay(500);
     // chassis.moveFor(30,2000,{.forwards = false},true);
     // chassis.waitUntil(25);
     // intake.set(Intake::IntakeState::STOPPED);
     // chassis.waitUntilDone();
-    chassis.turnToHeading(90-60,2000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
+    chassis.turnToHeading(-8,2000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
     hook.set_value(false);
-    chassis.turnToPoint(-28,-14,2000,{.forwards = false},false);
-    chassis.moveToPose(-28,-14,-90-45,2000,{.forwards = false,.maxSpeed = 80},true);
+    // chassis.turnToPoint(24,-15,2000,{.forwards = false},false);
+    chassis.moveToPose(-20,-20,180,2000,{.forwards = false,.maxSpeed = 70},true);
     chassis.waitUntil(33);
     clamp.set_value(true);
-    chassis.waitUntilDone();
-    chassis.moveToPoint(-6,-60,2000,{.maxSpeed = 70},false);
-    chassis.turnToHeading(90+50,2000,{},false);
+    chassis.moveToPoint(-10,-56,2000,{.maxSpeed = 70},false);  // was 4,-61
+    chassis.turnToHeading(+90+39,2000,{},false);  //was -90-42
+    chassis.moveFor(7,2000,{},false);
+    chassis.turnToHeading(90+47,1000,{},false);
     intake.set(Intake::IntakeState::STOPPED);
     arm.scoreWallstake();
-
-    arm.retract();
     intake.set(Intake::IntakeState::OUTTAKE,90);
-    chassis.moveFor(10,2000,{.forwards = false},false);
+    pros::delay(200);
+    chassis.moveFor(10,2000,{.forwards = false});
+    chassis.waitUntil(5);
+    arm.retract();
     chassis.turnToPoint(-58,-26,2000,{},true);
     intake.set(Intake::IntakeState::INTAKING);
     chassis.moveToPose(-58,-26,-90,2000,{},true);
@@ -322,9 +323,9 @@ void mogoRush_Blue(){
     chassis.moveFor(10,2000,{.forwards = false});
     chassis.waitUntil(5);
     arm.retract();
-    chassis.turnToPoint(58,-24,2000,{},true);
+    chassis.turnToPoint(58,-26,2000,{},true);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveToPose(58,-24,90,2000,{},true);
+    chassis.moveToPose(58,-26,90,2000,{},true);
 }
 void awpRed() {
     chassis.setPose(-56, 11.5, -120);
@@ -823,7 +824,7 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
     // rightRed();
-    mogoRush_Blue();
+    mogoRush_Red();
     //awpRed();
     // awpBlue();
     // elimRedTopSide();H
