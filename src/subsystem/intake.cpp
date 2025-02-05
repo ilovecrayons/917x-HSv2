@@ -13,13 +13,13 @@ void Intake::checkForSort(){
         sort = false;
     }
     else if (ring == Ring::BLUE){
-        if (topSort.get_hue()>200 && topSort.get_hue()<=270 &&topSort.get_proximity()<100){   //TUNE PROXIMITY
+        if (topSort.get_hue()>200 && topSort.get_hue()<=270){   //TUNE PROXIMITY
             sort = true;
             INITIAL_POSITION = motor.get_position();
         }
     }
     else if (ring == Ring::RED){
-        if (topSort.get_hue()<30 && topSort.get_hue()>=0 &&topSort.get_proximity()<100) {  //TUNE PROXIMITY
+        if (topSort.get_hue()<30 && topSort.get_hue()>=0) {  //TUNE PROXIMITY
             sort = true;
             INITIAL_POSITION = motor.get_position();
         }

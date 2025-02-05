@@ -37,6 +37,7 @@ void printTelemetry() {
                             rightMotors.get_temperature(1), rightMotors.get_temperature(2));
 
         pros::screen::print(pros::E_TEXT_MEDIUM, 7, "intake temp: %.1f", intake.motor.get_temperature());
+        pros::screen::print(pros::E_TEXT_MEDIUM, 8, "top sort: %d", topSort.get_proximity());
 
         std::cout << pose.x << " " << pose.y << " " << imu.get_rotation() << pose.theta << std::endl;
         switch (intake.ring) {
@@ -111,20 +112,20 @@ void prog() {
     pros::delay(200);
 
     // autistic ass mf of a wallstake
-    chassis.moveToPoint(6.3, -45.5, 4000, {.forwards = false, .maxSpeed = 70}, false); // was 6.3 and 5.5 after
+    chassis.moveToPoint(6.8, -45.5, 4000, {.forwards = false, .maxSpeed = 70}, false); // was 6.3 and 5.5 after
     chassis.turnToHeading(180, 3000, {.maxSpeed = 100});
     intake.set(Intake::IntakeState::STOPPED);
     pros::delay(200);
     intake.set(Intake::IntakeState::INTAKING);
     chassis.waitUntilDone();
-    chassis.moveFor(19.8, 2000, {.maxSpeed = 70},false);
+    chassis.moveFor(19.8, 1300, {.maxSpeed = 70},false);
     // chassis.moveToPoint(4,-54.75,1000,{},false);
 
     intake.set(Intake::IntakeState::OUTTAKE, 30);
     arm.scoreWallstake();
+    chassis.moveFor(7.5, 1000, {.forwards = false}, false);
     arm.retract();
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveFor(7.5, 1000, {.forwards = false}, false);
 
     chassis.turnToPoint(-40, -55.5, 2000, {}, false);
     chassis.moveToPose(-40,-55.5,-90,3000,{.maxSpeed = 75},false);
@@ -181,8 +182,8 @@ void prog() {
     intake.set(Intake::IntakeState::OUTTAKE, 30);
 
 //score second wallstake
-    chassis.moveToPoint(11, 46,3000,{.maxSpeed = 60},true);
-    chassis.waitUntil(8);
+    chassis.moveToPoint(10, 46,3000,{.maxSpeed = 60},true);
+    chassis.waitUntil(9);
     arm.loadWallstake();
     intake.set(Intake::IntakeState::INTAKING);
     chassis.turnToHeading(0, 1000);
@@ -194,10 +195,10 @@ void prog() {
     arm.retract();
     
     // holding one rings in the intake
-    intake.set(Intake::IntakeState::INTAKING, 80);
-    chassis.moveToPoint(40, 20, 3000, {.maxSpeed = 70}, false);
+    intake.set(Intake::IntakeState::INTAKING, 70);
+    chassis.moveToPoint(40, 18, 3000, {.maxSpeed = 70}, false);
     pros::delay(250);
-    chassis.turnToPoint(70, -5,300,
+    chassis.turnToPoint(68, -4,300,
                         {
                             .forwards = false,
                         },
@@ -212,16 +213,16 @@ void prog() {
     pros::delay(200);
     // chassis.turnToHeading(-5, 2000, {}, false);
     intake.set(Intake::INTAKING);
-    chassis.moveToPoint(60,55, 3000, {.maxSpeed = 90}, false);
+    chassis.moveToPoint(60,57, 3000, {.maxSpeed = 90}, false);
     // chassis.moveFor(60,3000,{},true);
     chassis.turnToPoint(69,65,2000,{.forwards = false},false);
     intake.set(Intake::IntakeState::OUTTAKE,50);
     clamp.set_value(false);
-    chassis.moveToPoint(69,65,2000,{.forwards = false},false);
+    chassis.moveToPoint(69,65,1000,{.forwards = false},false);
     
     chassis.moveToPoint(60,55,2000,{.minSpeed = 120,.earlyExitRange = 6});
     intake.set(Intake::IntakeState::STOPPED);
-    chassis.moveToPoint(90,-69,5000,{.minSpeed = 120},false);
+    chassis.moveToPoint(95,-69,5000,{.minSpeed = 120},false);
 
     // // beginning scoring on new mobile goal
     // chassis.turnToPoint(20, 47, 2000, {}, false);
@@ -262,7 +263,7 @@ void prog() {
     // // final rings
 }
 
-void mogoRush_Red() {
+void mogoRushRed() {
     chassis.setPose(-54,-36,90);
     intake.set(Intake::IntakeState::INTAKING, 127); 
     chassis.moveToPose(-10,-43,90,2000,{.maxSpeed = 90},true);
@@ -276,7 +277,7 @@ void mogoRush_Red() {
     chassis.turnToHeading(-8,2000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
     hook.set_value(false);
     // chassis.turnToPoint(24,-15,2000,{.forwards = false},false);
-    chassis.moveToPose(-20,-20,180,2000,{.forwards = false,.maxSpeed = 70},true);
+    chassis.moveToPose(-20,-17,180,2000,{.forwards = false,.maxSpeed = 70},true);
     chassis.waitUntil(33);
     clamp.set_value(true);
     chassis.moveToPoint(-10,-56,2000,{.maxSpeed = 70},false);  // was 4,-61
@@ -295,7 +296,7 @@ void mogoRush_Red() {
     chassis.moveToPose(-58,-26,-90,2000,{},true);
 }
 
-void mogoRush_Blue(){
+void mogoRushBlue(){
     chassis.setPose(54,-36,-90);
     intake.set(Intake::IntakeState::INTAKING, 127); 
     chassis.moveToPose(12,-50,-105,2000,{.maxSpeed = 90},true);
@@ -309,7 +310,7 @@ void mogoRush_Blue(){
     chassis.turnToHeading(90,2000,{.direction = AngularDirection::CCW_COUNTERCLOCKWISE},false);
     hook.set_value(false);
     // chassis.turnToPoint(24,-15,2000,{.forwards = false},false);
-    chassis.moveToPose(20,-20,-180,2000,{.forwards = false,.maxSpeed = 70},true);
+    chassis.moveToPose(23,-20,-180,2000,{.forwards = false,.maxSpeed = 70},true);
     chassis.waitUntil(33);
     clamp.set_value(true);
     chassis.moveToPoint(8,-59,2000,{.maxSpeed = 70},false);  // was 4,-61
@@ -505,67 +506,50 @@ void positiveRed(){
 }
 
 void elimBlueTopSide(){
+    
     chassis.setPose(56, 11.5, 120);
-    arm.scoreWallstake(125, true);
-    pros::delay(500);
-    chassis.moveFor(13, 2000);
-    chassis.waitUntilDone();
-    chassis.moveToPoint(21, 28.5, 2000, {.forwards = false, .maxSpeed = 60});
+    
+    chassis.moveToPoint(21, 27, 2000, {.forwards = false, .maxSpeed = 50});
     //chassis.moveToPoint(-50, 12, 2000, {.forwards = false, .maxSpeed = 80});
-    pros::delay(500);
-    arm.retract();
     //chassis.waitUntilDone();
-    chassis.waitUntil(43);
+    chassis.waitUntil(30);
     clamp.set_value(true);
+    
+    intake.set(Intake::IntakeState::INTAKING, 127);
 
-    // first ring
-    chassis.turnToPoint(26, 40, 2000, {}, true);
+    chassis.turnToPoint(14, 40, 2000, {}, false);
+    // intake.set(Intake::IntakeState::INTAKING);
+    // chassis.moveToPose(-8.4, 50,0, 5000,{.minSpeed = 20},false);
+    chassis.moveToPoint(14, 40, 2000, {.minSpeed = 50}, false);
+    pros::delay(250); 
+    chassis.moveToPoint(8,52,2000,{},false);   
+    // chassis.moveFor(7,2000,{.forwards = false},false); 
+    
+    
+    chassis.turnToPoint(26, 48, 2000, {}, true); //30
+    
+    chassis.moveToPoint(26, 48, 2000, {.minSpeed = 80}, false);
+    pros::delay(1000);
+    intake.set(Intake::IntakeState::OUTTAKE,127);
+
+    chassis.moveToPose(60,17,180,2000,{},false);
+    // chassis.waitUntil(5);
+    // intake.set(Intake::IntakeState::OUTTAKE,127);
+    // chassis.waitUntilDone();
+    hook.set_value(true);
     pros::delay(250);
-    intake.set(Intake::IntakeState::INTAKING, 127);
-    chassis.moveToPoint(26, 44, 2000, {}, true);
-    pros::delay(1000);
-    intake.set(Intake::IntakeState::STOPPED);
-    chassis.moveFor(15, 1000,{},false);
-    chassis.turnToPoint(9, 50, 2000);
-    intake.set(Intake::IntakeState::INTAKING, 127);
-    pros::delay(1000);
+    chassis.moveFor(10,2000,{.forwards = false},false);
+    intake.set(Intake::IntakeState::INTAKING);
+    hook.set_value(false);
+    chassis.moveToPoint(50,14,2000,{},false); // -51,12
+    
+    chassis.turnToPoint(54,54,2000,{},false); //-53
+    chassis.moveToPose(54,54,24,2000,{},false);
+    hook.set_value(true);
+    pros::delay(500);
+    chassis.turnToHeading(-90,2000,{.minSpeed = 127},false);
 
-    // second ring
-    chassis.moveToPoint(10, 52, 2000, {.maxSpeed = 90}, false);
-    pros::delay(1000);
-    chassis.moveFor(15,2000,{.forwards = false},false); 
-    chassis.turnToPoint(9, 44, 2000);
-    chassis.moveToPoint(9, 44, 2000,{},false);
-    pros::delay(750);
 
-chassis.moveFor(20, 1000,{.forwards = false});
-    // releasing stake near POSITIVE CORNER
-    // chassis.turnToPoint(40, 0, 2000, {}, false);
-    // chassis.moveToPoint(40, 0, 3000,
-    //                     {
-    //                         .maxSpeed = 90,
-    //                         .minSpeed = 50,
-    //                         .earlyExitRange = 5,
-    //                     },
-    //                     false);
-    // intake.set(Intake::IntakeState::STOPPED);
-
-    // chassis.moveToPoint(44, -45, 3000, {.maxSpeed = 70}, true);
-    // chassis.waitUntil(15);
-    // clamp.set_value(false);
-
-    // // clamp next goal
-    // chassis.turnToPoint(21, -26, 2000, {.forwards = false}, false);
-    // chassis.moveToPoint(21, -26, 2000, {.forwards = false, .maxSpeed = 70}, true);
-    // chassis.waitUntil(25);
-    // clamp.set_value(true);
-
-    // // scoring next ring
-    // chassis.moveToPoint(21, -50, 2000, {}, true);
-    // pros::delay(500);
-    // intake.set(Intake::IntakeState::INTAKING, 127);
-
-    // // touching bar
     // chassis.turnToPoint(13, -24, 2000, {.minSpeed = 50}, false);
     // chassis.moveToPoint(13, -24, 2000, {.minSpeed = 60}, false);
 }
@@ -573,77 +557,62 @@ chassis.moveFor(20, 1000,{.forwards = false});
 
 void elimRedTopSide(){
     chassis.setPose(-56, 11.5, -120);
-    arm.scoreWallstake(125, true, 8);
-    pros::delay(500);
-    chassis.moveFor(13, 2000);
-    chassis.waitUntilDone();
-    chassis.moveToPoint(-21, 27.5, 2000, {.forwards = false, .maxSpeed = 60});
+    
+    chassis.moveToPoint(-21, 27, 2000, {.forwards = false, .maxSpeed = 50});
     //chassis.moveToPoint(-50, 12, 2000, {.forwards = false, .maxSpeed = 80});
-    pros::delay(500);
-    arm.retract();
     //chassis.waitUntilDone();
-    chassis.waitUntil(43);
+    chassis.waitUntil(30);
     clamp.set_value(true);
     
-
-    chassis.turnToPoint(-8.75, 40, 2000, {}, false);
-    intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveToPose(-8.75, 51,0, 5000,{.maxSpeed = 70},false);
-    pros::delay(750);
-    chassis.moveFor(3,2000,{.forwards = false},false); 
-    // // second ring
-    // chassis.moveToPoint(-10, 50, 2000, {.maxSpeed = 90}, false);
-    // pros::delay(750);
-
-    // first ring
-    chassis.turnToPoint(-30, 48, 2000, {}, true);
-    pros::delay(250);
     intake.set(Intake::IntakeState::INTAKING, 127);
-    arm.loadWallstake();
-    chassis.moveToPoint(-26, 48, 2000, {}, false);
-    chassis.turnToPoint(-14,65,3000,{},false);
-    chassis.moveToPoint(-11,63,3000,{},false);
+
+    chassis.turnToPoint(-12, 40, 2000, {}, false);
+    // intake.set(Intake::IntakeState::INTAKING);
+    // chassis.moveToPose(-8.4, 50,0, 5000,{.minSpeed = 20},false);
+    chassis.moveToPoint(-12, 40, 2000, {.minSpeed = 50}, false);
+    pros::delay(250); 
+    chassis.moveToPoint(-10,52,2000,{},false);   
+    chassis.moveFor(7,2000,{.forwards = false},false); 
+    
+    
+    chassis.turnToPoint(-28, 48, 2000, {}, true); //30
+    
+    chassis.moveToPoint(-26, 48, 2000, {.minSpeed = 50}, false);
+    chassis.moveToPose(-45,17,180,2000,{},false);
+
+    hook.set_value(true);
+    pros::delay(100);
+    chassis.moveFor(10,2000,{.forwards = false},false);
+    intake.set(Intake::IntakeState::INTAKING);
+    hook.set_value(false);
+    chassis.moveToPoint(-51,14,2000,{},false); // -51,12
+    
+    chassis.turnToPoint(-54,60,2000,{},false); //-53
+    chassis.moveToPoint(-54,61,2000,{},true);  //-53
+    chassis.waitUntil(10);
     intake.set(Intake::IntakeState::STOPPED);
-    arm.scoreWallstake();
-    arm.retract();
-//     pros::delay(3000);
-//     intake.set(Intake::IntakeState::OUTTAKE,90);
-//     chassis.moveFor(15, 1000,{},false);
-//     chassis.turnToPoint(-9, 50, 2000);
-//     intake.set(Intake::IntakeState::INTAKING, 127);
-//     pros::delay(1000);
+    chassis.turnToHeading(-75,2000,{},true);
+    chassis.waitUntil(60);
+    hook.set_value(true);
+    pros::delay(500);
+    chassis.swingToHeading(180,DriveSide::LEFT,2000,{.minSpeed = 127},false);
 
+    // chassis.turnToPoint(-68,69,2000,{},false);
+    // chassis.moveFor(60,2000,{.maxSpeed = 127},true);
+    // chassis.waitUntil(10);
+    // intake.set(Intake::IntakeState::OUTTAKE,127);
+    // pros::delay(1000);
+    // intake.set(Intake::IntakeState::INTAKING,127);
+    // chassis.moveFor(10,2000,{.maxSpeed = 127},true);
+    // chassis.moveFor(10,2000,{.forwards = false},true);
+    // chassis.moveFor(5,2000,{},false);
+    // chassis.moveFor(5,2000,{.forwards = false},false);
 
-// chassis.moveFor(20, 1000,{.forwards = false});
-
-
-    // releasing stake near POSITIVE CORNER
-    // chassis.turnToPoint(40, 0, 2000, {}, false);
-    // chassis.moveToPoint(40, 0, 3000,
-    //                     {
-    //                         .maxSpeed = 90,
-    //                         .minSpeed = 50,
-    //                         .earlyExitRange = 5,
-    //                     },
-    //                     false);
+    // chassis.moveToPoint(-12,63,3000,{},false);
     // intake.set(Intake::IntakeState::STOPPED);
-
-    // chassis.moveToPoint(44, -45, 3000, {.maxSpeed = 70}, true);
-    // chassis.waitUntil(15);
-    // clamp.set_value(false);
-
-    // // clamp next goal
-    // chassis.turnToPoint(21, -26, 2000, {.forwards = false}, false);
-    // chassis.moveToPoint(21, -26, 2000, {.forwards = false, .maxSpeed = 70}, true);
-    // chassis.waitUntil(25);
-    // clamp.set_value(true);
-
-    // // scoring next ring
-    // chassis.moveToPoint(21, -50, 2000, {}, true);
-    // pros::delay(500);
-    // intake.set(Intake::IntakeState::INTAKING, 127);
-
-    // // touching bar
+    // arm.scoreWallstake();
+    // chassis.moveFor(10,2000,{.forwards = false},false);
+    // arm.retract();
     // chassis.turnToPoint(13, -24, 2000, {.minSpeed = 50}, false);
     // chassis.moveToPoint(13, -24, 2000, {.minSpeed = 60}, false);
 }
@@ -824,14 +793,15 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
     // rightRed();
-    mogoRush_Red();
+    // mogoRushRed();
+    // mogoRushBlue();
     //awpRed();
     // awpBlue();
-    // elimRedTopSide();H
+    // elimRedTopSide();
+    elimBlueTopSide();
     //rightBlue();
     //topElim_Red();
-    //prog();
-    // mogoRush_Red();
+    // prog();
     //positiveRed();
     // chassis.moveFor(12,2000,{},false);
 }
