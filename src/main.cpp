@@ -380,17 +380,19 @@ void awpRed() {
 
     // clamp next goal
     chassis.turnToPoint(-21, -26, 2000, {.forwards = false}, false);
-    chassis.moveToPoint(-21, -26, 2000, {.forwards = false, .maxSpeed = 70}, true);
+    chassis.moveToPoint(-21, -26, 2000, {.forwards = false, .maxSpeed = 60}, true);
     chassis.waitUntil(25);
     clamp.set_value(true);
-
-    // scoring next ring
-    chassis.moveToPoint(-23, -50, 2000, {.maxSpeed = 60}, true);
-    pros::delay(500);
+    chassis.waitUntilDone();
     intake.set(Intake::IntakeState::INTAKING, 127);
 
+    // scoring next ring
+    chassis.moveToPoint(-23, -50, 2000, {.maxSpeed = 65}, false);
+    
+    
+
     // touching bar
-    chassis.turnToPoint(-13, -24, 2000, {.minSpeed = 50}, false);
+    chassis.turnToPoint(-13, -24, 2000, {.maxSpeed = 70}, false);
     chassis.moveToPoint(-13, -24, 2000, {.minSpeed = 60}, false);
 }
 
@@ -619,10 +621,10 @@ void autonomous() {
     // chassis.waitUntilDone();
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
-    halfAwpRed();
+    //halfAwpRed();
     // mogoRushRed();
     // mogoRushBlue();
-    // awpRed();
+     awpRed();
     // awpBlue();
     // elimRedTopSide();
     // elimBlueTopSide();
