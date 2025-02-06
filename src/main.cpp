@@ -294,7 +294,9 @@ void mogoRushRed() {
     arm.retract();
     chassis.turnToPoint(-58, -26, 2000, {}, true);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveToPose(-58, -26, -90, 2000, {}, true);
+    chassis.moveToPose(-58,-26,-90,2000,{},true);
+    pros::delay(1000);
+    clamp.set_value(true);
 }
 
 void mogoRushBlue() {
@@ -311,13 +313,14 @@ void mogoRushBlue() {
     chassis.turnToHeading(90, 2000, {.direction = AngularDirection::CCW_COUNTERCLOCKWISE}, false);
     hook.set_value(false);
     // chassis.turnToPoint(24,-15,2000,{.forwards = false},false);
-    chassis.moveToPose(23, -20, -180, 2000, {.forwards = false, .maxSpeed = 70}, true);
-    chassis.waitUntil(33);
+    chassis.moveToPoint(12,-47,2000,{.forwards = false,.maxSpeed = 90,.minSpeed = 20,.earlyExitRange = 10},false);
+    chassis.moveToPose(23, -20, -180, 2000, {.forwards = false, .maxSpeed = 70}, true); // was 23,-20 // was 21, -14.5
+    chassis.waitUntil(30);
     clamp.set_value(true);
-    chassis.moveToPoint(8, -59, 2000, {.maxSpeed = 70}, false); // was 4,-61
-    chassis.turnToHeading(-90 - 42, 2000, {}, false); // was -90-42
-    chassis.moveFor(4.5, 2000, {}, false);
-    chassis.turnToHeading(-90 - 46, 1000, {}, false);
+    chassis.moveToPoint(7, -61, 3000, {.maxSpeed = 70}, false); // was 4,-61
+    chassis.turnToHeading(-90 - 46, 2000, {}, false); // was -90-42
+    chassis.moveFor(3.5, 2000, {}, false);
+    chassis.turnToHeading(-90 - 47, 1000, {}, false);
     intake.set(Intake::IntakeState::STOPPED);
     arm.scoreWallstake();
     intake.set(Intake::IntakeState::OUTTAKE, 90);
@@ -327,7 +330,9 @@ void mogoRushBlue() {
     arm.retract();
     chassis.turnToPoint(58, -26, 2000, {}, true);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveToPose(58, -26, 90, 2000, {}, true);
+    chassis.moveToPose(58,-28, 90,2000,{},false);
+    pros::delay(1000);
+    clamp.set_value(false);
 }
 
 void awpRed() {
@@ -621,10 +626,10 @@ void autonomous() {
     // chassis.waitUntilDone();
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
-    //halfAwpRed();
+    // halfAwpRed();
     // mogoRushRed();
-    // mogoRushBlue();
-     awpRed();
+    mogoRushBlue();
+    // awpRed();
     // awpBlue();
     // elimRedTopSide();
     // elimBlueTopSide();
