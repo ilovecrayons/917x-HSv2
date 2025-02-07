@@ -284,7 +284,7 @@ void mogoRushRed() {
     chassis.moveToPoint(-10, -56, 2000, {.maxSpeed = 70}, false); // was 4,-61
     chassis.turnToHeading(+90 + 39, 2000, {}, false); // was -90-42
     chassis.moveFor(7, 2000, {}, false);
-    chassis.turnToHeading(90 + 47, 1000, {}, false);
+    chassis.turnToHeading(90 + 48, 1000, {}, false);
     intake.set(Intake::IntakeState::STOPPED);
     arm.scoreWallstake();
     intake.set(Intake::IntakeState::OUTTAKE, 90);
@@ -294,7 +294,7 @@ void mogoRushRed() {
     arm.retract();
     chassis.turnToPoint(-58, -26, 2000, {}, true);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveToPose(-58,-26,-90,2000,{},true);
+    chassis.moveToPose(-59,-25,-90,2000,{},true);
     pros::delay(1000);
     clamp.set_value(true);
 }
@@ -302,7 +302,7 @@ void mogoRushRed() {
 void mogoRushBlue() {
     chassis.setPose(54, -36, -90);
     intake.set(Intake::IntakeState::INTAKING, 127);
-    chassis.moveToPose(12, -50, -105, 2000, {.maxSpeed = 90}, true);
+    chassis.moveToPose(12, -50, -105, 2000, {.maxSpeed = 100}, true);
     arm.loadWallstake();
     chassis.waitUntil(34);
     hook.set_value(true);
@@ -310,17 +310,17 @@ void mogoRushBlue() {
     // chassis.waitUntil(25);
     // intake.set(Intake::IntakeState::STOPPED);
     // chassis.waitUntilDone();
-    chassis.turnToHeading(90, 2000, {.direction = AngularDirection::CCW_COUNTERCLOCKWISE}, false);
+    chassis.turnToHeading(90, 2000, {.direction = AngularDirection::CCW_COUNTERCLOCKWISE, .maxSpeed = 90}, false);
     hook.set_value(false);
     // chassis.turnToPoint(24,-15,2000,{.forwards = false},false);
-    chassis.moveToPoint(12,-47,2000,{.forwards = false,.maxSpeed = 90,.minSpeed = 20,.earlyExitRange = 10},false);
-    chassis.moveToPose(23, -20, -180, 2000, {.forwards = false, .maxSpeed = 70}, true); // was 23,-20 // was 21, -14.5
-    chassis.waitUntil(30);
+    chassis.moveToPoint(12,-47,2000,{.forwards = false,.maxSpeed = 90,.minSpeed = 40,.earlyExitRange = 10},false);
+    chassis.moveToPose(23, -19, -180, 2000, {.forwards = false, .maxSpeed = 70}, true); // was 23,-20 // was 21, -14.5
+    chassis.waitUntil(32);
     clamp.set_value(true);
-    chassis.moveToPoint(7, -61, 3000, {.maxSpeed = 70}, false); // was 4,-61
-    chassis.turnToHeading(-90 - 46, 2000, {}, false); // was -90-42
+    chassis.moveToPoint(7, -61, 3000, {.maxSpeed = 80}, false); // was 4,-61
+    chassis.turnToHeading(-90 - 48, 2000, {}, false); // was -90-42
     chassis.moveFor(3.5, 2000, {}, false);
-    chassis.turnToHeading(-90 - 47, 1000, {}, false);
+    chassis.turnToHeading(-90 - 47, 500, {}, false);
     intake.set(Intake::IntakeState::STOPPED);
     arm.scoreWallstake();
     intake.set(Intake::IntakeState::OUTTAKE, 90);
@@ -328,9 +328,11 @@ void mogoRushBlue() {
     chassis.moveFor(10, 2000, {.forwards = false});
     chassis.waitUntil(5);
     arm.retract();
-    chassis.turnToPoint(58, -26, 2000, {}, true);
+    chassis.turnToPoint(30, -35, 2000, {}, true);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveToPose(58,-28, 90,2000,{},false);
+    //chassis.moveToPose(58,-28, 90,2000,{},false);
+    chassis.moveToPoint(30, -35, 2000, {.minSpeed = 50, .earlyExitRange = 6}, false);
+    chassis.moveToPoint(58, -28, 2000, {.maxSpeed = 80}, false);
     pros::delay(1000);
     clamp.set_value(false);
 }
@@ -485,13 +487,13 @@ void halfAwpRed() {
     pros::delay(30);
 
     // touch bar
-    chassis.turnToPoint(-40, 0, 2000, {}, false);
-    chassis.moveToPoint(-10, 30, 3000,
+    chassis.turnToPoint(-22, 26, 2000, {}, false);
+    chassis.moveToPoint(-22, 26, 3000,
                         {
                             .maxSpeed = 80,
                         },
                         false);
-    chassis.moveToPoint(-20, 10, 2000, {.maxSpeed = 70});
+    chassis.moveToPoint(-19, 10, 2000, {.maxSpeed = 70});
 }
 
 void halfAwpBlue() {}
@@ -626,15 +628,15 @@ void autonomous() {
     // chassis.waitUntilDone();
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
-    // halfAwpRed();
-    // mogoRushRed();
-    mogoRushBlue();
+    //halfAwpRed();
+    mogoRushRed();
+    //mogoRushBlue();
     // awpRed();
     // awpBlue();
     // elimRedTopSide();
-    // elimBlueTopSide();
+    //elimBlueTopSide();
 
-    // prog();
+    //prog();
     // chassis.moveFor(12,2000,{},false);
 }
 
