@@ -318,7 +318,7 @@ void mogoRushBlue() {
     chassis.waitUntil(32);
     clamp.set_value(true);
     chassis.moveToPoint(7, -61, 3000, {.maxSpeed = 80}, false); // was 4,-61
-    chassis.turnToHeading(-90 - 48, 2000, {}, false); // was -90-42
+    chassis.turnToHeading(-90 - 50, 2000, {}, false); // was -90-48
     chassis.moveFor(3.5, 2000, {}, false);
     chassis.turnToHeading(-90 - 47, 500, {}, false);
     intake.set(Intake::IntakeState::STOPPED);
