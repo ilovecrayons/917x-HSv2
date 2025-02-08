@@ -350,7 +350,7 @@ void awpRed() {
     pros::delay(500);
     arm.retract();
     // chassis.waitUntilDone();
-    chassis.waitUntil(33);
+    chassis.waitUntil(31);
     clamp.set_value(true);
 
     // first ring
@@ -629,9 +629,9 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
     //halfAwpRed();
-    mogoRushRed();
+    //mogoRushRed();
     //mogoRushBlue();
-    // awpRed();
+    awpRed();
     // awpBlue();
     // elimRedTopSide();
     //elimBlueTopSide();
