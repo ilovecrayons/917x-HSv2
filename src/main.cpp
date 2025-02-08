@@ -112,13 +112,13 @@ void prog() {
     pros::delay(200);
 
     // autistic ass mf of a wallstake
-    chassis.moveToPoint(6.8, -45.5, 4000, {.forwards = false, .maxSpeed = 70}, false); // was 6.3 and 5.5 after
+    chassis.moveToPoint(4.8, -45.5, 4000, {.forwards = false, .maxSpeed = 70}, false); // was 6.3 and 5.5 after // was 6.8 dropped to 4.8 went up to 5.8 dropped to 5.3
     chassis.turnToHeading(180, 3000, {.maxSpeed = 100});
     intake.set(Intake::IntakeState::STOPPED);
     pros::delay(200);
     intake.set(Intake::IntakeState::INTAKING);
     chassis.waitUntilDone();
-    chassis.moveFor(19.8, 1300, {.maxSpeed = 70}, false);
+    chassis.moveFor(19.3, 1300, {.maxSpeed = 70}, false);
     // chassis.moveToPoint(4,-54.75,1000,{},false);
 
     intake.set(Intake::IntakeState::OUTTAKE, 30);
@@ -128,7 +128,7 @@ void prog() {
     intake.set(Intake::IntakeState::INTAKING);
 
     chassis.turnToPoint(-40, -55.5, 2000, {}, false);
-    chassis.moveToPose(-40, -55.5, -90, 3000, {.maxSpeed = 75}, false);
+    chassis.moveToPose(-40, -54.5, -90, 3000, {.maxSpeed = 75}, false);
 
     chassis.moveFor(14, 3000, {.maxSpeed = 80});
     pros::delay(100);
@@ -183,7 +183,7 @@ void prog() {
     intake.set(Intake::IntakeState::OUTTAKE, 30);
 
     // score second wallstake
-    chassis.moveToPoint(10, 46, 3000, {.maxSpeed = 60}, true);
+    chassis.moveToPoint(10.5, 46, 3000, {.maxSpeed = 60}, true); // was x = 10
     chassis.waitUntil(9);
     arm.loadWallstake();
     intake.set(Intake::IntakeState::INTAKING);
@@ -191,7 +191,7 @@ void prog() {
     chassis.moveFor(18.5, 2000, {.maxSpeed = 60}, true);
     chassis.waitUntilDone();
     pros::delay(750);
-    intake.set(Intake::IntakeState::OUTTAKE, 30);
+    intake.set(Intake::IntakeState::STOPPED);
     arm.scoreWallstake();
     arm.retract();
 
@@ -216,10 +216,10 @@ void prog() {
     intake.set(Intake::INTAKING);
     chassis.moveToPoint(60, 57, 3000, {.maxSpeed = 90}, false);
     // chassis.moveFor(60,3000,{},true);
-    chassis.turnToPoint(69, 65, 2000, {.forwards = false}, false);
+    chassis.turnToPoint(72, 65, 2000, {.forwards = false}, false);
     intake.set(Intake::IntakeState::OUTTAKE, 50);
     clamp.set_value(false);
-    chassis.moveToPoint(69, 65, 1000, {.forwards = false}, false);
+    chassis.moveToPoint(72, 65, 1000, {.forwards = false}, false);
 
     chassis.moveToPoint(60, 55, 2000, {.minSpeed = 120, .earlyExitRange = 6});
     intake.set(Intake::IntakeState::STOPPED);
@@ -629,14 +629,14 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
     //halfAwpRed();
-    mogoRushRed();
+    // mogoRushRed();
     //mogoRushBlue();
     // awpRed();
     // awpBlue();
     // elimRedTopSide();
     //elimBlueTopSide();
 
-    //prog();
+    prog();
     // chassis.moveFor(12,2000,{},false);
 }
 
