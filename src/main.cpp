@@ -112,7 +112,7 @@ void prog() {
     pros::delay(200);
 
     // autistic ass mf of a wallstake
-    chassis.moveToPoint(4.8, -45.5, 4000, {.forwards = false, .maxSpeed = 70}, false); // was 4.8
+    chassis.moveToPoint(5.8, -45.5, 4000, {.forwards = false, .maxSpeed = 70}, false); // was 4.8
     chassis.turnToHeading(180, 3000, {.maxSpeed = 100});
     intake.set(Intake::IntakeState::STOPPED);
     pros::delay(200);
@@ -633,14 +633,14 @@ void autonomous() {
     // chassis.moveToPoint(0,0, 10000, {.maxSpeed = 80});
     // chassis.waitUntilDone();
     //halfAwpRed();
-    // mogoRushRed();
+    mogoRushRed();
     // mogoRushBlue();
-    //awpRed();
+    // awpRed();
     // awpBlue();
     // elimRedTopSide();
     //elimBlueTopSide();
 
-    prog();
+    // prog();
     // chassis.moveFor(12,2000,{},false);
 }
 
