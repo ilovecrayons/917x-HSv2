@@ -19,6 +19,7 @@ float up;
 float down;
 bool clamped = false;
 bool hooked = false;
+int autoSelector = 0;
 
 void printTelemetry() {
     while (true) {
@@ -35,6 +36,19 @@ void printTelemetry() {
                             rightMotors.get_temperature(1), rightMotors.get_temperature(2));
 
         pros::screen::print(pros::E_TEXT_MEDIUM, 7, "intake temp: %.1f", intake.motor.get_temperature());
+
+        switch (autoSelector) {
+            case 0: pros::screen::print(pros::E_TEXT_MEDIUM, 8, "Auto: Prog"); break;
+            case 1: pros::screen::print(pros::E_TEXT_MEDIUM, 8, "Auto: AWP Red"); break;
+            case 2: pros::screen::print(pros::E_TEXT_MEDIUM, 8, "Auto: AWP Blue"); break;
+            case 3: pros::screen::print(pros::E_TEXT_MEDIUM, 8, "Auto: Half AWP Red"); break;
+            case 4: pros::screen::print(pros::E_TEXT_MEDIUM, 8, "Auto: Half AWP Blue"); break;
+            case 5: pros::screen::print(pros::E_TEXT_MEDIUM, 8, "Auto: Mogo Rush Red"); break;
+            case 6: pros::screen::print(pros::E_TEXT_MEDIUM, 8, "Auto: Mogo Rush Blue"); break;
+            case 7: pros::screen::print(pros::E_TEXT_MEDIUM, 8, "Auto: Elim Red Top Side"); break;
+            case 8: pros::screen::print(pros::E_TEXT_MEDIUM, 8, "Auto: Elim Blue Top Side"); break;
+            default: break;
+        }
 
         std::cout << pose.x << " " << pose.y << " " << imu.get_rotation() << pose.theta << std::endl;
 
@@ -56,14 +70,28 @@ void competition_initialize() {}
 
 void autonomous() {
     // halfAwpRed();
+    // halfAwpBlue();
     // mogoRushRed();
-    //mogoRushBlue();
+    // mogoRushBlue();
     // awpRed();
     // awpBlue();
     // elimRedTopSide();
     // elimBlueTopSide();
-    prog();
+    // prog();
     // chassis.moveFor(12,2000,{},false);
+
+    switch (autoSelector) {
+        case 0: prog(); break;
+        case 1: awpRed(); break;
+        case 2: awpBlue(); break;
+        case 3: halfAwpRed(); break;
+        case 4: halfAwpBlue(); break;
+        case 5: mogoRushRed(); break;
+        case 6: mogoRushBlue(); break;
+        case 7: elimRedTopSide(); break;
+        case 8: elimBlueTopSide(); break;
+        default: break;
+    }
 }
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
@@ -115,6 +143,11 @@ void opcontrol() {
             controller.get_digital(DIGITAL_R2) == false) // stop intake
         {
             intake.set(Intake::IntakeState::STOPPED);
+        }
+
+        if (controller.get_digital(DIGITAL_X)) {
+            autoSelector++;
+            if (autoSelector > 8) { autoSelector = 0; }
         }
 
         pros::delay(10);
