@@ -57,12 +57,12 @@ void competition_initialize() {}
 void autonomous() {
     // halfAwpRed();
     // mogoRushRed();
-    mogoRushBlue();
+    //mogoRushBlue();
     // awpRed();
     // awpBlue();
     // elimRedTopSide();
     // elimBlueTopSide();
-    // prog();
+    prog();
     // chassis.moveFor(12,2000,{},false);
 }
 

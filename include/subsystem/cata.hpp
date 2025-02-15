@@ -16,9 +16,9 @@ class Cata {
 
         void moveTo(int position, bool async = false, int timeout = 2000, int slewrate = 0);
 
-        void load(float position = 0, bool async = false);
+        void load(float position = 1, bool async = false);
 
-        void score(float position = 0, bool async = false, int slewrate = 0); 
+        void score(float position = 225, bool async = false, int slewrate = 0); 
         
         void toggle();
 

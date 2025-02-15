@@ -6,7 +6,7 @@
 
 // ports
 constexpr int RIGHT_F = 7;
-constexpr int RIGHT_M = 20;
+constexpr int RIGHT_M = 0;
 constexpr int RIGHT_B = -18;
 
 constexpr int LEFT_F = -12;
@@ -18,8 +18,8 @@ constexpr int HORI_ROT = -5;
 
 constexpr int INTAKE = -15;
 
-constexpr int CATA = 69;
-constexpr int CATA_ROT = 3;
+constexpr int CATA = -20;
+constexpr int CATA_ROT = 10;
 
 constexpr char CLAMP = 'A';
 constexpr char HOOK = 'B';
@@ -37,7 +37,7 @@ inline pros::MotorGroup leftMotors({LEFT_F, LEFT_M, LEFT_B}, pros::MotorGearset:
 // cata
 inline pros::Motor cataMotor(CATA, pros::MotorGearset::green);
 inline pros::Rotation cataRot(CATA_ROT);
-inline Cata cata(&cataMotor, &cataRot, 2, 0, 2);
+inline Cata cata(&cataMotor, &cataRot, 1.5, 0, 2);
 
 // intake
 inline pros::Motor intakeMotor(INTAKE, pros::MotorGearset::blue);

@@ -74,7 +74,7 @@ void Cata::moveTo(int position, bool async, int timeout, int slewrate) {
             exitCondition.update(error); // update the exit condition
 
             pros::delay(10); // delay to save resources
-            pros::screen::print(pros::E_TEXT_MEDIUM, 6, "error: %d", error); // prints error to screen for debugging
+            pros::screen::print(pros::E_TEXT_MEDIUM, 8, "error: %d", error); // prints error to screen for debugging
         }
         motor->brake(); // stops motor
     }
@@ -115,9 +115,9 @@ void Cata::score(float position, bool async, int slewrate) {
     motor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
     if (async) {
-        moveTo(position, true, slewrate);
+        moveTo(position, true, 2000, slewrate);
     } else {
-        moveTo(position, false, slewrate);
+        moveTo(position, false, 2000, slewrate);
     }
 }
 
