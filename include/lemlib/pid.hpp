@@ -70,8 +70,6 @@ class PID {
         // gets the kP, kI, and kD gains
         std::vector<float> getGains();
 
-        //program to make tuning PID algs easier
-        void constantChanger(pros::Controller& controller);
     protected:
         // 917x custom: kP, kI, and kD changed to dynamic
         // gains

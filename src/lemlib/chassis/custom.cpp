@@ -194,3 +194,22 @@ void lemlib::Chassis::collectDistances(pros::Distance& distanceSensor) {
 }
 
 void lemlib::Chassis::endCollectDistances() { this->inDistanceCollection = false; }
+
+void lemlib::Chassis::setConstantState(Chassis::ConstantState state) {
+    switch (state) {
+        case Chassis::ConstantState::DEFAULT:
+            this->lateralPID.setGains(defaultConstants.lateralkP, defaultConstants.lateralkI, defaultConstants.lateralkD);
+            this->angularPID.setGains(defaultConstants.angularkP, defaultConstants.angularkI, defaultConstants.angularkD);
+            break;
+        case Chassis::ConstantState::EMPTY:
+            this->lateralPID.setGains(emptyConstants.lateralkP, emptyConstants.lateralkI, emptyConstants.lateralkD);
+            this->angularPID.setGains(emptyConstants.angularkP, emptyConstants.angularkI, emptyConstants.angularkD);
+            break;
+        case Chassis::ConstantState::FULL:
+            this->lateralPID.setGains(fullConstants.lateralkP, fullConstants.lateralkI, fullConstants.lateralkD);
+            this->angularPID.setGains(fullConstants.angularkP, fullConstants.angularkI, fullConstants.angularkD);
+            break;
+        default:
+            break;
+    }
+}

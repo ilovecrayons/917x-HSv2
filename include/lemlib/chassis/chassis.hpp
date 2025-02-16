@@ -925,7 +925,42 @@ class Chassis {
         void endCollectDistances();
         bool inDistanceCollection = false;
 
-        PID lateralPID;
+        enum class ConstantState {
+                DEFAULT,
+                EMPTY,
+                FULL
+        };
+
+        struct DefaultConstants {
+                float lateralkP = 0;
+                float lateralkI = 0;
+                float lateralkD = 0;
+                float angularkP = 0;
+                float angularkI = 0;
+                float angularkD = 0;
+        };
+
+        struct EmptyConstants {
+                float lateralkP = 0;
+                float lateralkI = 0;
+                float lateralkD = 0;
+                float angularkP = 0;
+                float angularkI = 0;
+                float angularkD = 0;
+        };
+
+        struct FullConstants {
+                float lateralkP = 0;
+                float lateralkI = 0;
+                float lateralkD = 0;
+                float angularkP = 0;
+                float angularkI = 0;
+                float angularkD = 0;
+        };
+
+        void setConstantState(ConstantState state);
+
+        
         /**
          * PIDs are exposed so advanced users can implement things like gain scheduling
          * Changes are immediate and will affect a motion in progress
@@ -933,6 +968,8 @@ class Chassis {
          * @warning Do not interact with these unless you know what you are doing
          */
         PID angularPID;
+        PID lateralPID;
+
     protected:
         /**
          * @brief Indicates that this motion is queued and blocks current task until this motion reaches front of queue
@@ -959,6 +996,11 @@ class Chassis {
         ExitCondition lateralSmallExit;
         ExitCondition angularLargeExit;
         ExitCondition angularSmallExit;
+
+        // 917x custom
+        DefaultConstants defaultConstants;
+        EmptyConstants emptyConstants;
+        FullConstants fullConstants;
     private:
         pros::Mutex mutex;
 };

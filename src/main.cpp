@@ -57,11 +57,11 @@ void printTelemetry() {
 }
 
 void initialize() {
-    pros::delay(500);
+    pros::delay(1000);
     chassis.calibrate(); // calibrate the chassis
     pros::Task printOdomTask(printTelemetry); // create a task to print the odometry values
-    pros::Task task {[=] { intake.intakeControl(); }};
-    cata.initialize();
+    pros::Task task {[=] { intake.intakeControl(); }}; // create a task to control the intake
+    cata.initialize(); // initialize the cata object
 }
 
 void disabled() {}
@@ -149,7 +149,7 @@ void opcontrol() {
             autoSelector++;
             if (autoSelector > 8) { autoSelector = 0; }
         }
-
+        
         pros::delay(10);
     }
 }
