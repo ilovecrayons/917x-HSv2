@@ -20,7 +20,7 @@
 Cata::Cata(pros::Motor* motor, pros::Rotation* rotation, float kP, float kI, float kD, float exitRange, float exitTime)
     : motor(motor),
       rotation(rotation),
-      pid(kP, kI, kD),
+      pid(kP, kI, kD, 15, true),
       exitCondition(exitRange, exitTime) {
     motor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
@@ -115,9 +115,9 @@ void Cata::score(float position, bool async, int slewrate) {
     motor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
     if (async) {
-        moveTo(position, true, 2000, slewrate);
+        moveTo(position, true, 1000, slewrate);
     } else {
-        moveTo(position, false, 2000, slewrate);
+        moveTo(position, false, 1000, slewrate);
     }
 }
 

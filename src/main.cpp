@@ -79,7 +79,17 @@ void autonomous() {
     // elimBlueTopSide();
     // prog();
     // chassis.moveFor(12,2000,{},false);
+    //tune();
+    chassis.moveToPoint(0,30, 10000);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(0,0, 10000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.turnToHeading(90, 10000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(0,10000);
+    chassis.waitUntilDone();
 
+    /** 
     switch (autoSelector) {
         case 0: prog(); break;
         case 1: awpRed(); break;
@@ -92,6 +102,7 @@ void autonomous() {
         case 8: elimBlueTopSide(); break;
         default: break;
     }
+    */
 }
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
