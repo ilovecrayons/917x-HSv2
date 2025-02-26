@@ -80,14 +80,15 @@ void autonomous() {
     // prog();
     // chassis.moveFor(12,2000,{},false);
     //tune();
-    chassis.moveToPoint(0,30, 10000);
-    chassis.waitUntilDone();
-    chassis.moveToPoint(0,0, 10000, {.forwards = false});
-    chassis.waitUntilDone();
-    chassis.turnToHeading(90, 10000);
-    chassis.waitUntilDone();
-    chassis.turnToHeading(0,10000);
-    chassis.waitUntilDone();
+    // chassis.moveToPoint(0,30, 10000);
+    // chassis.waitUntilDone();
+    // chassis.moveToPoint(0,0, 10000, {.forwards = false});
+    // chassis.waitUntilDone();
+    // chassis.turnToHeading(90, 10000);
+    // chassis.waitUntilDone();
+    // chassis.turnToHeading(0,10000);
+    // chassis.waitUntilDone();
+    prog();
 
     /** 
     switch (autoSelector) {
