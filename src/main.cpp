@@ -79,7 +79,7 @@ void autonomous() {
     // elimBlueTopSide();
     // prog();
     // chassis.moveFor(12,2000,{},false);
-    //tune();
+    tune();
     // chassis.moveToPoint(0,30, 10000);
     // chassis.waitUntilDone();
     // chassis.moveToPoint(0,0, 10000, {.forwards = false});
@@ -88,7 +88,7 @@ void autonomous() {
     // chassis.waitUntilDone();
     // chassis.turnToHeading(0,10000);
     // chassis.waitUntilDone();
-    prog();
+    //prog();
 
     /** 
     switch (autoSelector) {

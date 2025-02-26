@@ -83,9 +83,9 @@ inline lemlib::ControllerSettings linearController(10, //12      proportional ga
 );
 
 // angular motion controller
-inline lemlib::ControllerSettings angularController(4.1, //4.1  proportional gain (kP)
+inline lemlib::ControllerSettings angularController(4.2, //4.1  proportional gain (kP)
                                                     0, // 0     integral gain (kI)
-                                                    38, // 38   derivative gain (kD)
+                                                    42, // 38   derivative gain (kD)
                                                     0, //       anti windup
                                                     1, // 1     small error range, in degrees
                                                     100, //100  small error range timeout, in milliseconds
