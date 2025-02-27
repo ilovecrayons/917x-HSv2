@@ -927,39 +927,31 @@ class Chassis {
 
         enum class ConstantState {
                 DEFAULT,
-                EMPTY,
-                FULL
+                MOGO
         };
 
         struct DefaultConstants {
-                float lateralkP = 0;
+                float lateralkP = 10;
                 float lateralkI = 0;
-                float lateralkD = 0;
-                float angularkP = 0;
+                float lateralkD = 50;
+                float angularkP = 2.125;
                 float angularkI = 0;
-                float angularkD = 0;
+                float angularkD = 15;
         };
 
-        struct EmptyConstants {
-                float lateralkP = 0;
+        struct MogoConstants {
+                float lateralkP = 10.5;
                 float lateralkI = 0;
-                float lateralkD = 0;
-                float angularkP = 0;
+                float lateralkD = 70;
+                float angularkP = 1.99;
                 float angularkI = 0;
-                float angularkD = 0;
-        };
-
-        struct FullConstants {
-                float lateralkP = 0;
-                float lateralkI = 0;
-                float lateralkD = 0;
-                float angularkP = 0;
-                float angularkI = 0;
-                float angularkD = 0;
+                float angularkD = 15;
         };
 
         void setConstantState(ConstantState state);
-
+        
+        DefaultConstants defaultConstants;
+        MogoConstants mogoConstants;
         
         /**
          * PIDs are exposed so advanced users can implement things like gain scheduling
@@ -997,10 +989,7 @@ class Chassis {
         ExitCondition angularLargeExit;
         ExitCondition angularSmallExit;
 
-        // 917x custom
-        DefaultConstants defaultConstants;
-        EmptyConstants emptyConstants;
-        FullConstants fullConstants;
+        
     private:
         pros::Mutex mutex;
 };

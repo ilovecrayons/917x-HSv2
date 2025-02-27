@@ -1,6 +1,7 @@
+#include "lemlib/chassis/chassis.hpp"
 #include "config.hpp"
 
-void tune(){
+inline void tune(){
     // chassis.setPose(0,0,0);
     // chassis.moveFor(24, 10000);
     // chassis.waitUntilDone();
@@ -18,13 +19,41 @@ void tune(){
     // chassis.waitUntilDone();
     // chassis.lateralPID.setGains(26,0,150);
     chassis.setPose(0,0,0);
-    // chassis.moveToPoint(0,30, 10000);
-    // chassis.waitUntilDone();
-    // chassis.moveToPoint(0,0, 10000, {.forwards = false});
-    // chassis.waitUntilDone();
+    chassis.defaultConstants = {10,0,50,2.125, 0, 15};
+    chassis.setConstantState
+    (lemlib::Chassis::ConstantState::MOGO);
+    clamp.set_value(true);
+    pros::delay(500);
+    chassis.moveToPoint(0,30, 10000);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(0,0, 10000, {.forwards = false});
+    chassis.waitUntilDone();
     chassis.turnToHeading(90, 10000);
     chassis.waitUntilDone();
     chassis.turnToHeading(0,10000);
     chassis.waitUntilDone();
+    chassis.turnToHeading(90, 10000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(0,10000);
+    chassis.waitUntilDone();
+    clamp.set_value(false);
+
+    // chassis.setConstantState(lemlib::Chassis::ConstantState::DEFAULT);
+    // pros::delay(500);
+
+    // chassis.moveToPoint(0,30, 10000);
+    // chassis.waitUntilDone();
+    // chassis.moveToPoint(0,0, 10000, {.forwards = false});
+    // chassis.waitUntilDone();
+    // chassis.turnToHeading(90, 10000);
+    // chassis.waitUntilDone();
+    // chassis.turnToHeading(0,10000);
+    // chassis.waitUntilDone();
+    // chassis.turnToHeading(90, 10000);
+    // chassis.waitUntilDone();
+    // chassis.turnToHeading(0,10000);
+    // chassis.waitUntilDone();
     
+    
+
 }
