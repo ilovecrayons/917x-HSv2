@@ -2,7 +2,7 @@
 
 inline void raiseHook(){
     hook.set_value(true);
-    cata.score(40,false);
+    cata.score(40,false,4);
 }
 
 void lowerHook(){
