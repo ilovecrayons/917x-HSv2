@@ -18,8 +18,13 @@ void tune(){
     // chassis.waitUntilDone();
     // chassis.lateralPID.setGains(26,0,150);
     chassis.setPose(0,0,0);
-    chassis.moveToPoint(0,-30, 10000);
+    // chassis.moveToPoint(0,30, 10000);
+    // chassis.waitUntilDone();
+    // chassis.moveToPoint(0,0, 10000, {.forwards = false});
+    // chassis.waitUntilDone();
+    chassis.turnToHeading(90, 10000);
     chassis.waitUntilDone();
-    chassis.moveToPoint(0,0, 10000);
+    chassis.turnToHeading(0,10000);
     chassis.waitUntilDone();
+    
 }
