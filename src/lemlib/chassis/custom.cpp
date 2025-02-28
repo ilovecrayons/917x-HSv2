@@ -31,7 +31,7 @@
  * @see lemlib::Chassis::moveToPose()
  * @see lemlib::Chassis::turnToPoint()
  */
-void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params, bool async) {
+void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params, bool async, bool customHeading, int headingLock) {
     params.earlyExitRange = fabs(params.earlyExitRange);
     this->requestMotionStart();
     // were all motions cancelled?
@@ -52,7 +52,9 @@ void lemlib::Chassis::moveFor(float distance, int timeout, MoveForParams params,
 
     // initialize vars used between iterations
     Pose startingPose = getPose(false);
-    float targetAngle = startingPose.theta;
+    
+    float targetAngle = customHeading ? headingLock : startingPose.theta;
+
     distTraveled = 0;
     Timer timer(timeout);
     bool close = false;

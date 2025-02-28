@@ -25,7 +25,7 @@ constexpr char CLAMP = 'A';
 constexpr char HOOK = 'B';
 constexpr char LIFT = 'C';
 
-constexpr char IMU = 11;
+constexpr char IMU = 21;
 
 // controller
 inline pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -71,22 +71,22 @@ inline lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
 );
 
 // lateral motion controller
-inline lemlib::ControllerSettings linearController(10, //12      proportional gain (kP)
-                                                   0, //       integral gain (kI)
-                                                  50, //65     derivative gain (kD)
-                                                   0, //       anti windup
+inline lemlib::ControllerSettings linearController(8, //12      proportional gain (kP)
+                                                   0.03, //       integral gain (kI)
+                                                  90, //65     derivative gain (kD)
+                                                   3, //       anti windup
                                                    1, // 1     small error range, in inches
                                                    100, //100    small error range timeout, in milliseconds
                                                    3, //3      large error range, in inches
-                                                   500, //500  large error range timeout, in milliseconds
-                                                   0 //20     maximum acceleration (slew)
+                                                   300, //500  large error range timeout, in milliseconds
+                                                   10 //20     maximum acceleration (slew)
 );
 
 // angular motion controller
-inline lemlib::ControllerSettings angularController(2.125, //4.1  proportional gain (kP)
-                                                    0, // 0     integral gain (kI)
-                                                    15, // 38   derivative gain (kD)
-                                                    0, //       anti windup
+inline lemlib::ControllerSettings angularController(5.78, //4.1  proportional gain (kP)
+                                                    0.1, // 0     integral gain (kI)
+                                                    62, // 38   derivative gain (kD)
+                                                   5, //       anti windup
                                                     1, // 1     small error range, in degrees
                                                     100, //100  small error range timeout, in milliseconds
                                                     3, //3      large error range, in degrees

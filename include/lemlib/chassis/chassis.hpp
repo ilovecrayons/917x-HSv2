@@ -692,7 +692,7 @@ class Chassis {
         void moveToPoint(float x, float y, int timeout, MoveToPointParams params = {}, bool async = true);
 
         // 917x custom
-        void moveFor(float distance, int timeout, MoveForParams params = {}, bool async = true);
+        void moveFor(float distance, int timeout, MoveForParams params = {}, bool async = true, bool customHeading = false, int headingLock = 0);
         /**
          * @brief Move the chassis along a path
          *
@@ -931,20 +931,20 @@ class Chassis {
         };
 
         struct DefaultConstants {
-                float lateralkP = 10;
-                float lateralkI = 0;
-                float lateralkD = 50;
-                float angularkP = 2.125;
-                float angularkI = 0;
-                float angularkD = 15;
+                float lateralkP = 8;
+                float lateralkI = 0.03;
+                float lateralkD = 90;
+                float angularkP = 5.78;
+                float angularkI = 0.1;
+                float angularkD = 62;
         };
 
         struct MogoConstants {
                 float lateralkP = 10.5;
-                float lateralkI = 0;
+                float lateralkI = 0.03;
                 float lateralkD = 70;
                 float angularkP = 1.99;
-                float angularkI = 0;
+                float angularkI = 0.2;
                 float angularkD = 15;
         };
 

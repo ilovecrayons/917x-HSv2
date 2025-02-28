@@ -1,7 +1,7 @@
 #include "lemlib/chassis/chassis.hpp"
 #include "config.hpp"
 
-inline void tune(){
+inline void tune() {
     // chassis.setPose(0,0,0);
     // chassis.moveFor(24, 10000);
     // chassis.waitUntilDone();
@@ -18,25 +18,40 @@ inline void tune(){
     // chassis.turnToHeading(0,10000);
     // chassis.waitUntilDone();
     // chassis.lateralPID.setGains(26,0,150);
-    chassis.setPose(0,0,0);
-    chassis.defaultConstants = {10,0,50,2.125, 0, 15};
-    chassis.setConstantState
-    (lemlib::Chassis::ConstantState::MOGO);
+    chassis.setPose(0, 0, 0);
+    //chassis.defaultConstants = {10, 0.01, 80, 4.7, 0.1, 51};
+    chassis.setConstantState(lemlib::Chassis::ConstantState::MOGO);
     clamp.set_value(true);
     pros::delay(500);
-    chassis.moveToPoint(0,30, 10000);
+    chassis.moveToPoint(0, 30, 10000);
     chassis.waitUntilDone();
-    chassis.moveToPoint(0,0, 10000, {.forwards = false});
-    chassis.waitUntilDone();
-    chassis.turnToHeading(90, 10000);
-    chassis.waitUntilDone();
-    chassis.turnToHeading(0,10000);
+    chassis.moveToPoint(0, 0, 10000, {.forwards = false});
     chassis.waitUntilDone();
     chassis.turnToHeading(90, 10000);
     chassis.waitUntilDone();
-    chassis.turnToHeading(0,10000);
+    chassis.turnToHeading(0, 10000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(140, 10000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(0, 10000);
     chassis.waitUntilDone();
     clamp.set_value(false);
+
+    chassis.setConstantState(lemlib::Chassis::ConstantState::DEFAULT);
+    pros::delay(500);
+    chassis.moveToPoint(0, 30, 10000);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(0, 0, 10000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.turnToHeading(90, 10000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(0, 10000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(140, 10000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(0, 10000);
+    chassis.waitUntilDone();
+
 
     // chassis.setConstantState(lemlib::Chassis::ConstantState::DEFAULT);
     // pros::delay(500);
@@ -53,7 +68,4 @@ inline void tune(){
     // chassis.waitUntilDone();
     // chassis.turnToHeading(0,10000);
     // chassis.waitUntilDone();
-    
-    
-
 }
