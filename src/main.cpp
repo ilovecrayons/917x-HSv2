@@ -78,9 +78,9 @@ void autonomous() {
     // awpBlue();
     // elimRedTopSide();
     // elimBlueTopSide();
-    // prog();
+    prog();
     // chassis.moveFor(12,2000,{},false);
-    tune();
+    // tune();
     
     // chassis.moveToPoint(0,30, 10000);
     // chassis.waitUntilDone();
