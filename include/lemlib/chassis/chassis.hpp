@@ -941,11 +941,11 @@ class Chassis {
 
         struct MogoConstants {
                 float lateralkP = 10.5;
-                float lateralkI = 0.03;
+                float lateralkI = 0.05;
                 float lateralkD = 70;
                 float angularkP = 1.99;
                 float angularkI = 0.2;
-                float angularkD = 15;
+                float angularkD = 17;
         };
 
         void setConstantState(ConstantState state);
