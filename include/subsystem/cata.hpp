@@ -21,7 +21,7 @@ class Cata {
         void score(float position = 227, bool async = false, int slewrate = 0); 
 
         void edge();
-        
+
         void toggle();
 
         int getPosition();

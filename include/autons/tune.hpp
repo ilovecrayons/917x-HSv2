@@ -23,9 +23,9 @@ inline void tune() {
     chassis.setConstantState(lemlib::Chassis::ConstantState::MOGO);
     clamp.set_value(true);
     pros::delay(500);
-    chassis.moveToPoint(0, 30, 10000);
+    chassis.moveToPoint(0, 30, 10000,{.maxSpeed = 100});
     chassis.waitUntilDone();
-    chassis.moveToPoint(0, 0, 10000, {.forwards = false});
+    chassis.moveToPoint(0, 0, 10000, {.forwards = false,.maxSpeed = 100});
     chassis.waitUntilDone();
     chassis.turnToHeading(90, 10000);
     chassis.waitUntilDone();
@@ -39,9 +39,9 @@ inline void tune() {
 
     chassis.setConstantState(lemlib::Chassis::ConstantState::DEFAULT);
     pros::delay(500);
-    chassis.moveToPoint(0, 30, 10000);
+    chassis.moveToPoint(0, 30, 10000,{.maxSpeed = 100});
     chassis.waitUntilDone();
-    chassis.moveToPoint(0, 0, 10000, {.forwards = false});
+    chassis.moveToPoint(0, 0, 10000, {.forwards = false,.maxSpeed = 100});
     chassis.waitUntilDone();
     chassis.turnToHeading(90, 10000);
     chassis.waitUntilDone();

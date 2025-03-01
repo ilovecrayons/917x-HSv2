@@ -78,6 +78,8 @@ void autonomous() {
     // awpBlue();
     // elimRedTopSide();
     // elimBlueTopSide();
+    // hook.set_value(true); 
+    
     prog();
     // chassis.moveFor(12,2000,{},false);
     // tune();

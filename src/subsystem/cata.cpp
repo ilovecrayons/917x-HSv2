@@ -123,8 +123,7 @@ void Cata::score(float position, bool async, int slewrate) {
 
 void Cata::edge(){
     this->score();
-    this->load(1,true);
-    pros::delay(500);
+    this->load(1, true);
 }
 
 void Cata::toggle() {
