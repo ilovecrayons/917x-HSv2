@@ -18,7 +18,7 @@ inline void prog() {
     intake.set(Intake::IntakeState::INTAKING);
     chassis.moveToPoint(-22,-24,2000,{.maxSpeed = 105, .minSpeed = 50, .earlyExitRange = 10},false);
     chassis.moveToPoint(3,-58,2000,{.maxSpeed = 105},false); //3,-62
-    chassis.turnToHeading(0,2000,{},false);
+    chassis.turnToHeading(0,2000,{.minSpeed = 80},false);
 
     //uncomment once raise is fixed
     // raiseHook();
@@ -30,9 +30,9 @@ inline void prog() {
     // lowerHook();
     pros::delay(500);
 
-    chassis.moveToPoint(24,-50,2000,{},false);
+    chassis.moveToPoint(27,-50,2000,{},false);
 
-    chassis.turnToPoint(35,-58,2000,{.minSpeed = 80},false);
+    chassis.turnToPoint(34,-59,2000,{.minSpeed = 80},false);
     chassis.moveToPoint(35,-58,2000,{.maxSpeed = 90,.minSpeed = 30, .earlyExitRange = 6},false);
 
     chassis.moveToPoint(52,-63,2000,{.maxSpeed = 105},false);
@@ -46,6 +46,7 @@ inline void prog() {
     chassis.turnToPoint(-22, -54, 2000, {.minSpeed = 80},false);
     cata.edge();
     chassis.moveToPoint(-22,-54,2000,{.maxSpeed = 105},false);
+    pros::delay(500); // cant spin while intaking???
     chassis.turnToPoint(-34,-64,2000,{.minSpeed = 80}, false);
     chassis.moveToPoint(-32,-62,2000,{.minSpeed = 40,.earlyExitRange = 3},false);
     chassis.moveToPoint(-47,-65,2000,{},false);
