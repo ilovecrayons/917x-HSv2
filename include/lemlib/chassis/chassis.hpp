@@ -322,6 +322,10 @@ struct MoveToPointParams {
         /** distance between the robot and target point where the movement will exit. Only has an effect if minSpeed is
          * non-zero.*/
         float earlyExitRange = 0;
+
+        // 917x custom
+        float slowDownRange = 0;
+        float slowDownSpeed = 127;
 };
 
 // 917x custom

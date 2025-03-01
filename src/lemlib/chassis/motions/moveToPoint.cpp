@@ -90,6 +90,12 @@ void lemlib::Chassis::moveToPoint(float x, float y, int timeout, MoveToPointPara
         // but not for decelerating, since that would interfere with settling
         if (!close) lateralOut = slew(lateralOut, prevLateralOut, lateralSettings.slew);
 
+        //917x custom
+        // apply slowdown to lateral speed if within slowing range
+        if (params.slowDownRange != 0 && distTarget < params.slowDownRange) {
+            lateralOut = std::clamp(lateralOut, -params.slowDownSpeed, params.slowDownSpeed);
+        }
+
         // prevent moving in the wrong direction
         if (params.forwards && !close) lateralOut = std::fmax(lateralOut, 0);
         else if (!params.forwards && !close) lateralOut = std::fmin(lateralOut, 0);
