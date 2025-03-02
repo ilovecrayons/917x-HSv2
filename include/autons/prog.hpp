@@ -1,12 +1,14 @@
 #include "config.hpp"
 
-inline void raiseHook(){
-    pros::Task raise {[=]{hook.set_value(true);
-    cata.score(55,true,4);}};
+inline void raiseLift(){
+    pros::Task raise {[=]{lift.set_value(true);
+    //pros::delay(300);
+    //cata.score(55,true,3);
+    }};
 }
 
-void lowerHook(){
-    hook.set_value(false);
+inline void lowerLift(){
+    lift.set_value(false);
 }
 
 
@@ -21,11 +23,11 @@ inline void prog() {
     chassis.turnToHeading(0,1500,{.maxSpeed = 80, .minSpeed = 20},false);
 
     //uncomment once raise is fixed
-    raiseHook();
-    chassis.moveFor(10, 750, {.forwards = false}, false, true, 0);
+    raiseLift();
+    chassis.moveFor(10, 750, {.forwards = false}, true, true, 0);
     pros::delay(500);
     cata.edge();
-    lowerHook();
+    lowerLift();
 
     chassis.moveToPoint(27,-50,2000,{},false);
 
@@ -83,7 +85,7 @@ inline void prog() {
     intake.set(Intake::IntakeState::STOPPED);
     cata.edge();
     
-    chassis.moveToPoint(65,-60,2000,{.forwards = false,.minSpeed = 80},true);
+    chassis.moveToPoint(68,-60,2000,{.forwards = false,.minSpeed = 80},true);
     clamp.set_value(false);
     chassis.setConstantState(lemlib::Chassis::ConstantState::DEFAULT);
 
@@ -91,13 +93,14 @@ inline void prog() {
     chassis.moveToPoint(30,48,2000,{.minSpeed = 30,.earlyExitRange = 10},false);
     chassis.moveToPoint(2,59,2000,{},false);
     chassis.turnToHeading(180,2000,{},false);
-    chassis.moveFor(10,750,{.forwards = false},false);
     
-    raiseHook();
+    raiseLift();
     chassis.moveFor(10, 750, {.forwards = false}, false, true, 0);
-    pros::delay(500);
     cata.edge();
-    lowerHook();
+    lowerLift();
+
+    chassis.moveToPoint(49, 47, 2000,{.minSpeed = 30, .earlyExitRange = 10},false);
+    chassis.moveToPoint(61,48,2000,{},false);
 
     // chassis.moveFor(10,2000,{.forwards = false},false);
     // chassis.moveToPoint(-61,-50,2000,{},false);

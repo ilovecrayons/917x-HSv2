@@ -130,7 +130,7 @@ void opAsyncButtons() {
 
         if (controller.get_digital(DIGITAL_RIGHT)) {
             hooked = !hooked;
-            hook.set_value(hooked);
+            lift.set_value(hooked);
             pros::delay(500);
         }
 
