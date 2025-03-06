@@ -14,11 +14,11 @@ class Cata {
 
         void initialize();
 
-        void moveTo(int position, bool async = false, int timeout = 1000, int slewrate = 0);
+        void moveTo(int position, bool async = false, int timeout = 1000, float maxSpeed = 127);
 
         void load(float position = 1, bool async = false);
 
-        void score(float position = 227, bool async = false, int slewrate = 0); 
+        void score(float position = 227, bool async = false, float maxSpeed = 127); 
 
         void edge();
 

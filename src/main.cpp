@@ -18,7 +18,7 @@ double turning;
 float up;
 float down;
 bool clamped = false;
-bool hooked = false;
+bool lifted = false;
 int autoSelector = 0;
 
 void printTelemetry() {
@@ -129,8 +129,12 @@ void opAsyncButtons() {
         }
 
         if (controller.get_digital(DIGITAL_RIGHT)) {
-            hooked = !hooked;
-            lift.set_value(hooked);
+            lifted = !lifted;
+            if(lifted){
+                raiseLift();
+            } else {
+                lowerLift();
+            }
             pros::delay(500);
         }
 

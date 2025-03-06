@@ -56,20 +56,18 @@ void Cata::initialize() {
  * @param slewrate The maximum change in motor output per cycle to prevent sudden changes.
  */
 
-void Cata::moveTo(int position, bool async, int timeout, int slewrate) {
+void Cata::moveTo(int position, bool async, int timeout, float maxSpeed) {
     if (async) {
-        pros::Task task {[=, this] { moveTo(position, false); }};
+        pros::Task task {[=, this] { moveTo(position, false, timeout, maxSpeed); }};
     } else {
         // reset controllers
         pid.reset();
         exitCondition.reset();
         lemlib::Timer timer(timeout);
-        int prevMotorOutput = 0;
         // main loop
         while (exitCondition.getExit() == false && !timer.isDone()) {
             int error = position - this->getPosition(); // get the error between target and current in DEGREES
-            int motorOutput = lemlib::slew(pid.update(error), prevMotorOutput, slewrate);
-            prevMotorOutput = motorOutput;
+            float motorOutput = std::clamp(pid.update(error), -maxSpeed, maxSpeed); // calculate PID output constrained by max speed
             motor->move(motorOutput); // move the motor according to PID output
             exitCondition.update(error); // update the exit condition
 
@@ -111,13 +109,13 @@ void Cata::load(float position, bool async) {
  * @param async If true, the movement runs asynchronously; otherwise, it is blocking
  * @param slewrate The maximum change in motor output per cycle to prevent sudden changes
  */
-void Cata::score(float position, bool async, int slewrate) {
+void Cata::score(float position, bool async, float maxSpeed) {
     motor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
     if (async) {
-        moveTo(position, true, 1000, slewrate);
+        moveTo(position, true, 1000, maxSpeed);
     } else {
-        moveTo(position, false, 1000, slewrate);
+        moveTo(position, false, 1000, maxSpeed);
     }
 }
 

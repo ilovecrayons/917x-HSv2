@@ -10,7 +10,7 @@ constexpr int RIGHT_M = 19;
 constexpr int RIGHT_B = 17;
 
 constexpr int LEFT_F = -16;
-constexpr int LEFT_M = -13;
+constexpr int LEFT_M = -19;
 constexpr int LEFT_B = -14;
 
 constexpr int VERTI_ROT = 1;
@@ -37,7 +37,7 @@ inline pros::MotorGroup leftMotors({LEFT_F, LEFT_M, LEFT_B}, pros::MotorGearset:
 // cata
 inline pros::Motor cataMotor(CATA, pros::MotorGearset::green);
 inline pros::Rotation cataRot(CATA_ROT);
-inline Cata cata(&cataMotor, &cataRot, 2, 0.4, 3.5);
+inline Cata cata(&cataMotor, &cataRot, 2.1, 0.1, 3.5);
 
 // intake
 inline pros::Motor intakeMotor(INTAKE, pros::MotorGearset::blue);
@@ -71,25 +71,25 @@ inline lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
 );
 
 // lateral motion controller
-inline lemlib::ControllerSettings linearController(8, //12      proportional gain (kP)
+inline lemlib::ControllerSettings linearController(8, // 12      proportional gain (kP)
                                                    0.03, //       integral gain (kI)
-                                                  90, //65     derivative gain (kD)
+                                                   90, // 65     derivative gain (kD)
                                                    3, //       anti windup
                                                    1, // 1     small error range, in inches
-                                                   100, //100    small error range timeout, in milliseconds
-                                                   3, //3      large error range, in inches
-                                                   300, //500  large error range timeout, in milliseconds
-                                                   10 //20     maximum acceleration (slew)
+                                                   100, // 100    small error range timeout, in milliseconds
+                                                   3, // 3      large error range, in inches
+                                                   300, // 500  large error range timeout, in milliseconds
+                                                   10 // 20     maximum acceleration (slew)
 );
 
 // angular motion controller
-inline lemlib::ControllerSettings angularController(5.78, //4.1  proportional gain (kP)
+inline lemlib::ControllerSettings angularController(5.78, // 4.1  proportional gain (kP)
                                                     0.1, // 0     integral gain (kI)
                                                     62, // 38   derivative gain (kD)
-                                                   5, //       anti windup
+                                                    5, //       anti windup
                                                     1, // 1     small error range, in degrees
-                                                    100, //100  small error range timeout, in milliseconds
-                                                    3, //3      large error range, in degrees
+                                                    100, // 100  small error range timeout, in milliseconds
+                                                    3, // 3      large error range, in degrees
                                                     500, //  large error range timeout, in milliseconds
                                                     0 //        maximum acceleration (slew)
 );
@@ -117,5 +117,18 @@ inline lemlib::ExpoDriveCurve steerCurve(3, // joystick deadband out of 127
 // create the chassis
 inline lemlib::Chassis chassis(drivetrain, linearController, angularController, sensors, &throttleCurve, &steerCurve);
 
+inline void raiseLift() {
+    // pros::Task raise {[=] {
+    //     lift.set_value(true);
+    //     pros::delay(500);
+    //     cata.score(37, false, 60);
+    // }};
+    lift.set_value(true);
+    pros::delay(500);
+    cata.score(37, false, 60);
+}
 
-
+inline void lowerLift(){
+  lift.set_value(false);
+  cata.load();
+}

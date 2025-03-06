@@ -1,16 +1,5 @@
 #include "config.hpp"
 
-inline void raiseLift(){
-    pros::Task raise {[=]{lift.set_value(true);
-    //pros::delay(300);
-    //cata.score(55,true,3);
-    }};
-}
-
-inline void lowerLift(){
-    lift.set_value(false);
-}
-
 
 inline void prog() {
     chassis.setPose(-63,0,90);
@@ -23,12 +12,13 @@ inline void prog() {
     chassis.turnToHeading(0,1500,{.maxSpeed = 80, .minSpeed = 20},false);
 
     //uncomment once raise is fixed
-    // raiseLift();
-    // chassis.moveFor(10, 750, {.forwards = false}, true, true, 0);
-    // pros::delay(500);
-    // cata.edge();
-    // lowerLift();
+    chassis.moveFor(10, 750, {.forwards = false, .maxSpeed = 60}, true, true, 0);
     pros::delay(200);
+    raiseLift();
+    //pros::delay(200);
+    cata.edge();
+    pros::delay(300);
+    lowerLift();
 
     chassis.moveToPoint(27,-50,2000,{},false);
 
@@ -102,7 +92,6 @@ inline void prog() {
 
     chassis.moveToPoint(49, 51, 2000,{.minSpeed = 30, .earlyExitRange = 10},false);
     chassis.moveToPoint(62,48,2000,{.minSpeed = 50},false);
-
     chassis.moveToPoint(41,34,2000,{.forwards = false,.minSpeed = 30, .earlyExitRange = 10},true);
     chassis.moveToPoint(69,-2,2000,{.forwards=false}, false);
     chassis.turnToHeading(-90,2000, {},false);
