@@ -10,7 +10,7 @@ constexpr int RIGHT_M = 19;
 constexpr int RIGHT_B = 17;
 
 constexpr int LEFT_F = -16;
-constexpr int LEFT_M = -12;
+constexpr int LEFT_M = -13;
 constexpr int LEFT_B = -14;
 
 constexpr int VERTI_ROT = 1;
