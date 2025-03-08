@@ -130,5 +130,5 @@ inline void raiseLift() {
 
 inline void lowerLift(){
   lift.set_value(false);
-  cata.load();
+  cata.load(1, true);
 }

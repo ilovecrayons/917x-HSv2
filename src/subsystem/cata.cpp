@@ -67,7 +67,8 @@ void Cata::moveTo(int position, bool async, int timeout, float maxSpeed) {
         // main loop
         while (exitCondition.getExit() == false && !timer.isDone()) {
             int error = position - this->getPosition(); // get the error between target and current in DEGREES
-            float motorOutput = std::clamp(pid.update(error), -maxSpeed, maxSpeed); // calculate PID output constrained by max speed
+            float motorOutput =
+                std::clamp(pid.update(error), -maxSpeed, maxSpeed); // calculate PID output constrained by max speed
             motor->move(motorOutput); // move the motor according to PID output
             exitCondition.update(error); // update the exit condition
 
@@ -113,15 +114,19 @@ void Cata::score(float position, bool async, float maxSpeed) {
     motor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
     if (async) {
-        moveTo(position, true, 1000, maxSpeed);
+        moveTo(position, true, 750, maxSpeed);
     } else {
-        moveTo(position, false, 1000, maxSpeed);
+        moveTo(position, false, 750, maxSpeed);
     }
 }
 
-void Cata::edge(){
-    this->score();
-    this->load(1, true);
+void Cata::edge(bool async) {
+    if (async) {
+        pros::Task goon {[=, this] { edge(false); }};
+    } else {
+        this->score();
+        this->load(1, true);
+    }
 }
 
 void Cata::toggle() {

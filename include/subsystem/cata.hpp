@@ -18,9 +18,9 @@ class Cata {
 
         void load(float position = 1, bool async = false);
 
-        void score(float position = 227, bool async = false, float maxSpeed = 127); 
+        void score(float position = 230, bool async = false, float maxSpeed = 127); 
 
-        void edge();
+        void edge(bool async = false);
 
         void toggle();
 
