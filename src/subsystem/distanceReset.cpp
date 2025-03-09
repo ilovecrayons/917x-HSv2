@@ -1,20 +1,26 @@
 #include "subsystem/distanceReset.hpp"
+#include <utility>
 
-DistanceReset::DistanceReset(pros::Distance* dist, int offset) {
-    this->dist = dist;
-    this->offset = offset;
-}
+std::pair<float, float> DistanceReset::getDistance(Wall wall) {
+    std::vector<int> horiDistances;
+    std::vector<int> vertiDistances;
+    for(int i = 0; i < 15; i++){
+        horiDistances.push_back(horiDist->get_distance());
+        vertiDistances.push_back(vertiDist->get_distance());
+        pros::delay(40);
+    }
+    float horiMedian = horiDistances[horiDistances.size()/2];
+    float vertiMedian = vertiDistances[vertiDistances.size()/2];
 
-int DistanceReset::getDistance(Wall wall) {
     switch (wall) {
         case Wall::RIGHT:
-            return 71 - toInches(dist->get_distance()) - offset;
+            break;
         case Wall::BOTTOM:
-            return -71 + toInches(dist->get_distance()) + offset;
+            return std::make_pair(71 - toInches(horiDist->get_distance()) - horiOffset, -71 + toInches(vertiMedian) + vertiOffset);
         case Wall::LEFT:
             break;
         case Wall::TOP:
             break;
     }
-    return 0;
+    return std::make_pair(0,0);
 }

@@ -1,4 +1,5 @@
 #include "config.hpp"
+#include <iostream>
 using namespace lemlib;
 
 inline void prog() {
@@ -25,7 +26,8 @@ inline void prog() {
     chassis.turnToPoint(40,-59,2000,{.minSpeed = 80, .earlyExitRange = 2},false);
     chassis.moveToPoint(40,-59,2000,{.maxSpeed = 90,.minSpeed = 50, .earlyExitRange = 5},false); //was .min 30
 
-    chassis.moveToPoint(52,-65,2000,{.minSpeed = 80},false); //was .min 30
+    chassis.moveToPoint(51,-65,2000,{.minSpeed = 80},false); //was .min 30
+    pros::delay(200);
 
     // chassis.turnToPoint(-55,-26,2000,{.forwards = false},false);   //not completely necessary, removable for time sake
     chassis.moveToPoint(-56,-24.25,3000,{.forwards = false,.maxSpeed = 110, .minSpeed = 50, .earlyExitRange = 2, .slowDownRange = 45, .slowDownSpeed = 60}, true);
@@ -65,44 +67,56 @@ inline void prog() {
     
     //MOGO 2
     chassis.moveToPoint(35,35,4000,{.minSpeed = 20, .earlyExitRange = 2, .slowDownRange = 40, .slowDownSpeed = 80},false);
-    chassis.moveToPoint(62,-7,2000,{.forwards = false,.maxSpeed = 80},true);
-    chassis.waitUntil(47);
+    chassis.moveToPoint(59,-3,2000,{.forwards = false,.maxSpeed = 80},true);
+    chassis.waitUntil(46);
     clamp.set_value(true);
     chassis.setConstantState(lemlib::Chassis::ConstantState::MOGO);
     chassis.waitUntilDone();
+
+    //turn to da wall
+    chassis.turnToHeading(180, 1000, {.minSpeed = 30}, false);
+    Pose reset1 = chassis.getPose();
+
     cata.edge(true);
 
+    std::pair<float, float> reset1x = distReset.getDistance(DistanceReset::Wall::BOTTOM);
+    chassis.setPose(reset1x.first, reset1x.second, reset1.theta);
+    reset1 = chassis.getPose();
+    std::cout << "reset1: " << reset1.x << " " << reset1.y << " " << reset1.theta << std::endl;
+
     chassis.turnToPoint(24,-24,2000,{.minSpeed = 60, .earlyExitRange = 2},false);
-    chassis.moveToPoint(35,-18,2000,{.minSpeed = 80},false);
+    
+    chassis.moveToPoint(24,-24,2000,{.minSpeed = 80},false);
     pros::delay(300);
-    chassis.turnToPoint(53,-48,2000,{.minSpeed = 80, .earlyExitRange = 2},false);
-    chassis.moveToPoint(50,-46,2000,{.maxSpeed = 95},false);
+    chassis.turnToPoint(48,-49,2000,{.minSpeed = 80, .earlyExitRange = 2},false);
+    chassis.moveToPoint(48,-49,2000,{.maxSpeed = 95},false);
     chassis.moveFor(10,2000,{.forwards = false},false);
     pros::delay(200);
     intake.set(Intake::IntakeState::STOPPED);
     cata.edge();
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.turnToPoint(63,-51,1000,{.minSpeed = 80},false);
-    chassis.moveToPoint(63, -51, 1000, {.minSpeed = 65}, false);
+    chassis.turnToPoint(59,-51,1000,{.minSpeed = 80},false);
+    chassis.moveToPoint(59, -51, 1000, {.minSpeed = 65}, false);
     
     pros::delay(200);
     intake.set(Intake::IntakeState::OUTTAKE);
     
     
-    chassis.turnToPoint(74, -67, 1000, {.forwards = false, .minSpeed = 80}, false);
+    chassis.turnToPoint(70, -67, 1000, {.forwards = false, .minSpeed = 80}, false);
     cata.edge();
-    chassis.moveToPoint(74,-67,1000,{.forwards = false,.minSpeed = 80},true);
-    chassis.waitUntilDone();
+    chassis.moveToPoint(70,-67,1000,{.forwards = false,.minSpeed = 110},true);
     clamp.set_value(false);
+    chassis.waitUntilDone();
     
     chassis.setConstantState(lemlib::Chassis::ConstantState::DEFAULT);
 
     //return;
 
     //WALLSTAKE 2
-    chassis.moveToPoint(28,50,2000,{.minSpeed = 30,.earlyExitRange = 10},true); //was 30,50
+    chassis.moveToPoint(28,50,3000,{.maxSpeed = 110, .minSpeed = 30,.earlyExitRange = 2},true); //was 30,50
     chassis.waitUntil(20);
     intake.set(Intake::IntakeState::INTAKING);
+    chassis.turnToPoint(5, 62, 2000,{.minSpeed = 80, .earlyExitRange = 1.5},false);
     chassis.moveToPoint(5,62,2000,{},false);
     chassis.turnToHeading(-180,2000,{.minSpeed = 80},false);
     
@@ -110,7 +124,7 @@ inline void prog() {
     chassis.moveFor(15, 500, {.forwards = false,.minSpeed = 30}, true);
     Pose pose = chassis.getPose();
     chassis.setPose(pose.x, 66, pose.theta);
-
+    pros::delay(200);
     raiseLift();
     chassis.waitUntilDone();
     cata.edge();

@@ -1,5 +1,6 @@
 #pragma once
 #include "pros/distance.hpp"
+#include <utility>
 
 class DistanceReset {
     public:
@@ -8,7 +9,12 @@ class DistanceReset {
          *
          * @param dist the distance sensor
          */
-        DistanceReset(pros::Distance* dist, int offset = 0);
+        DistanceReset(pros::Distance* horiDist, pros::Distance* vertiDist, float horiOffset = 0, float vertiOffset = 0) {
+            this->horiDist = horiDist;
+            this->vertiDist = vertiDist;
+            this->horiOffset = horiOffset;
+            this->vertiOffset = vertiOffset;
+        }
 
         enum class Wall { TOP, BOTTOM, LEFT, RIGHT };
 
@@ -17,7 +23,7 @@ class DistanceReset {
          *
          * @param wall the wall to reset the distance sensor to
          */
-        int getDistance(Wall wall);
+        std::pair<float, float> getDistance(Wall wall);
     protected:
         /**
          * @brief convert millimeters to inches
@@ -25,8 +31,10 @@ class DistanceReset {
          * @param mm the distance in millimeters
          * @return int the distance in inches
          */
-        int toInches(int mm);
+        float toInches(int mm) { return mm / 25.4; }
     private:
-        int offset;
-        pros::Distance* dist;
+        float horiOffset;
+        float vertiOffset;
+        pros::Distance* horiDist;
+        pros::Distance* vertiDist;
 };
