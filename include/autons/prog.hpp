@@ -92,15 +92,15 @@ inline void prog() {
     chassis.turnToPoint(74, -67, 1000, {.forwards = false, .minSpeed = 80}, false);
     cata.edge();
     chassis.moveToPoint(74,-67,1000,{.forwards = false,.minSpeed = 80},true);
-    clamp.set_value(false);
     chassis.waitUntilDone();
+    clamp.set_value(false);
     
     chassis.setConstantState(lemlib::Chassis::ConstantState::DEFAULT);
 
     //return;
 
     //WALLSTAKE 2
-    chassis.moveToPoint(27,50,2000,{.minSpeed = 30,.earlyExitRange = 10},true); //was 30,50
+    chassis.moveToPoint(28,50,2000,{.minSpeed = 30,.earlyExitRange = 10},true); //was 30,50
     chassis.waitUntil(20);
     intake.set(Intake::IntakeState::INTAKING);
     chassis.moveToPoint(5,62,2000,{},false);

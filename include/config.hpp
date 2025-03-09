@@ -1,6 +1,7 @@
 #pragma once
 #include "lemlib/api.hpp"
 #include "pros/rotation.hpp"
+#include "subsystem/distanceReset.hpp"
 #include "subsystem/intake.hpp"
 #include "subsystem/cata.hpp"
 
@@ -26,6 +27,7 @@ constexpr char HOOK = 'B';
 constexpr char LIFT = 'C';
 
 constexpr char IMU = 21;
+constexpr int DISTANCE = 20;
 
 // controller
 inline pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -54,6 +56,9 @@ inline pros::adi::DigitalOut hook(HOOK);
 
 // Inertial Sensor
 inline pros::Imu imu(IMU);
+
+// distance sensor
+inline pros::Distance distance(DISTANCE);
 
 inline pros::Rotation vertiRot(VERTI_ROT);
 inline pros::Rotation horiRot(HORI_ROT);
@@ -116,6 +121,8 @@ inline lemlib::ExpoDriveCurve steerCurve(3, // joystick deadband out of 127
 
 // create the chassis
 inline lemlib::Chassis chassis(drivetrain, linearController, angularController, sensors, &throttleCurve, &steerCurve);
+
+inline DistanceReset distanceReset(&distance, 0);
 
 inline void raiseLift() {
     // pros::Task raise {[=] {
