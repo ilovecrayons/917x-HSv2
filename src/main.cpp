@@ -145,6 +145,7 @@ void opAsyncButtons() {
 }
 
 void opcontrol() {
+    chassis.setPose(-63,0,90);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     pros::Task asyncButtons(opAsyncButtons);
 

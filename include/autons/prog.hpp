@@ -25,7 +25,7 @@ inline void prog() {
     chassis.turnToPoint(40,-59,2000,{.minSpeed = 80, .earlyExitRange = 2},false);
     chassis.moveToPoint(40,-59,2000,{.maxSpeed = 90,.minSpeed = 50, .earlyExitRange = 5},false); //was .min 30
 
-    chassis.moveToPoint(52,-65,2000,{.minSpeed = 50},false); //was .min 30
+    chassis.moveToPoint(52,-65,2000,{.minSpeed = 80},false); //was .min 30
 
     // chassis.turnToPoint(-55,-26,2000,{.forwards = false},false);   //not completely necessary, removable for time sake
     chassis.moveToPoint(-56,-24.25,3000,{.forwards = false,.maxSpeed = 110, .minSpeed = 50, .earlyExitRange = 2, .slowDownRange = 45, .slowDownSpeed = 60}, true);
@@ -38,8 +38,8 @@ inline void prog() {
     chassis.turnToPoint(-20, -54, 2000, {.minSpeed = 80},true);
     intake.set(Intake::IntakeState::INTAKING);
     cata.edge(true);
-    chassis.moveToPoint(-20,-54,2000,{.maxSpeed = 100, .minSpeed = 30, .earlyExitRange = 3},false);
-    pros::delay(200); // cant spin while intaking???
+    chassis.moveToPoint(-20,-54,2000,{.maxSpeed = 100, .minSpeed = 30, .earlyExitRange = 2},false);
+    pros::delay(400); // cant spin while intaking???
     chassis.turnToPoint(-30,-63,2000,{.minSpeed = 80}, false);
     chassis.moveToPoint(-30,-63,2000,{.minSpeed = 40,.earlyExitRange = 3},false);
     chassis.moveToPoint(-48,-66,2000,{.minSpeed = 40},false); // was .min = 0
@@ -64,7 +64,7 @@ inline void prog() {
 
     
     //MOGO 2
-    chassis.moveToPoint(35,35,4000,{.earlyExitRange = 2},false);
+    chassis.moveToPoint(35,35,4000,{.minSpeed = 20, .earlyExitRange = 2, .slowDownRange = 40, .slowDownSpeed = 80},false);
     chassis.moveToPoint(62,-7,2000,{.forwards = false,.maxSpeed = 80},true);
     chassis.waitUntil(47);
     clamp.set_value(true);
@@ -74,44 +74,51 @@ inline void prog() {
 
     chassis.turnToPoint(24,-24,2000,{.minSpeed = 60, .earlyExitRange = 2},false);
     chassis.moveToPoint(35,-18,2000,{.minSpeed = 80},false);
+    pros::delay(300);
     chassis.turnToPoint(53,-48,2000,{.minSpeed = 80, .earlyExitRange = 2},false);
-    chassis.moveToPoint(49,-45,2000,{.maxSpeed = 95,.slowDownRange = 24,.slowDownSpeed = 50},false);
+    chassis.moveToPoint(50,-46,2000,{.maxSpeed = 95},false);
     chassis.moveFor(10,2000,{.forwards = false},false);
-
+    pros::delay(200);
     intake.set(Intake::IntakeState::STOPPED);
     cata.edge();
-    pros::delay(500);
     intake.set(Intake::IntakeState::INTAKING);
-
-    chassis.moveFor(18,2000,{},false);
-    chassis.turnToHeading(60,2000,{.minSpeed = 40, .earlyExitRange = 2},false);
-    chassis.moveFor(16,2000,{},false);
+    chassis.turnToPoint(63,-51,1000,{.minSpeed = 80},false);
+    chassis.moveToPoint(63, -51, 1000, {.minSpeed = 65}, false);
+    
     pros::delay(200);
     intake.set(Intake::IntakeState::OUTTAKE);
-    cata.edge(true);
     
     
-    chassis.moveToPoint(74,-60,1000,{.forwards = false,.minSpeed = 80},false);
+    chassis.turnToPoint(74, -67, 1000, {.forwards = false, .minSpeed = 80}, false);
+    cata.edge();
+    chassis.moveToPoint(74,-67,1000,{.forwards = false,.minSpeed = 80},true);
     clamp.set_value(false);
+    chassis.waitUntilDone();
+    
     chassis.setConstantState(lemlib::Chassis::ConstantState::DEFAULT);
 
     //return;
 
     //WALLSTAKE 2
-    chassis.moveToPoint(30,50,2000,{.minSpeed = 30,.earlyExitRange = 10},true);
+    chassis.moveToPoint(27,50,2000,{.minSpeed = 30,.earlyExitRange = 10},true); //was 30,50
     chassis.waitUntil(20);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.moveToPoint(4,62,2000,{},false);
-    chassis.turnToHeading(-170,2000,{.minSpeed = 80},false);
+    chassis.moveToPoint(5,62,2000,{},false);
+    chassis.turnToHeading(-180,2000,{.minSpeed = 80},false);
     
+    
+    chassis.moveFor(15, 500, {.forwards = false,.minSpeed = 30}, true);
+    Pose pose = chassis.getPose();
+    chassis.setPose(pose.x, 66, pose.theta);
+
     raiseLift();
-    chassis.moveFor(15, 500, {.forwards = false,.minSpeed = 30}, false);
+    chassis.waitUntilDone();
     cata.edge();
     lowerLift();
 
-    chassis.moveToPoint(49, 48, 2000,{.minSpeed = 30, .earlyExitRange = 10},false);
-    chassis.moveToPoint(63,50,2000,{.minSpeed = 70,.earlyExitRange = 2},false); //64,50
-    chassis.moveToPoint(41,34,2000,{.forwards = false,.minSpeed = 40, .earlyExitRange = 10},false);
+    chassis.moveToPoint(51, 48+7, 2000,{.minSpeed = 50},false);
+    // chassis.moveToPoint(65,50,2000,{.minSpeed = 70,.earlyExitRange = 2},false); //64,50
+    chassis.moveToPoint(41,34+7,2000,{.forwards = false,.minSpeed = 40, .earlyExitRange = 10},false);
     intake.set(Intake::IntakeState::OUTTAKE); 
     chassis.moveToPoint(61,-0.5,2000,{.forwards=false}, false);
     chassis.turnToHeading(-90,2000, {.minSpeed = 80},false);

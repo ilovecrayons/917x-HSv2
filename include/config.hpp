@@ -125,7 +125,7 @@ inline void raiseLift() {
     // }};
     lift.set_value(true);
     pros::delay(500);
-    cata.score(37, false, 60);
+    cata.score(35, false, 60);
 }
 
 inline void lowerLift(){
