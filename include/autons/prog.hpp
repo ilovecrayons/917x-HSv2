@@ -74,7 +74,7 @@ inline void prog() {
     chassis.waitUntilDone();
 
     //turn to da wall
-    chassis.turnToHeading(180, 1000, {.minSpeed = 30}, false);
+    chassis.turnToHeading(180, 1000, {}, false);
     Pose reset1 = chassis.getPose();
 
     cata.edge(true);
@@ -86,26 +86,25 @@ inline void prog() {
 
     chassis.turnToPoint(24,-24,2000,{.minSpeed = 60, .earlyExitRange = 2},false);
     
-    chassis.moveToPoint(24,-24,2000,{.minSpeed = 80},false);
+    chassis.moveToPoint(20,-28,2000,{.minSpeed = 80},false);
     pros::delay(300);
-    chassis.turnToPoint(48,-49,2000,{.minSpeed = 80, .earlyExitRange = 2},false);
-    chassis.moveToPoint(48,-49,2000,{.maxSpeed = 95},false);
+    chassis.turnToPoint(46,-51,2000,{.minSpeed = 80, .earlyExitRange = 2},false);
+    chassis.moveToPoint(46,-51,2000,{.maxSpeed = 95},false);
     chassis.moveFor(10,2000,{.forwards = false},false);
     pros::delay(200);
     intake.set(Intake::IntakeState::STOPPED);
     cata.edge();
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.turnToPoint(59,-51,1000,{.minSpeed = 80},false);
-    chassis.moveToPoint(59, -51, 1000, {.minSpeed = 65}, false);
+    chassis.turnToPoint(58,-56,1000,{.minSpeed = 80},false);
+    chassis.moveToPoint(58, -56, 1000, {.minSpeed = 65}, false);
     
     pros::delay(200);
-    intake.set(Intake::IntakeState::OUTTAKE);
     
     
-    chassis.turnToPoint(70, -67, 1000, {.forwards = false, .minSpeed = 80}, false);
+    chassis.turnToPoint(70, -67, 1000, {.forwards = false,.direction = AngularDirection::CW_CLOCKWISE, .minSpeed = 80}, false);
     cata.edge();
-    chassis.moveToPoint(70,-67,1000,{.forwards = false,.minSpeed = 110},true);
     clamp.set_value(false);
+    chassis.moveToPoint(70,-67,750,{.forwards = false,.minSpeed = 120},false);
     chassis.waitUntilDone();
     
     chassis.setConstantState(lemlib::Chassis::ConstantState::DEFAULT);
@@ -113,37 +112,37 @@ inline void prog() {
     //return;
 
     //WALLSTAKE 2
-    chassis.moveToPoint(28,50,3000,{.maxSpeed = 110, .minSpeed = 30,.earlyExitRange = 2},true); //was 30,50
+    chassis.moveToPoint(18,46,4000,{.maxSpeed = 110, .minSpeed = 30,.earlyExitRange = 15},true); //was 30,50 //10
     chassis.waitUntil(20);
     intake.set(Intake::IntakeState::INTAKING);
-    chassis.turnToPoint(5, 62, 2000,{.minSpeed = 80, .earlyExitRange = 1.5},false);
-    chassis.moveToPoint(5,62,2000,{},false);
+    chassis.moveToPoint(-7,56,2000,{},false);
     chassis.turnToHeading(-180,2000,{.minSpeed = 80},false);
     
     
-    chassis.moveFor(15, 500, {.forwards = false,.minSpeed = 30}, true);
+    chassis.moveFor(15, 1000, {.forwards = false,.minSpeed = 30}, true);
     Pose pose = chassis.getPose();
     chassis.setPose(pose.x, 66, pose.theta);
     pros::delay(200);
+
     raiseLift();
     chassis.waitUntilDone();
     cata.edge();
     lowerLift();
 
-    chassis.moveToPoint(51, 48+7, 2000,{.minSpeed = 50},false);
+    chassis.moveToPoint(50, 50, 2000,{.minSpeed = 50},false);
     // chassis.moveToPoint(65,50,2000,{.minSpeed = 70,.earlyExitRange = 2},false); //64,50
-    chassis.moveToPoint(41,34+7,2000,{.forwards = false,.minSpeed = 40, .earlyExitRange = 10},false);
+    chassis.moveToPoint(35,46,2000,{.forwards = false,.minSpeed = 40, .earlyExitRange = 10},false);
     intake.set(Intake::IntakeState::OUTTAKE); 
-    chassis.moveToPoint(61,-0.5,2000,{.forwards=false}, false);
+    chassis.moveToPoint(61,2,2000,{.forwards=false}, false);
     chassis.turnToHeading(-90,2000, {.minSpeed = 80},false);
     
     chassis.moveFor(13, 750, {.forwards = false,.earlyExitRange = 2}, false);
     cata.edge();
 
     // intake.set(Intake::IntakeState::STOPPED);
-    chassis.moveFor(15,2000,{.minSpeed = 30},false);
-    chassis.turnToPoint(70,60,2000,{.forwards = false, .minSpeed = 80,},false);
-    chassis.moveToPoint(70,60,2000,{.forwards = false,.minSpeed = 120,.earlyExitRange = 2},false);
+    chassis.moveFor(6,2000,{.minSpeed = 30},false);
+    chassis.turnToPoint(65,60,2000,{.forwards = false, .minSpeed = 80,},false);
+    chassis.moveToPoint(65,60,2000,{.forwards = false,.minSpeed = 120,.earlyExitRange = 2},false);
     chassis.turnToHeading(-60,2000,{.minSpeed = 80},false);
 
 
