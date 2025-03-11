@@ -119,6 +119,8 @@ void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t 
     rightMotors.move(fwd * 0.9 + turning);
 }
 
+
+bool cataScore = false;
 void opAsyncButtons() {
     while (true) {
         // toggle clamp
@@ -138,7 +140,14 @@ void opAsyncButtons() {
             pros::delay(500);
         }
 
-        if (controller.get_digital(DIGITAL_R2)) { cata.toggle(); }
+        if (controller.get_digital(DIGITAL_R2) && cataScore == false) {
+            cataScore == true;
+            cata.pidLessMovement();
+        }
+        else if (!(controller.get_digital(DIGITAL_R2))) {
+            cata.load();
+            cataScore = false;
+        }
 
         pros::delay(20);
     }

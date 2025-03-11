@@ -40,6 +40,8 @@ void Cata::initialize() {
     if ((rotation->get_position() / 100) > 250) {
         rotation->set_position((rotation->get_position() / 100 - 360) * 100);
     }
+    pros::Task task {[=, this] {movementClamp();}};
+
 }
 
 /**
@@ -136,6 +138,17 @@ void Cata::toggle() {
     } else {
         this->load();
     }
+}
+
+void Cata::movementClamp(){
+    if (rotation->get_position()>=235){
+        motor->move(0);
+    }
+}
+
+void Cata::pidLessMovement(){
+    motor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    motor->move(127);
 }
 
 void Cata::brake() { motor->brake(); }

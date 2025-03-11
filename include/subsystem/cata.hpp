@@ -28,6 +28,10 @@ class Cata {
 
         void brake();
 
+        void movementClamp();
+
+        void pidLessMovement();
+
     private:
         bool toggleState = false; 
         pros::Rotation* rotation;
