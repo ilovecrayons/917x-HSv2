@@ -40,8 +40,6 @@ void Cata::initialize() {
     if ((rotation->get_position() / 100) > 250) {
         rotation->set_position((rotation->get_position() / 100 - 360) * 100);
     }
-    pros::Task task {[=, this] {movementClamp();}};
-
 }
 
 /**
@@ -126,7 +124,12 @@ void Cata::edge(bool async) {
     if (async) {
         pros::Task goon {[=, this] { edge(false); }};
     } else {
-        this->score();
+        lemlib::Timer timer(750);
+        motor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+        while(this->getPosition() < 235 && !timer.isDone()){
+            motor->move(127);
+        }
+        motor->brake();
         this->load(1, true);
     }
 }
@@ -140,15 +143,13 @@ void Cata::toggle() {
     }
 }
 
-void Cata::movementClamp(){
-    if (rotation->get_position()>=235){
-        motor->move(0);
-    }
-}
-
-void Cata::pidLessMovement(){
+void Cata::scoreOverride(){
     motor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    motor->move(127);
+    if(this->getPosition() < 235){
+        motor->move(127);
+    } else {
+        motor->brake();
+    }
 }
 
 void Cata::brake() { motor->brake(); }

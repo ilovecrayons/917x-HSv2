@@ -133,7 +133,7 @@ inline void raiseLift() {
     //     cata.score(37, false, 60);
     // }};
     lift.set_value(true);
-    pros::delay(500);
+    pros::delay(200);
     cata.score(35, false, 60);
 }
 

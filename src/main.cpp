@@ -140,13 +140,13 @@ void opAsyncButtons() {
             pros::delay(500);
         }
 
-        if (controller.get_digital(DIGITAL_R2) && cataScore == false) {
-            cataScore == true;
-            cata.pidLessMovement();
+        if (controller.get_digital(DIGITAL_R2)) {
+            cataScore = true;
+            cata.scoreOverride();
         }
-        else if (!(controller.get_digital(DIGITAL_R2))) {
+        else if (!controller.get_digital(DIGITAL_R2) && cataScore == true) {
             cata.load();
-            cataScore = false;
+            cataScore = false; 
         }
 
         pros::delay(20);

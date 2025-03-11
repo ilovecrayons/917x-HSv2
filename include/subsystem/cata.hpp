@@ -27,10 +27,12 @@ class Cata {
         int getPosition();
 
         void brake();
+        
+        
+        void scoreOverride();
 
-        void movementClamp();
 
-        void pidLessMovement();
+
 
     private:
         bool toggleState = false; 
