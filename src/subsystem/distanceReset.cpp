@@ -9,6 +9,8 @@ std::pair<float, float> DistanceReset::getDistance(Wall wall) {
         vertiDistances.push_back(vertiDist->get_distance());
         pros::delay(40);
     }
+    std::sort(horiDistances.begin(), horiDistances.end());
+    std::sort(vertiDistances.begin(), vertiDistances.end());
     float horiMedian = horiDistances[horiDistances.size()/2];
     float vertiMedian = vertiDistances[vertiDistances.size()/2];
 
