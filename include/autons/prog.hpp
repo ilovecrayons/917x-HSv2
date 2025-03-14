@@ -102,14 +102,18 @@ inline void prog() {
     pros::delay(400);
     
     
-    chassis.swingToPoint(70, -67, lemlib::DriveSide::RIGHT, 1000, {.forwards = false,.direction = AngularDirection::CCW_COUNTERCLOCKWISE, .maxSpeed = 80, .minSpeed = 30}, true);
+    // chassis.swingToPoint(70, -67, lemlib::DriveSide::RIGHT, 1000, {.forwards = false,.direction = AngularDirection::CCW_COUNTERCLOCKWISE, .maxSpeed = 80, .minSpeed = 80}, true);
+    chassis.turnToPoint(70,-67,2000,{.forwards = false, .minSpeed = 80},true);
     pros::delay(300);
     intake.set(Intake::IntakeState::OUTTAKE, 100);
     cata.edge();
-    pros::delay(100);
-    clamp.set_value(false);
-    chassis.moveToPoint(72,-64.5,750,{.forwards = false,.minSpeed = 120},false);
+    // chassis.waitUntil(70);
     chassis.waitUntilDone();
+    clamp.set_value(false);
+    // chassis.moveToPoint(72,-64.5,750,{.forwards = false,.minSpeed = 120},false);
+    chassis.tank(-127,-127);
+    pros::delay(750);
+    chassis.cancelAllMotions();
     
     chassis.setConstantState(lemlib::Chassis::ConstantState::DEFAULT);
     intake.set(Intake::IntakeState::INTAKING);

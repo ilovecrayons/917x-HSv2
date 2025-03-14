@@ -136,12 +136,20 @@ void Cata::edge(bool async) {
 
 void Cata::toggle() {
     toggleState = !toggleState;
-    if (toggleState) {
-        this->score();
-    } else {
+    // if (toggleState) {
+    //     this->score();
+    // } else {
+    //     this->load();
+    // }
+
+    if(toggleState){
+        pros::Task task{[=,this]{while(this->getPosition()<235){motor->move(127);} motor->brake();}};
+    }
+    else{
         this->load();
     }
 }
+
 
 void Cata::scoreOverride(){
     motor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
