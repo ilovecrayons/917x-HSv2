@@ -127,7 +127,7 @@ void opAsyncButtons() {
         if (controller.get_digital(DIGITAL_R1)) {
             clamped = !clamped;
             clamp.set_value(clamped);
-            pros::delay(500);
+            pros::delay(200);
         }
 
         if (controller.get_digital(DIGITAL_RIGHT)) {
@@ -143,6 +143,7 @@ void opAsyncButtons() {
         if (controller.get_digital(DIGITAL_R2)) {
             cataScore = true;
             cata.scoreOverride();
+            // cata.toggle();
         }
         else if (!controller.get_digital(DIGITAL_R2) && cataScore == true) {
             cata.load();
