@@ -145,7 +145,7 @@ void opAsyncButtons() {
             cata.scoreOverride();
         }
         else if (!controller.get_digital(DIGITAL_R2) && cataScore == true) {
-            cata.load(true);
+            cata.load(1, true);
             cataScore = false; 
         }
 
