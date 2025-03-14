@@ -102,7 +102,7 @@ inline void prog() {
     pros::delay(400);
     
     
-    chassis.swingToPoint(70, -67, lemlib::DriveSide::RIGHT, 1000, {.forwards = false,.direction = AngularDirection::CCW_COUNTERCLOCKWISE, .minSpeed = 80}, true);
+    chassis.swingToPoint(70, -67, lemlib::DriveSide::RIGHT, 1000, {.forwards = false,.direction = AngularDirection::CCW_COUNTERCLOCKWISE, .maxSpeed = 80, .minSpeed = 30}, true);
     pros::delay(300);
     intake.set(Intake::IntakeState::OUTTAKE, 100);
     cata.edge();
@@ -168,9 +168,11 @@ inline void prog() {
     chassis.waitUntil(30);
     clamp.set_value(true);
     cata.edge();
-    chassis.moveToPoint(-55, 65, 2000, {.minSpeed = 80}, false);
+    chassis.setConstantState(lemlib::Chassis::ConstantState::MOGO);
 
-    chassis.swingToHeading(150, lemlib::DriveSide::LEFT, 2000, {.direction = AngularDirection::CW_CLOCKWISE, .minSpeed = 80}, true);
+    chassis.moveToPoint(-54, 65, 2000, {.minSpeed = 80}, false);
+
+    chassis.turnToHeading(150, 2000, {.minSpeed = 80}, false);
 
     pros::delay(400);
     cata.edge();
