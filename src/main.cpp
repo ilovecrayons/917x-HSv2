@@ -115,8 +115,8 @@ void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t 
     down = mast.get_analog(turn);
     fwd = (exp(-f / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-f / 10))) * up;
     turning = -1 * down;
-    leftMotors.move(fwd * 0.9 - turning);
-    rightMotors.move(fwd * 0.9 + turning);
+    leftMotors.move(fwd * 0.95 - turning);
+    rightMotors.move(fwd * 0.95 + turning);
 }
 
 
@@ -146,7 +146,7 @@ void opAsyncButtons() {
             // cata.toggle();
         }
         else if (!controller.get_digital(DIGITAL_R2) && cataScore == true) {
-            cata.load();
+            cata.load(true);
             cataScore = false; 
         }
 
