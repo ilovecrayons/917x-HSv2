@@ -64,7 +64,9 @@ void initialize() {
     cata.initialize(); // initialize the cata object
 }
 
-void disabled() {}
+void disabled() {
+    clamp.set_value(false);
+}
 
 void competition_initialize() {}
 
@@ -74,14 +76,14 @@ void autonomous() {
     // halfAwpBlue();
     // mogoRushRed();
     // mogoRushBlue();
-    // awpRed();
+    //awpRed();
     // awpBlue();
     // elimRedTopSide();
     // elimBlueTopSide();
     // hook.set_value(true); 
-    
-    // prog();
-    awpRed();
+    //chassis.moveFor(36, 2000, {}, false);   
+    //prog();
+    awpBlue();
     // chassis.moveFor(12,2000,{},false);
     // tune();
     

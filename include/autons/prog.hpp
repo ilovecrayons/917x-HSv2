@@ -183,14 +183,15 @@ inline void prog() {
     cata.edge();
     chassis.setConstantState(lemlib::Chassis::ConstantState::MOGO);
 
-    chassis.moveToPoint(-50, 67, 2000, {.minSpeed = 80, .earlyExitRange = 1}, false);
+    chassis.moveToPoint(-50, 67, 2000, {.minSpeed = 80, .earlyExitRange = 2}, false);
 
-    chassis.turnToHeading(130, 2000, {.minSpeed = 80, .earlyExitRange = 1}, false);
+    chassis.turnToHeading(130, 2000, {.minSpeed = 80, .earlyExitRange = 2}, false);
     pros::delay(200);
     
     chassis.moveFor(25, 750, {.forwards = false, .maxSpeed = 80}, true);
     cata.edge();
-    pros::delay(100);
+    pros::delay(200);
+
     clamp.set_value(false);
     chassis.waitUntilDone();
     chassis.moveFor(10, 1000,{.minSpeed = 127},false);
